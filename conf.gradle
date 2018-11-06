@@ -1,0 +1,53 @@
+ext {
+    android = [
+            compileSdkVersion: 26,
+            buildToolsVersion: "26.0.2",
+            minSdkVersion    : 21,
+            targetSdkVersion : 25,
+            versionCode      : 1,
+            versionName      : '1.0.0',
+            VSupportSdk      : '26.+'
+    ]
+
+
+
+    dependencies = [
+            "appcompat-v7"   : "com.android.support:appcompat-v7:${android["VSupportSdk"]}",
+            "support-v4"     : "com.android.support:support-v4:${android["VSupportSdk"]}",
+            "design"         : "com.android.support:design:${android["VSupportSdk"]}",
+            "annotations"    : "com.android.support:support-annotations:${android["VSupportSdk"]}",
+            "recyclerview-v7": "com.android.support:recyclerview-v7:${android["VSupportSdk"]}",
+            "cardview"       : "com.android.support:cardview-v7:${android["VSupportSdk"]}",
+            "multidex"   : "com.android.support:multidex:1.0.2",
+            "butterknife"    : "com.jakewharton:butterknife:8.5.1",
+            "butterknife-apt": "com.jakewharton:butterknife-compiler:8.5.1",
+//            "glide"          : "com.github.bumptech.glide:glide:4.3.1",
+//            "glide-compiler"          : "com.github.bumptech.glide:compiler:4.3.1",
+            "glide"          : "com.github.bumptech.glide:glide:3.7.0",
+            "picasso"        : "com.squareup.picasso:picasso:2.5.2",
+            "okhttp3"        : "com.squareup.okhttp3:okhttp:3.3.0",
+            "gson"           : "com.google.code.gson:gson:2.6.2",
+            "eventbus"       : "org.greenrobot:eventbus:3.0.0",
+            "sugar"          : "com.github.satyan:sugar:1.5",//数据库
+            "baseRecyclerViewAdapter" : "com.github.CymChad:BaseRecyclerViewAdapterHelper:2.7.8",
+            "tkrefreshlayout" : "com.lcodecorex:tkrefreshlayout:1.0.7",
+            "okhttputils"    : "com.zhy:okhttputils:2.6.2",
+            "canary-debug"   : "com.squareup.leakcanary:leakcanary-android:1.4-beta2",
+            "canary-release" : "com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2",
+            "autolayout"     : "com.zhy:autolayout:1.4.5",
+            "avi-loading"    : "com.wang.avi:library:1.0.2",
+            "subsampling"    : "com.davemorrissey.labs:subsampling-scale-image-view:3.6.0",//处理超大图片
+            "utilcode"       : "com.blankj:utilcode:1.3.5",//各种Util工具代码集合
+            "kprogresshud"   : "com.kaopiz:kprogresshud:1.0.2",//锁屏加载
+            "datetimepicker" : "com.wdullaer:materialdatetimepicker:3.5.1",//日期选择
+            "lottie" : "com.airbnb.android:lottie:2.1.0",//动画插件
+            "easypermissions" : "pub.devrel:easypermissions:0.4.2",//动态权限申请
+            "kprogresshud"    : "com.kaopiz:kprogresshud:1.0.2",//锁屏加载
+            "logger"    : "com.orhanobut:logger:2.2.0",//日志打印
+            "banner"    : "com.youth.banner:banner:1.4.10",//轮播图
+            "badgeview"    : "q.rorbin:badgeview:1.1.0",//角标
+            "filepicker"    : "com.droidninja:filepicker:2.1.5",//文件选择
+            "MultiTypeFilePicker"    : "com.vincent.filepicker:MultiTypeFilePicker:1.0.7",//文件选择
+            "BottomNavigationViewEx"    : "com.github.ittianyu:BottomNavigationViewEx:1.2.4"//底部按钮
+    ]
+}

@@ -1,0 +1,123 @@
+buildscript {
+    repositories {
+        maven { url 'https://fabric-artifacts.s3.amazonaws.com/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'io.fabric'
+
+
+def static getGitVersion() {
+}
+
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.appTargetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+
+        buildConfigField "String", "GIT_REVISION", "\"${getGitVersion()}\""
+        buildConfigField "String", "BUILD_DATE", "\"${new Date().toLocaleString()}\""
+        multiDexEnabled true
+
+        ndk {
+            abiFilters "arm64-v8a", "armeabi-v7a", "x86", "x86_64"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+//            java.srcDirs = ['src']
+//            resources.srcDirs = ['src']
+//            aidl.srcDirs = ['src']
+//            renderscript.srcDirs = ['src']
+//            res.srcDirs = ['res', 'res-chatroom', 'res-rp']
+            assets.srcDirs = ['assets']
+            jniLibs.srcDirs = ['libs', 'libs-sdk']
+        }
+    }
+
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+//    dexOptions {
+//        preDexLibraries false
+//        jumboMode true
+//        javaMaxHeapSize "4g"
+//    }
+//
+//    packagingOptions {
+//        exclude 'META-INF/LICENSE.txt'
+//        exclude 'META-INF/NOTICE.txt'
+//    }
+//
+//    aaptOptions {
+//        cruncherEnabled = false
+//        useNewCruncher = false
+//    }
+//
+//    flavorDimensions "rc"
+//
+//
+//    compileOptions {
+//        sourceCompatibility rootProject.ext.appSourceCompatibility
+//        targetCompatibility rootProject.ext.appTargetCompatibility
+//    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:multidex:1.0.2'
+
+    compile rootProject.ext.dependencies["design"]
+    compile ('com.afollestad.material-dialogs:core:0.9.4.5') {
+        exclude group: 'com.android.support' //exclude 可以解决 lib冲突的问题。
+    }
+    testImplementation 'junit:junit:4.12'
+    implementation project(path: ':uikit')
+    implementation 'com.google.firebase:firebase-messaging:11.6.0'
+    implementation 'com.google.android.gms:play-services-base:11.6.0'
+
+    compile files('libs/MiPush_SDK_Client_3_6_2.jar')
+    compile files('libs/nim-push-5.7.0.jar')
+    compile files('libs/nim-rts-5.7.0.jar')
+    compile files('libs/nrtc-sdk.jar')
+    compile files('libs/nim-avchat-5.7.0.jar')
+    compile files('libs/AMap2DMap_3.0.0_AMapSearch_3.6.1_AMapLocation_3.2.1_20161228.jar')
+
+    implementation 'com.meizu.flyme.internet:push-internal:3.6.3@aar'
+    implementation 'com.huawei.android.hms:push:2.6.0.301'
+
+    implementation 'com.netease.nimlib:jsbridge:1.3.1'
+    compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
+        transitive = true
+    }
+
+    // ViewModel and LiveData
+    implementation "android.arch.lifecycle:extensions:1.1.0"
+    // Java8 support for Lifecycles
+    implementation "android.arch.lifecycle:common-java8:1.1.0"
+}
+
+//apply plugin: 'com.google.gms.google-services'
