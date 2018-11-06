@@ -26,10 +26,17 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
+    packagingOptions{
+        doNotStrip '*/mips/*.so'
+        doNotStrip '*/mips64/*.so'
+    }
+
     compileOptions {
         sourceCompatibility rootProject.ext.appSourceCompatibility
         targetCompatibility rootProject.ext.appTargetCompatibility
     }
+
 
     lintOptions {
         abortOnError false
