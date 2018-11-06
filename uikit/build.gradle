@@ -26,7 +26,6 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
-
     compileOptions {
         sourceCompatibility rootProject.ext.appSourceCompatibility
         targetCompatibility rootProject.ext.appTargetCompatibility
