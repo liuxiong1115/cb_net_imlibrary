@@ -106,7 +106,7 @@ public class WatchMessagePictureActivity extends UI {
 
         ToolBarOptions options = new NimToolBarOptions();
         options.titleString = "图片";
-        options.navigateId = R.drawable.nim_actionbar_white_back_icon;
+//        options.navigateId = R.drawable.nim_actionbar_white_back_icon;
         setToolBar(R.id.toolbar, options);
 
         handleIntent();
@@ -146,18 +146,18 @@ public class WatchMessagePictureActivity extends UI {
     }
 
     private void initActionbar() {
-        TextView menuBtn = findView(R.id.actionbar_menu);
-        if (isShowMenu) {
-            menuBtn.setVisibility(View.VISIBLE);
-            menuBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    WatchPicAndVideoMenuActivity.startActivity(WatchMessagePictureActivity.this, message);
-                }
-            });
-        } else {
-            menuBtn.setVisibility(View.GONE);
-        }
+//        TextView menuBtn = findView(R.id.actionbar_menu);
+//        if (isShowMenu) {
+//            menuBtn.setVisibility(View.VISIBLE);
+//            menuBtn.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    WatchPicAndVideoMenuActivity.startActivity(WatchMessagePictureActivity.this, message);
+//                }
+//            });
+//        } else {
+//            menuBtn.setVisibility(View.GONE);
+//        }
     }
 
     private void findViews() {

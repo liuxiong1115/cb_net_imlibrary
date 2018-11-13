@@ -46,4 +46,5 @@
         </com.netease.nim.uikit.common.ui.widget.MyToolbar>
 
     </FrameLayout>
+
 </android.support.design.widget.AppBarLayout>

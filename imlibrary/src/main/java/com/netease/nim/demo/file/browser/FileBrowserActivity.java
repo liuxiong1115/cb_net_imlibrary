@@ -51,6 +51,7 @@ public class FileBrowserActivity extends UI implements TAdapterDelegate {
         setContentView(R.layout.file_browser_activity);
 
         ToolBarOptions options = new NimToolBarOptions();
+        options.titleString = "文件浏览";
         setToolBar(R.id.toolbar, options);
 
         findViews();

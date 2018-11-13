@@ -126,7 +126,7 @@ public class WatchVideoActivity extends UI implements Callback {
         setContentView(R.layout.nim_watch_video_activity);
 
         ToolBarOptions options = new NimToolBarOptions();
-        options.navigateId = R.drawable.nim_actionbar_white_back_icon;
+//        options.navigateId = R.drawable.nim_actionbar_white_back_icon;
         setToolBar(R.id.toolbar, options);
 
         parseIntent();
@@ -207,18 +207,18 @@ public class WatchVideoActivity extends UI implements Callback {
     }
 
     private void initActionbar() {
-        TextView menuBtn = findView(R.id.actionbar_menu);
-        if (isShowMenu) {
-            menuBtn.setVisibility(View.VISIBLE);
-            menuBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    WatchPicAndVideoMenuActivity.startActivity(WatchVideoActivity.this, message);
-                }
-            });
-        } else {
-            menuBtn.setVisibility(View.GONE);
-        }
+//        TextView menuBtn = findView(R.id.actionbar_menu);
+//        if (isShowMenu) {
+//            menuBtn.setVisibility(View.VISIBLE);
+//            menuBtn.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    WatchPicAndVideoMenuActivity.startActivity(WatchVideoActivity.this, message);
+//                }
+//            });
+//        } else {
+//            menuBtn.setVisibility(View.GONE);
+//        }
     }
 
     private void initVideoSize() {
