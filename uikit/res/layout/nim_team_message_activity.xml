@@ -20,7 +20,7 @@
             <!--app:titleTextAppearance="@style/Toolbar.TitleText" />-->
     <!--</android.support.design.widget.AppBarLayout>-->
 
-    <include layout="@layout/layout_toolbar"/>
+    <include layout="@layout/nim_layout_toolbar"/>
 
     <RelativeLayout
         android:id="@+id/invalid_team_tip"

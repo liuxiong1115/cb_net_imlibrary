@@ -22,6 +22,6 @@
             <!--app:subtitleTextAppearance="@style/Toolbar.SubTitleText"/>-->
     <!--</android.support.design.widget.AppBarLayout>-->
 
-    <include layout="@layout/layout_toolbar"/>
+    <include layout="@layout/nim_layout_toolbar"/>
 
 </LinearLayout>
