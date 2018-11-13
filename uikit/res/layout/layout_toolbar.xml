@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/appbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:theme="@style/AppTheme.AppBarOverlay"
+    app:elevation="0dp">
+
+    <View
+        android:id="@+id/baseTopbar"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:visibility="gone"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/topbar"
+            android:layout_width="match_parent"
+            android:layout_height="25dp" />
+
+        <com.liuxiong.library.weights.MyToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/appbarHeight"
+            android:background="@color/transparent"
+            android:minHeight="?attr/actionBarSize"
+            android:paddingLeft="0dp"
+            app:backIcon="@drawable/ic_back"
+            app:backMarginLeft="15dp"
+            app:backText=""
+            app:backTextAppearance="?attr/actionMenuTextAppearance"
+            app:backTextColor="@android:color/white"
+            app:contentInsetStart="0dp"
+            app:menuMarginLeft="15dp"
+            app:menuMarginRight="15dp"
+            app:title=""
+            app:titleTextAppearance="@style/NET_Title_Appearance"
+            app:titleTextColor="@android:color/white"
+            app:title_gravity="center">
+
+        </com.liuxiong.library.weights.MyToolbar>
+
+    </FrameLayout>
+</android.support.design.widget.AppBarLayout>

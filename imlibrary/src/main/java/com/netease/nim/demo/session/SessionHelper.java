@@ -184,15 +184,15 @@ public class SessionHelper {
 
             // 定制加号点开后可以包含的操作， 默认已经有图片，视频等消息了
             ArrayList<BaseAction> actions = new ArrayList<>();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                actions.add(new AVChatAction(AVChatType.AUDIO));
-                actions.add(new AVChatAction(AVChatType.VIDEO));
-            }
-            actions.add(new RTSAction());
-            actions.add(new SnapChatAction());
-            actions.add(new GuessAction());
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//                actions.add(new AVChatAction(AVChatType.AUDIO));
+//                actions.add(new AVChatAction(AVChatType.VIDEO));
+//            }
+//            actions.add(new RTSAction());
+//            actions.add(new SnapChatAction());
+//            actions.add(new GuessAction());
             actions.add(new FileAction());
-            actions.add(new TipAction());
+//            actions.add(new TipAction());
 //            if (NIMRedPacketClient.isEnable()) {
 //                actions.add(new RedPacketAction());
 //            }
@@ -264,8 +264,8 @@ public class SessionHelper {
 
             // 定制加号点开后可以包含的操作， 默认已经有图片，视频等消息了
             ArrayList<BaseAction> actions = new ArrayList<>();
-            actions.add(new SnapChatAction());
-            actions.add(new GuessAction());
+//            actions.add(new SnapChatAction());
+//            actions.add(new GuessAction());
             actions.add(new FileAction());
             myP2pCustomization.actions = actions;
             myP2pCustomization.withSticker = true;
@@ -522,15 +522,16 @@ public class SessionHelper {
         SessionEventListener listener = new SessionEventListener() {
             @Override
             public void onAvatarClicked(Context context, IMMessage message) {
+                //TODO 用户头像点击事件处理
                 // 一般用于打开用户资料页面
-                if (message.getMsgType() == MsgTypeEnum.robot && message.getDirect() == MsgDirectionEnum.In) {
-                    RobotAttachment attachment = (RobotAttachment) message.getAttachment();
-                    if (attachment.isRobotSend()) {
-                        RobotProfileActivity.start(context, attachment.getFromRobotAccount());
-                        return;
-                    }
-                }
-                UserProfileActivity.start(context, message.getFromAccount());
+//                if (message.getMsgType() == MsgTypeEnum.robot && message.getDirect() == MsgDirectionEnum.In) {
+//                    RobotAttachment attachment = (RobotAttachment) message.getAttachment();
+//                    if (attachment.isRobotSend()) {
+//                        RobotProfileActivity.start(context, attachment.getFromRobotAccount());
+//                        return;
+//                    }
+//                }
+//                UserProfileActivity.start(context, message.getFromAccount());
             }
 
             @Override

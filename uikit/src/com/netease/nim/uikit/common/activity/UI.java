@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.netease.nim.uikit.common.fragment.TFragment;
+import com.netease.nim.uikit.common.ui.widget.MyToolbar;
 import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nim.uikit.common.util.sys.ReflectionUtil;
 
@@ -28,7 +29,7 @@ public abstract class UI extends AppCompatActivity {
 
     private static Handler handler;
 
-    private Toolbar toolbar;
+    private MyToolbar toolbar;
 
     @Override
     protected void onStart() {
@@ -76,7 +77,7 @@ public abstract class UI extends AppCompatActivity {
     }
 
     public void setToolBar(int toolBarId, ToolBarOptions options) {
-        toolbar = (Toolbar) findViewById(toolBarId);
+        toolbar = (MyToolbar) findViewById(toolBarId);
         if (options.titleId != 0) {
             toolbar.setTitle(options.titleId);
         }
@@ -84,7 +85,7 @@ public abstract class UI extends AppCompatActivity {
             toolbar.setTitle(options.titleString);
         }
         if (options.logoId != 0) {
-            toolbar.setLogo(options.logoId);
+//            toolbar.setLogo(options.logoId);
         }
         setSupportActionBar(toolbar);
 
@@ -101,9 +102,9 @@ public abstract class UI extends AppCompatActivity {
     }
 
     public void setToolBar(int toolbarId, int titleId, int logoId) {
-        toolbar = (Toolbar) findViewById(toolbarId);
+        toolbar = (MyToolbar) findViewById(toolbarId);
         toolbar.setTitle(titleId);
-        toolbar.setLogo(logoId);
+//        toolbar.setLogo(logoId);
         setSupportActionBar(toolbar);
     }
 

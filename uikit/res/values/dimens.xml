@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--toolbar 定义-->
+    <dimen name="appbarHeight">50dp</dimen>
+    <dimen name="statusHeight">25dp</dimen>
+
+
     <!-- 通用 -->
     <dimen name="isetting_item_height">55dip</dimen>
     <dimen name="isetting_item_padding_left">15dip</dimen>
