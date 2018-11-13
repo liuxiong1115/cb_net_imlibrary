@@ -1,6 +1,7 @@
 package com.netease.nim.uikit.common.activity;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,8 +14,10 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
+import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.common.fragment.TFragment;
 import com.netease.nim.uikit.common.ui.widget.MyToolbar;
 import com.netease.nim.uikit.common.util.log.LogUtil;
@@ -39,7 +42,17 @@ public abstract class UI extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         LogUtil.ui("activity: " + getClass().getSimpleName() + " onCreate()");
+    }
+
+
+    public void showBaseTopbar(Activity activity, int rBarId, boolean isShow) {
+        View baseTopbar = activity.findViewById(rBarId);
+        if(baseTopbar != null) {
+            baseTopbar.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        }
     }
 
     @Override
@@ -77,6 +90,9 @@ public abstract class UI extends AppCompatActivity {
     }
 
     public void setToolBar(int toolBarId, ToolBarOptions options) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            showBaseTopbar(this, R.id.baseTopbar, true);
+        }
         toolbar = (MyToolbar) findViewById(toolBarId);
         if (options.titleId != 0) {
             toolbar.setTitle(options.titleId);
