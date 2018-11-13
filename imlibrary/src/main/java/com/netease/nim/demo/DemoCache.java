@@ -14,6 +14,8 @@ public class DemoCache {
 
     private static String account;
 
+    private static boolean isVisi = false;
+
     private static StatusBarNotificationConfig notificationConfig;
 
     public static void clear() {
@@ -60,5 +62,13 @@ public class DemoCache {
 
     public static boolean isMainTaskLaunching() {
         return mainTaskLaunching;
+    }
+
+    public static boolean isIsVisi() {
+        return isVisi;
+    }
+
+    public static void setIsVisi(boolean isVisi) {
+        DemoCache.isVisi = isVisi;
     }
 }

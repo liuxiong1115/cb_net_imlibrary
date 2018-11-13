@@ -65,20 +65,20 @@ public class NIMRedPacketClient {
     };
 
     private static void getRpAuthToken() {
-        NIMClient.getService(RedPacketService.class).getRedPacketAuthToken().setCallback(new RequestCallbackWrapper<String>() {
-            @Override
-            public void onResult(int code, String result, Throwable exception) {
-                if (code == ResponseCode.RES_SUCCESS) {
-                    thirdToken = result;
-                } else if (code == ResponseCode.RES_RP_INVALID) {
-                    // 红包功能不可用
-                    Toast.makeText(DemoCache.getContext(), "红包功能不可用", Toast.LENGTH_SHORT).show();
-                } else if (code == ResponseCode.RES_FORBIDDEN) {
-                    // 应用没开通红包功能
-                    Toast.makeText(DemoCache.getContext(), "应用没开通红包功能", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        NIMClient.getService(RedPacketService.class).getRedPacketAuthToken().setCallback(new RequestCallbackWrapper<String>() {
+//            @Override
+//            public void onResult(int code, String result, Throwable exception) {
+//                if (code == ResponseCode.RES_SUCCESS) {
+//                    thirdToken = result;
+//                } else if (code == ResponseCode.RES_RP_INVALID) {
+//                    // 红包功能不可用
+//                    Toast.makeText(DemoCache.getContext(), "红包功能不可用", Toast.LENGTH_SHORT).show();
+//                } else if (code == ResponseCode.RES_FORBIDDEN) {
+//                    // 应用没开通红包功能
+//                    Toast.makeText(DemoCache.getContext(), "应用没开通红包功能", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
     }
 
     /**

@@ -133,7 +133,7 @@ public class MainActivity extends UI {
     @OnMPermissionGranted(BASIC_PERMISSION_REQUEST_CODE)
     public void onBasicPermissionSuccess() {
         try {
-            Toast.makeText(this, "授权成功", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "授权成功", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
         }

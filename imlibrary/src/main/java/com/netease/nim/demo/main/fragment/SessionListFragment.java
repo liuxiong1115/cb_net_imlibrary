@@ -3,9 +3,11 @@ package com.netease.nim.demo.main.fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.netease.nim.demo.DemoCache;
 import com.netease.nim.demo.R;
 import com.netease.nim.demo.config.preference.Preferences;
 import com.netease.nim.demo.login.LoginActivity;
@@ -29,8 +31,11 @@ import com.netease.nimlib.sdk.StatusCode;
 import com.netease.nimlib.sdk.auth.AuthServiceObserver;
 import com.netease.nimlib.sdk.auth.ClientType;
 import com.netease.nimlib.sdk.auth.OnlineClient;
+import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
+import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
+import com.netease.nimlib.sdk.msg.model.CustomMessageConfig;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 
@@ -196,8 +201,27 @@ public class SessionListFragment extends MainTabFragment {
 
         fragment.setCallback(new RecentContactsCallback() {
             @Override
-            public void onRecentContactsLoaded() {
+            public void onRecentContactsLoaded(List<RecentContact> items) {
                 // 最近联系人列表加载完毕
+                boolean isVisi = DemoCache.isIsVisi();
+                if(isVisi){
+                    return;
+                }
+                boolean isYes = false;
+                for (RecentContact recentContact : items) {
+                    if(recentContact.getContactId().equals(DemoCache.getAccount())){
+                        isYes = true;
+                    }
+                }
+                if(null == items || items.isEmpty() || !isYes) {
+                    IMMessage msg = MessageBuilder.createTipMessage(DemoCache.getAccount(), SessionTypeEnum.P2P);
+                    msg.setContent("这里可以向电脑发送文件");
+
+                    CustomMessageConfig config = new CustomMessageConfig();
+                    config.enablePush = false; // 不推送
+                    msg.setConfig(config);
+                    NIMClient.getService(MsgService.class).sendMessage(msg, false);
+                }
             }
 
             @Override

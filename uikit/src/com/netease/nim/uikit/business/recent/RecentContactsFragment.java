@@ -117,6 +117,13 @@ public class RecentContactsFragment extends TFragment {
         registerOnlineStateChangeListener(false);
     }
 
+
+    public void addHeaderView(View view){
+        adapter.addHeaderView(view);
+    }
+
+
+
     /**
      * 查找页面控件
      */
@@ -166,7 +173,7 @@ public class RecentContactsFragment extends TFragment {
         }
         callback = new RecentContactsCallback() {
             @Override
-            public void onRecentContactsLoaded() {
+            public void onRecentContactsLoaded(List<RecentContact> items) {
 
             }
 
@@ -346,7 +353,7 @@ public class RecentContactsFragment extends TFragment {
         refreshMessages(true);
 
         if (callback != null) {
-            callback.onRecentContactsLoaded();
+            callback.onRecentContactsLoaded(items);
         }
     }
 

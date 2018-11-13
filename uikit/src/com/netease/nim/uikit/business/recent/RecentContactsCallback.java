@@ -3,6 +3,8 @@ package com.netease.nim.uikit.business.recent;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 
+import java.util.List;
+
 /**
  * 最近联系人列表自定义事件回调函数.
  */
@@ -11,7 +13,7 @@ public interface RecentContactsCallback {
     /**
      * 最近联系人列表数据加载完成的回调函数
      */
-    void onRecentContactsLoaded();
+    void onRecentContactsLoaded(List<RecentContact> items);
 
     /**
      * 有未读数更新时的回调函数，供更新除最近联系人列表外的其他界面和未读指示
