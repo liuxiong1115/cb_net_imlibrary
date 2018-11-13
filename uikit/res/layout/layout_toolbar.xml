@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="25dp" />
 
-        <com.liuxiong.library.weights.MyToolbar
+        <com.netease.nim.uikit.common.ui.widget.MyToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/appbarHeight"
@@ -43,7 +43,7 @@
             app:titleTextColor="@android:color/white"
             app:title_gravity="center">
 
-        </com.liuxiong.library.weights.MyToolbar>
+        </com.netease.nim.uikit.common.ui.widget.MyToolbar>
 
     </FrameLayout>
 </android.support.design.widget.AppBarLayout>
