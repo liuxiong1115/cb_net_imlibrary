@@ -3,6 +3,7 @@
     package="com.testlib.netease">
 
     <application
+        android:name=".MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,6 +17,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <meta-data
+            android:name="com.netease.nim.appKey"
+            android:value="39b5b8380a846355afbe1d31f0b83705" />
     </application>
 
 </manifest>
