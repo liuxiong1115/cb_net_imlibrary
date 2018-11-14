@@ -148,6 +148,10 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
         }
     }
 
+    /**
+     * TODO 加载用户头像
+     * @param recent
+     */
     protected void loadPortrait(RecentContact recent) {
         // 设置头像
         if (recent.getSessionType() == SessionTypeEnum.P2P) {
