@@ -5,7 +5,7 @@ import com.netease.nimlib.sdk.msg.model.RecentContact;
 public class CommonUtil {
 
     //TODO Base URL 加载头像时使用
-    public static final String BaseUrl = "http://www.classbro.ca/";
+    public static String BaseUrl = "http://www.classbro.com/";
 
 
     public static String getAvatarUrl(String url){
