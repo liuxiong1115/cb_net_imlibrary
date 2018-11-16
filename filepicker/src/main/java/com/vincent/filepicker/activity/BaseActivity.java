@@ -1,12 +1,15 @@
 package com.vincent.filepicker.activity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.vincent.filepicker.FolderListHelper;
 import com.vincent.filepicker.R;
@@ -38,12 +41,22 @@ public abstract class BaseActivity extends AppCompatActivity implements EasyPerm
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         isNeedFolderList = getIntent().getBooleanExtra(IS_NEED_FOLDER_LIST, false);
         if (isNeedFolderList) {
             mFolderHelper = new FolderListHelper();
             mFolderHelper.initFolderListView(this);
         }
+    }
+
+    public void showBaseTopbar(Activity activity, int rBarId, boolean isShow) {
+        View baseTopbar = activity.findViewById(rBarId);
+        if(baseTopbar != null) {
+            baseTopbar.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        }
+
     }
 
     @Override

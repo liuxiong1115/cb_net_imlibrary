@@ -1,6 +1,7 @@
 package com.vincent.filepicker.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
@@ -55,7 +56,12 @@ public class ImageBrowserActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.vw_activity_image_browser);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            showBaseTopbar(this, R.id.baseTopbar, true);
+        }
 
         mMaxNumber = getIntent().getIntExtra(Constant.MAX_NUMBER, DEFAULT_MAX_NUMBER);
         initIndex = getIntent().getIntExtra(IMAGE_BROWSER_INIT_INDEX, 0);
@@ -64,7 +70,6 @@ public class ImageBrowserActivity extends BaseActivity {
         mCurrentNumber = mSelectedFiles.size();
 
 
-        super.onCreate(savedInstanceState);
     }
 
     private void initView() {

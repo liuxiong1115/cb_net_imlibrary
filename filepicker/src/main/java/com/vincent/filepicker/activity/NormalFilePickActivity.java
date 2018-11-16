@@ -1,6 +1,7 @@
 package com.vincent.filepicker.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -64,6 +65,9 @@ public class NormalFilePickActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vw_activity_file_pick);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            showBaseTopbar(this, R.id.baseTopbar, true);
+        }
         mMaxNumber = getIntent().getIntExtra(Constant.MAX_NUMBER, DEFAULT_MAX_NUMBER);
         mSuffix = getIntent().getStringArrayExtra(SUFFIX);
         initView();

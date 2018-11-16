@@ -5,10 +5,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <View
+        android:id="@+id/baseTopbar"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:visibility="gone"/>
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/tb_image_pick"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_below="@+id/baseTopbar"
         android:background="@color/vw_BgToolBar"
         android:theme="@style/vw_ToolbarTheme"
         app:titleTextColor="#FFFFFF"

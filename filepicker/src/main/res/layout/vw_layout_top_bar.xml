@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="wrap_content"
     android:background="@color/vw_BgToolBar">
 
     <RelativeLayout
         android:id="@+id/rl_back"
         android:layout_width="50dp"
-        android:layout_height="match_parent"
+        android:layout_height="50dp"
         android:onClick="onBackClick">
 
         <ImageView
@@ -32,7 +32,7 @@
     <LinearLayout
         android:id="@+id/ll_folder"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="50dp"
         android:layout_centerInParent="true"
         android:orientation="horizontal"
         android:visibility="gone">
@@ -62,7 +62,7 @@
     <RelativeLayout
         android:id="@+id/rl_done"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="50dp"
         android:layout_alignParentRight="true"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
