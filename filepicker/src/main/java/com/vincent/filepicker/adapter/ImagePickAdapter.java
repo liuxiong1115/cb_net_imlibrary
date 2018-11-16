@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 //import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.vincent.filepicker.Constant;
 import com.vincent.filepicker.R;
 import com.vincent.filepicker.ToastUtil;
@@ -117,10 +118,10 @@ public class ImagePickAdapter extends BaseAdapter<ImageFile, ImagePickAdapter.Im
 //            RequestOptions options = new RequestOptions();
             Glide.with(mContext)
                     .load(file.getPath())
-                    .centerCrop()
+//                    .centerCrop()
 //                    .apply(options.centerCrop())
 //                    .transition(withCrossFade())
-//                    .transition(new DrawableTransitionOptions().crossFade(500))
+                    .transition(new DrawableTransitionOptions().crossFade(500))
                     .into(holder.mIvThumbnail);
 
             if (file.isSelected()) {

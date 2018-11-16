@@ -78,6 +78,7 @@ dependencies {
     implementation project(path: ':uikit')
     compile project(':imlibrary')
     compile project(':filepicker')
+    annotationProcessor  rootProject.ext.dependencies["glide-apt"]
     annotationProcessor rootProject.ext.dependencies["butterknife-apt"]
     compile 'com.braintreepayments.api:braintree:2.12.0'
     testCompile 'junit:junit:4.12'

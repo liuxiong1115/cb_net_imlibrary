@@ -1,6 +1,7 @@
 package com.testlib.netease;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,12 @@ import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
 import com.netease.nimlib.sdk.auth.LoginInfo;
+import com.vincent.filepicker.Constant;
+import com.vincent.filepicker.activity.ImagePickActivity;
+
+import static com.vincent.filepicker.activity.ImagePickActivity.IS_NEED_CAMERA;
+import static com.vincent.filepicker.activity.ImagePickActivity.IS_NEED_IMAGE_PAGER;
+import static com.vincent.filepicker.activity.ImagePickActivity.IS_ONLY_SINGLE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,8 +45,29 @@ public class MainActivity extends AppCompatActivity {
                 com.netease.nim.demo.main.activity.MainActivity.start(MainActivity.this);
             }
         });
-
+        Button button1 = (Button)findViewById(R.id.button1);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onPickPhoto();
+            }
+        });
     }
+
+
+    /**
+     * 选择图片
+     */
+    public void onPickPhoto() {
+        Intent intent1 = new Intent(this, ImagePickActivity.class);
+        intent1.putExtra(IS_NEED_CAMERA, true);
+        intent1.putExtra(IS_NEED_IMAGE_PAGER, false);
+        intent1.putExtra(IS_ONLY_SINGLE, true);
+        intent1.putExtra(Constant.MAX_NUMBER, 1);
+        startActivityForResult(intent1, Constant.REQUEST_CODE_PICK_IMAGE);
+    }
+
+
 
 
     private AbortableFuture<LoginInfo> loginRequest;
