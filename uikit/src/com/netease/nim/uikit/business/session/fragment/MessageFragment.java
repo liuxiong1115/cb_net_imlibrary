@@ -22,6 +22,7 @@ import com.netease.nim.uikit.business.session.module.Container;
 import com.netease.nim.uikit.business.session.module.ModuleProxy;
 import com.netease.nim.uikit.business.session.module.input.InputPanel;
 import com.netease.nim.uikit.business.session.module.list.MessageListPanelEx;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.fragment.TFragment;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nimlib.sdk.NIMClient;
@@ -43,6 +44,7 @@ import com.netease.nimlib.sdk.robot.model.RobotAttachment;
 import com.netease.nimlib.sdk.robot.model.RobotMsgType;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -259,6 +261,15 @@ public class MessageFragment extends TFragment implements ModuleProxy {
         if (aitManager != null) {
             aitManager.reset();
         }
+
+        //发送消息外部回调
+        if(CommonUtil.classbroRobot.equals(sessionId)){
+            CommonUtil.sendMessageCount ++ ;
+            if(onSendMessageListener != null){
+                onSendMessageListener.messageSend(message , new Date().getTime() , CommonUtil.sendMessageCount);
+            }
+        }
+
         return true;
     }
 
@@ -403,5 +414,19 @@ public class MessageFragment extends TFragment implements ModuleProxy {
      */
     public void receiveReceipt() {
         messageListPanel.receiveReceipt();
+    }
+
+
+
+
+
+    OnSendMessageListener onSendMessageListener;
+
+    public interface OnSendMessageListener{
+        public void messageSend(IMMessage message , Long sendTime , int count);
+    }
+
+    public void setOnSendMessageListener(OnSendMessageListener onSendMessageListener){
+        this.onSendMessageListener = onSendMessageListener;
     }
 }

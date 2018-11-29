@@ -47,6 +47,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -332,6 +333,8 @@ public class RecentContactsFragment extends TFragment {
                                 updateOfflineContactAited(loadedRecent);
                             }
                         }
+
+
                         // 此处如果是界面刚初始化，为了防止界面卡顿，可先在后台把需要显示的用户资料和群组资料在后台加载好，然后再刷新界面
                         //
                         msgLoaded = true;

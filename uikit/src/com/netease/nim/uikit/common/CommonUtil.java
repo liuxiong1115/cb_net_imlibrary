@@ -7,6 +7,13 @@ public class CommonUtil {
     //TODO Base URL 加载头像时使用
     public static String BaseUrl = "http://www.classbro.com/";
 
+    public static String classbroRobot = "1008611";
+
+    //当前已发送消息数量
+    public static int sendMessageCount = 0;
+    //是否开启留言  0-未开启   1-开启
+    public static int isOPeenMessage = 0;
+
 
     public static String getAvatarUrl(String url){
         if(null == url){
