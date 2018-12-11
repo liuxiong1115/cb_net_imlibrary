@@ -24,7 +24,7 @@ public class SnapChatAction extends PickImageAction {
         snapChatAttachment.setPath(file.getPath());
         snapChatAttachment.setSize(file.length());
         CustomMessageConfig config = new CustomMessageConfig();
-        config.enableHistory = false;
+        config.enableHistory = true;
         config.enableRoaming = false;
         config.enableSelfSync = false;
         IMMessage stickerMessage = MessageBuilder.createCustomMessage(getAccount(), getSessionType(), "阅后即焚消息", snapChatAttachment, config);

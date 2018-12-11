@@ -47,7 +47,7 @@ public class NIMOpenRpCallback {
 
         String content = redPacketOpenedMessage.getDesc(sessionType, sessionId);
         CustomMessageConfig config = new CustomMessageConfig();
-        config.enableHistory = false;
+        config.enableHistory = true;
         config.enablePush = false;
         config.enableUnreadCount = false;
         imMessage = MessageBuilder.createCustomMessage(sessionId, sessionType, content, redPacketOpenedMessage, config);
