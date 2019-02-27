@@ -86,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
         // 在这里直接使用同步到云信服务器的帐号和token登录。
         // 这里为了简便起见，demo就直接使用了密码的md5作为token。
         // 如果开发者直接使用这个demo，只更改appkey，然后就登入自己的账户体系的话，需要传入同步到云信服务器的token，而不是用户密码。
-        final String account = "0stud74";
-        final String token = "7e4984ba-22b3-4214-ad09-a90cdd66d7a2";
+        final String account = "0teac5";
+        final String token = "cfc92cd0-eb6d-4e08-a803-ec145a4889f2";
         // 登录
         loginRequest = NimUIKit.login(new LoginInfo(account, token), new RequestCallback<LoginInfo>() {
             @Override

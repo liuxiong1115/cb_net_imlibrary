@@ -400,19 +400,19 @@ public class SessionHelper {
 
     private static SessionCustomization getTeamCustomization(String tid) {
         if (normalTeamCustomization == null) {
-
+            //TODO Team actions 按钮自定义
             // 定制加号点开后可以包含的操作， 默认已经有图片，视频等消息了
             final TeamAVChatAction avChatAction = new TeamAVChatAction(AVChatType.VIDEO);
 //            TeamAVChatProfile.sharedInstance().registerObserver(true);
 
             ArrayList<BaseAction> actions = new ArrayList<>();
-            actions.add(avChatAction);
-            actions.add(new GuessAction());
+//            actions.add(avChatAction);
+//            actions.add(new GuessAction());
             actions.add(new FileAction());
 //            if (NIMRedPacketClient.isEnable()) {
 //                actions.add(new RedPacketAction());
 //            }
-            actions.add(new TipAction());
+//            actions.add(new TipAction());
 
 
             SessionTeamCustomization.SessionTeamCustomListener listener = new SessionTeamCustomization.SessionTeamCustomListener() {
@@ -447,14 +447,14 @@ public class SessionHelper {
 //            TeamAVChatProfile.sharedInstance().registerObserver(true);
 
             ArrayList<BaseAction> actions = new ArrayList<>();
-            actions.add(avChatAction);
-            actions.add(new GuessAction());
             actions.add(new FileAction());
-            actions.add(new AckMessageAction());
+//            actions.add(avChatAction);
+//            actions.add(new GuessAction());
+//            actions.add(new AckMessageAction());
 //            if (NIMRedPacketClient.isEnable()) {
 //                actions.add(new RedPacketAction());
 //            }
-            actions.add(new TipAction());
+//            actions.add(new TipAction());
 
             SessionTeamCustomization.SessionTeamCustomListener listener = new SessionTeamCustomization.SessionTeamCustomListener() {
 
