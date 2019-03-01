@@ -137,7 +137,6 @@ class NimSDKOptionConfig {
     private static void initStatusBarNotificationConfig(SDKOptions options) {
         // load 应用的状态栏配置
         StatusBarNotificationConfig config = loadStatusBarNotificationConfig();
-        config.notificationSmallIconId=R.drawable.appicon;  //设置推送小图标
         // load 用户的 StatusBarNotificationConfig 设置项
         StatusBarNotificationConfig userConfig = UserPreferences.getStatusConfig();
         if (userConfig == null) {
