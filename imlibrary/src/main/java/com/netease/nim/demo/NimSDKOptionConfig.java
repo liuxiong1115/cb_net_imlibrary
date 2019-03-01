@@ -137,7 +137,7 @@ class NimSDKOptionConfig {
     private static void initStatusBarNotificationConfig(SDKOptions options) {
         // load 应用的状态栏配置
         StatusBarNotificationConfig config = loadStatusBarNotificationConfig();
-
+        config.notificationSmallIconId=R.drawable.appicon;  //设置推送小图标
         // load 用户的 StatusBarNotificationConfig 设置项
         StatusBarNotificationConfig userConfig = UserPreferences.getStatusConfig();
         if (userConfig == null) {
@@ -161,7 +161,7 @@ class NimSDKOptionConfig {
         StatusBarNotificationConfig config = new StatusBarNotificationConfig();
         // 点击通知需要跳转到的界面
         config.notificationEntrance = WelcomeActivity.class;
-        config.notificationSmallIconId = R.drawable.ic_stat_notify_msg;
+        config.notificationSmallIconId = R.drawable.pushicon;
         config.notificationColor = DemoCache.getContext().getResources().getColor(R.color.color_blue_3a9efb);
         // 通知铃声的uri字符串
         config.notificationSound = "android.resource://com.netease.nim.demo/raw/msg";
