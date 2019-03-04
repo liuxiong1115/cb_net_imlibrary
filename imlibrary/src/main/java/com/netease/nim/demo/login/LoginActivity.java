@@ -104,7 +104,7 @@ public class LoginActivity extends UI implements OnKeyListener {
 
         ToolBarOptions options = new NimToolBarOptions();
         options.isNeedNavigate = false;
-        options.logoId = R.drawable.actionbar_white_logo_space;
+        options.logoId = R.drawable.appicon;
         setToolBar(R.id.toolbar, options);
 
         requestBasicPermission();
