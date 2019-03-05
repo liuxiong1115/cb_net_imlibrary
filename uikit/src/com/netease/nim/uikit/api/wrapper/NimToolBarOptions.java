@@ -9,7 +9,7 @@ import com.netease.nim.uikit.common.activity.ToolBarOptions;
 public class NimToolBarOptions extends ToolBarOptions {
 
     public NimToolBarOptions() {
-        logoId = R.drawable.appicon;
+      //  logoId = R.drawable.appicon;
         navigateId = R.drawable.ic_back;
         isNeedNavigate = true;
     }
