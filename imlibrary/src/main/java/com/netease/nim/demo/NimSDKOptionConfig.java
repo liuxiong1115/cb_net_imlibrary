@@ -137,6 +137,7 @@ class NimSDKOptionConfig {
     private static void initStatusBarNotificationConfig(SDKOptions options) {
         // load 应用的状态栏配置
         StatusBarNotificationConfig config = loadStatusBarNotificationConfig();
+
         // load 用户的 StatusBarNotificationConfig 设置项
         StatusBarNotificationConfig userConfig = UserPreferences.getStatusConfig();
         if (userConfig == null) {
