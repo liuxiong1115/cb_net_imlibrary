@@ -16,6 +16,7 @@ import com.netease.nim.demo.main.activity.MultiportActivity;
 import com.netease.nim.demo.main.model.MainTab;
 import com.netease.nim.demo.main.reminder.ReminderManager;
 import com.netease.nim.demo.session.SessionHelper;
+import com.netease.nim.demo.session.extension.DefaultCustomAttachment;
 import com.netease.nim.demo.session.extension.GuessAttachment;
 import com.netease.nim.demo.session.extension.RedPacketAttachment;
 import com.netease.nim.demo.session.extension.RedPacketOpenedAttachment;
@@ -204,16 +205,16 @@ public class SessionListFragment extends MainTabFragment {
             public void onRecentContactsLoaded(List<RecentContact> items) {
                 // 最近联系人列表加载完毕
                 boolean isVisi = DemoCache.isIsVisi();
-                if(isVisi){
+                if (isVisi) {
                     return;
                 }
                 boolean isYes = false;
                 for (RecentContact recentContact : items) {
-                    if(recentContact.getContactId().equals(DemoCache.getAccount())){
+                    if (recentContact.getContactId().equals(DemoCache.getAccount())) {
                         isYes = true;
                     }
                 }
-                if(null == items || items.isEmpty() || !isYes) {
+                if (null == items || items.isEmpty() || !isYes) {
                     IMMessage msg = MessageBuilder.createTipMessage(DemoCache.getAccount(), SessionTypeEnum.P2P);
                     msg.setContent("这里可以向电脑发送文件");
 
@@ -250,7 +251,7 @@ public class SessionListFragment extends MainTabFragment {
                 // 当然，你也可以自定义一些内建消息的缩略语，例如图片，语音，音视频会话等，自定义的缩略语会被优先使用。
                 if (attachment instanceof GuessAttachment) {
                     GuessAttachment guess = (GuessAttachment) attachment;
-                    return guess.getValue().getDesc();
+                    return "[" + guess.getValue().getDesc() + "]";
                 }
 //                else if (attachment instanceof RTSAttachment) {
 //                    return "[白板]";
@@ -263,8 +264,10 @@ public class SessionListFragment extends MainTabFragment {
                     return "[红包]";
                 } else if (attachment instanceof RedPacketOpenedAttachment) {
                     return ((RedPacketOpenedAttachment) attachment).getDesc(recentContact.getSessionType(), recentContact.getContactId());
+                } else if (attachment instanceof DefaultCustomAttachment) {
+                    DefaultCustomAttachment customAttachment = (DefaultCustomAttachment) attachment;
+                    return "[" + customAttachment.getTitle() + "]";
                 }
-
                 return null;
             }
 
@@ -281,7 +284,6 @@ public class SessionListFragment extends MainTabFragment {
                         return (String) content.get("content");
                     }
                 }
-
                 return null;
             }
         });

@@ -74,7 +74,6 @@ public class JsBridgeActivity extends UI {
         WebViewConfig.removeJavascriptInterfaces(webView);
         WebViewConfig.setWebViewAllowDebug(false);
         WebViewConfig.setAcceptThirdPartyCookies(webView);
-
         webView.loadUrl(LOCAL_ASSET_HTML);
     }
 

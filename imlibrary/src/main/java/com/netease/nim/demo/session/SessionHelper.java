@@ -26,6 +26,7 @@ import com.netease.nim.demo.session.activity.MessageHistoryActivity;
 import com.netease.nim.demo.session.activity.MessageInfoActivity;
 import com.netease.nim.demo.session.extension.CustomAttachParser;
 import com.netease.nim.demo.session.extension.CustomAttachment;
+import com.netease.nim.demo.session.extension.DefaultCustomAttachment;
 import com.netease.nim.demo.session.extension.GuessAttachment;
 import com.netease.nim.demo.session.extension.RedPacketAttachment;
 import com.netease.nim.demo.session.extension.RedPacketOpenedAttachment;
@@ -500,7 +501,7 @@ public class SessionHelper {
         NimUIKit.registerMsgItemViewHolder(FileAttachment.class, MsgViewHolderFile.class);
 //        NimUIKit.registerMsgItemViewHolder(AVChatAttachment.class, MsgViewHolderAVChat.class);
         NimUIKit.registerMsgItemViewHolder(GuessAttachment.class, MsgViewHolderGuess.class);
-        NimUIKit.registerMsgItemViewHolder(CustomAttachment.class, MsgViewHolderDefCustom.class);
+        NimUIKit.registerMsgItemViewHolder(DefaultCustomAttachment.class, MsgViewHolderDefCustom.class);
         NimUIKit.registerMsgItemViewHolder(StickerAttachment.class, MsgViewHolderSticker.class);
         NimUIKit.registerMsgItemViewHolder(SnapChatAttachment.class, MsgViewHolderSnapChat.class);
 //        NimUIKit.registerMsgItemViewHolder(RTSAttachment.class, MsgViewHolderRTS.class);

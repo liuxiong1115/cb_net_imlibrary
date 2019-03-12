@@ -201,8 +201,8 @@ public class LoginActivity extends UI implements OnKeyListener {
         loginPasswordEdit.setIconResource(R.drawable.user_pwd_lock_icon);
 
 
-        loginAccountEdit.setText("0stud74");
-        loginPasswordEdit.setText("9fc03788-c946-4b41-b2cf-4e96d6091f9a");
+        loginAccountEdit.setText("0stud111");
+        loginPasswordEdit.setText("ca3b942d-864f-4656-b6d6-cd33192dcc95");
 
         loginAccountEdit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(32)});
         loginPasswordEdit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(32)});

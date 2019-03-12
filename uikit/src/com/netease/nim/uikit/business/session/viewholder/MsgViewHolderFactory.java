@@ -31,6 +31,7 @@ public class MsgViewHolderFactory {
         register(LocationAttachment.class, MsgViewHolderLocation.class);
         register(NotificationAttachment.class, MsgViewHolderNotification.class);
         register(RobotAttachment.class, MsgViewHolderRobot.class);
+
     }
 
     public static void register(Class<? extends MsgAttachment> attach, Class<? extends MsgViewHolderBase> viewHolder) {
