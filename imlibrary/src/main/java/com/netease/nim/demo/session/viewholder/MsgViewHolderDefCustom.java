@@ -5,9 +5,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.netease.nim.demo.R;
+import com.netease.nim.demo.session.extension.CustomAttachmentType;
 import com.netease.nim.demo.session.extension.DefaultCustomAttachment;
 import com.netease.nim.demo.session.utils.GlideUtils;
 import com.netease.nim.uikit.business.session.emoji.MoonUtil;
@@ -60,7 +62,7 @@ public class MsgViewHolderDefCustom extends MsgViewHolderBase {
     protected void bindContentView() {
         final DefaultCustomAttachment attachment = (DefaultCustomAttachment) message.getAttachment();
         MoonUtil.identifyFaceExpressionAndATags(context, titleView, attachment.getTitle() == null ? "" : attachment.getTitle(), ImageSpan.ALIGN_BASELINE);  //标题
-        MoonUtil.identifyFaceExpressionAndATags(context, contentView, attachment.getContent() == null ? "" : attachment.getContent(), ImageSpan.ALIGN_BOTTOM);  //内容
+        MoonUtil.identifyFaceExpressionAndATags(context, contentView, attachment.getSubTitle() == null ? "" : attachment.getSubTitle(), ImageSpan.ALIGN_BOTTOM);  //内容
 
         //图片
         RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.appicon);
@@ -88,23 +90,6 @@ public class MsgViewHolderDefCustom extends MsgViewHolderBase {
 //                }
             }
         });
-       /* CommonUtil.setChatItemOnClicklistener(new CommonUtil.ChatItemOnClicklistener() {
-            @Override
-            public void onClick(View view, Object o) {
-                DefaultCustomAttachment attachment = (DefaultCustomAttachment) o;
-                if (attachment.getMsgType() == CustomAttachmentType.ConfirmLetter) {  //确认函
-                    Toast.makeText(context, "确认函", Toast.LENGTH_SHORT).show();
-                } else if (attachment.getMsgType() == CustomAttachmentType.Bill) {  //账单
-                    Toast.makeText(context, "账单", Toast.LENGTH_SHORT).show();
-
-                } else if (attachment.getMsgType() == CustomAttachmentType.Course) { //课程
-                    Toast.makeText(context, "课程", Toast.LENGTH_SHORT).show();
-
-                } else {  //课堂
-                    Toast.makeText(context, "课堂", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });*/
     }
 
 }
