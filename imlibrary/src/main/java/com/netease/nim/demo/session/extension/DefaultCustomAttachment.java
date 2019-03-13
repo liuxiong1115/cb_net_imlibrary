@@ -12,16 +12,22 @@ public class DefaultCustomAttachment extends CustomAttachment {
     private int msgType;
     private String messageId;  //消息传递id
     private String imgUrl;
-
+    private int picType;
+    private String orderNo;
+    private int courseId;
     private static final String KEY_CONTENT = "subtitle";
     private static final String KEY_ID = "messageId";
     private static final String KEY_TITLE = "title";
     private static final String KEY_TYPE = "type";
     private static final String KEY_URL = "imgUrl";
+    private static final String KEY_Type = "picType";
+    private static final String KEY_COURSEID = "courseId";
+    private static final String KEY_ORDERNO = "orderNo";
 
     public DefaultCustomAttachment() {
         super(0);
     }
+
     @Override
     protected void parseData(JSONObject data) {
         content = data.getString(KEY_CONTENT);
@@ -29,6 +35,9 @@ public class DefaultCustomAttachment extends CustomAttachment {
         msgType = data.getInteger(KEY_TYPE);
         messageId = data.getString(KEY_ID);
         imgUrl = data.getString(KEY_URL);
+        picType = data.getInteger(KEY_Type);
+        orderNo = data.getString(KEY_ORDERNO);
+        courseId = data.getInteger(KEY_COURSEID);
     }
 
     @Override
@@ -40,6 +49,9 @@ public class DefaultCustomAttachment extends CustomAttachment {
             data.put(KEY_TITLE, title);
             data.put(KEY_TYPE, type);
             data.put(KEY_URL, imgUrl);
+            data.put(KEY_TYPE, picType);
+            data.put(KEY_COURSEID, courseId);
+            data.put(KEY_ORDERNO, orderNo);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,5 +76,17 @@ public class DefaultCustomAttachment extends CustomAttachment {
 
     public String getImgUrl() {
         return imgUrl;
+    }
+
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public int getPicType() {
+        return picType;
+    }
+
+    public int getCourseId() {
+        return courseId;
     }
 }

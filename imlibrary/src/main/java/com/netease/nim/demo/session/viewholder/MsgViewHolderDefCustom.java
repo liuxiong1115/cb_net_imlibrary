@@ -5,17 +5,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.netease.nim.demo.R;
-import com.netease.nim.demo.config.DemoServers;
-import com.netease.nim.demo.session.extension.CustomAttachmentType;
 import com.netease.nim.demo.session.extension.DefaultCustomAttachment;
 import com.netease.nim.demo.session.utils.GlideUtils;
 import com.netease.nim.uikit.business.session.emoji.MoonUtil;
 import com.netease.nim.uikit.business.session.viewholder.MsgViewHolderBase;
-import com.netease.nim.uikit.business.session.viewholder.MsgViewHolderUnknown;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.ui.recyclerview.adapter.BaseMultiItemFetchLoadAdapter;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
@@ -35,7 +31,7 @@ public class MsgViewHolderDefCustom extends MsgViewHolderBase {
 
     @Override
     protected int getContentResId() {
-        return R.layout.message_default_custom;
+        return R.layout.message_itme_custom;
     }
 
     @Override
@@ -65,8 +61,10 @@ public class MsgViewHolderDefCustom extends MsgViewHolderBase {
         final DefaultCustomAttachment attachment = (DefaultCustomAttachment) message.getAttachment();
         MoonUtil.identifyFaceExpressionAndATags(context, titleView, attachment.getTitle() == null ? "" : attachment.getTitle(), ImageSpan.ALIGN_BASELINE);  //标题
         MoonUtil.identifyFaceExpressionAndATags(context, contentView, attachment.getContent() == null ? "" : attachment.getContent(), ImageSpan.ALIGN_BOTTOM);  //内容
+
         //图片
-        GlideUtils.lxGlide(context, attachment.getImgUrl(), imageView);
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.appicon);
+        GlideUtils.lxGlide(context, attachment.getImgUrl(), imageView,requestOptions);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

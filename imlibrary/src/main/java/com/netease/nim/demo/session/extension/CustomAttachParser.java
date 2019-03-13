@@ -42,7 +42,6 @@ public class CustomAttachParser implements MsgAttachmentParser {
                     attachment = new DefaultCustomAttachment();
                     break;
             }
-
             if (attachment != null) {
                 attachment.fromJson(object);
             }
