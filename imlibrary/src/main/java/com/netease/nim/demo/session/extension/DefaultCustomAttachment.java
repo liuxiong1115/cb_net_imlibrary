@@ -20,7 +20,7 @@ public class DefaultCustomAttachment extends CustomAttachment {
     private static final String KEY_TITLE = "title";
     private static final String KEY_TYPE = "type";
     private static final String KEY_URL = "imgUrl";
-    private static final String KEY_Type = "picType";
+    private static final String KEY_PICTYPE = "picType";
     private static final String KEY_COURSEID = "courseId";
     private static final String KEY_ORDERNO = "orderNo";
 
@@ -35,7 +35,7 @@ public class DefaultCustomAttachment extends CustomAttachment {
         msgType = data.getInteger(KEY_TYPE);
         messageId = data.getString(KEY_ID);
         imgUrl = data.getString(KEY_URL);
-        picType = data.getInteger(KEY_Type);
+        picType = data.getInteger(KEY_PICTYPE);
         orderNo = data.getString(KEY_ORDERNO);
         courseId = data.getInteger(KEY_COURSEID);
     }
@@ -49,7 +49,7 @@ public class DefaultCustomAttachment extends CustomAttachment {
             data.put(KEY_TITLE, title);
             data.put(KEY_TYPE, type);
             data.put(KEY_URL, imgUrl);
-            data.put(KEY_TYPE, picType);
+            data.put(KEY_PICTYPE, picType);
             data.put(KEY_COURSEID, courseId);
             data.put(KEY_ORDERNO, orderNo);
         } catch (Exception e) {

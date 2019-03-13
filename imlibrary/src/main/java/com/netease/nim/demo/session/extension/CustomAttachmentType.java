@@ -13,11 +13,13 @@ public interface CustomAttachmentType {
     int OpenedRedPacket = 6;
     int ConfirmLetter = 301;  //确认函
     int Bill = 302;  //账单
+
     int ClassRoom = 303; //确认课堂
     int ClassRoom1 = 304; //更改课堂
     int ClassRoom2 = 305; //取消排课
     int ClassRoom3 = 306; //赠送时长
     int ClassRoom4 = 307;  //开始上课
+
     int Course = 308; //评价课程
 
 }
