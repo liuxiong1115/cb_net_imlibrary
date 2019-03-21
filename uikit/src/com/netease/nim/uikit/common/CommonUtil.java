@@ -19,9 +19,9 @@ public class CommonUtil {
     //是否开启留言  0-未开启   1-开启
     public static int isOPeenMessage = 0;
 
-    public static int role = 0;  //角色  1--教SELLER师   2--学生  3--销售
+    public static int role = 0;  //角色  1--教师   2--学生  3--销售
 
-    public void checkRole (int lable) {
+    public static void checkRole (int lable) {
         role = lable;
     }
 
