@@ -6,6 +6,8 @@ import android.widget.Toast;
 
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.NimUIKit;
+import com.netease.nim.uikit.business.session.fragment.MessageFragment;
+import com.netease.nim.uikit.business.session.helper.TeamNotificationHelper;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
@@ -40,21 +42,24 @@ public class ScheduleAction extends BaseAction {
                 // 查询成功，获得群组资料
                 try {
                     String extension = team.getExtServer();
-                    Log.i("content", extension);
                     if (!TextUtils.isEmpty(extension)) {
                         JSONObject jsonObject = new JSONObject(extension);
+                        int code = jsonObject.getInt("courseStatus");
                         long courseId = jsonObject.getLong("courseId");
                         CommonUtil.ScheduleClassOnClicklistener listener = CommonUtil.scheduleClassOnClicklistener;
-                        if (listener != null) {
-                            listener.onClick(courseId);
+                        if (TeamNotificationHelper.CODE_1024  >= code ) {
+                            if (listener != null) {
+                                listener.onClick(courseId);
+                            }
+                        } else {
+                            Toast.makeText(getActivity(), "当前课堂不能进行排课！", Toast.LENGTH_SHORT).show();
                         }
-                        Toast.makeText(getActivity(),courseId+"",Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getActivity(), "课程群组数据有误，请前往我的课程进行排课！", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
-                    Toast.makeText(getActivity(),e.toString(),Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
+                    Toast.makeText(getActivity(), "课程群组数据有误，请前往我的课程进行排课！", Toast.LENGTH_SHORT).show();
                 }
             }
 

@@ -21,7 +21,7 @@ public class CommonUtil {
 
     public static int role = 0;  //角色  1--教师   2--学生  3--销售
 
-    public static void checkRole (int lable) {
+    public static void setRole (int lable) {
         role = lable;
     }
 
@@ -52,6 +52,7 @@ public class CommonUtil {
     }
 
 
+    //自定义消息item点击事件回调
     public static ChatItemOnClicklistener clicklistener;
 
     public static void setChatItemOnClicklistener(ChatItemOnClicklistener listener){
