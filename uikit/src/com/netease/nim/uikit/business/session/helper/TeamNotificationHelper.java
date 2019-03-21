@@ -17,6 +17,11 @@ import com.netease.nimlib.sdk.team.model.MuteMemberAttachment;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.UpdateTeamAttachment;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +30,28 @@ import java.util.Map;
  * Created by huangjun on 2015/3/11.
  */
 public class TeamNotificationHelper {
+
+    //课程状态码
+    public static final int CODE_1 = 1; //未处理
+    public static final int CODE_2 = 2;  //待审核
+    public static final int CODE_4 = 4;  //待确定
+    public static final int CODE_8 = 8;  //待规划
+    public static final int CODE_16 = 16;  //规划中(订单第一次超时等待运营接单)
+    public static final int CODE_32 = 32; //规划中(订单第二次超时等待运营主管强制指派)
+    public static final int CODE_64 = 64;  //规划中(运营接单待指派，正在处理)
+    public static final int CODE_128 = 128;  //待排课
+    public static final int CODE_256 = 256;  //已排课
+    public static final int CODE_512 = 512;  //待结课
+    public static final int CODE_1024 = 1024;  //已结课
+    public static final int CODE_2048 = 2048;  //已强制结课
+    public static final int CODE_4096 = 4096;  //已取消
+    public static final int CODE_8192 = 8192;  //坏单申请中
+    public static final int CODE_16384 = 16384;  //坏单已确认结束
+    public static final int CODE_32768 = 32768;  //销售被更换
+    public static final int CODE_65536 = 65536;  //事故单申请中
+    public static final int CODE_131072 = 131072;  //事故单已处理
+    public static final int CODE_262144 = 262144;  //事故单更换教师
+
     private static ThreadLocal<String> teamId = new ThreadLocal<>();
 
     public static String getMsgShowText(final IMMessage message) {
@@ -181,9 +208,23 @@ public class TeamNotificationHelper {
                     sb.append(authen + NimUIKit.getContext().getString(R.string.team_not_allow_anyone_join));
                 }
             } else if (field.getKey() == TeamFieldEnum.Extension) {
-                sb.append("群扩展字段被更新为 " + field.getValue());
+                sb.append("群消息更新");
             } else if (field.getKey() == TeamFieldEnum.Ext_Server) {
-                sb.append("群扩展字段(服务器)被更新为 " + field.getValue());
+                Object value = field.getValue();
+                String data = "";
+                if (value != null) {
+                    data = String.valueOf(value);
+                }
+                try {
+                    JSONObject jsonObject = new JSONObject(data);
+                    int code = jsonObject.getInt("courseStatus");
+                    String content = initTip(code);
+                    sb.append(content);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //    sb.append("群扩展字段(服务器)被更新为 " + field.getValue());
             } else if (field.getKey() == TeamFieldEnum.ICON) {
                 sb.append("群头像已更新");
             } else if (field.getKey() == TeamFieldEnum.InviteMode) {
@@ -193,7 +234,7 @@ public class TeamNotificationHelper {
             } else if (field.getKey() == TeamFieldEnum.BeInviteMode) {
                 sb.append("群被邀请人身份验证权限被更新为 " + field.getValue());
             } else if (field.getKey() == TeamFieldEnum.TeamExtensionUpdateMode) {
-                sb.append("群扩展字段修改权限被更新为 " + field.getValue());
+                sb.append("群权限被更改");
             } else if (field.getKey() == TeamFieldEnum.AllMute) {
                 TeamAllMuteModeEnum teamAllMuteModeEnum = (TeamAllMuteModeEnum) field.getValue();
                 if (teamAllMuteModeEnum == TeamAllMuteModeEnum.Cancel) {
@@ -265,5 +306,61 @@ public class TeamNotificationHelper {
         sb.append(a.isMute() ? "禁言" : "解除禁言");
 
         return sb.toString();
+    }
+
+    /**
+     * 服务器扩展字段tip信息
+     *
+     * @param code
+     * @return
+     */
+    public static String initTip(int code) {
+        String content = "";
+        String BASE_CONTENT = "课程状态变更为:";
+        switch (code) {
+            case CODE_1:
+                content = "未处理";
+                break;
+            case CODE_2:
+                content = "待审核";
+                break;
+            case CODE_4:
+                content = "待确定";
+                break;
+            case CODE_8:
+                content = "待规划";
+                break;
+            case CODE_16:
+                content = "规划中";
+                break;
+            case CODE_32:
+                content = "规划中";
+                break;
+            case CODE_64:
+                content = "规划中";
+                break;
+            case CODE_128:
+                content = "待排课";
+                break;
+            case CODE_256:
+                content = "已排课";
+                break;
+            case CODE_512:
+                content = "待结课";
+                break;
+            case CODE_1024:
+                content = "已结课";
+                break;
+            case CODE_2048:
+                content = "已强制结课";
+                break;
+            case CODE_4096:
+                content = "已取消";
+                break;
+            default:
+                content = "异常";
+                break;
+        }
+        return BASE_CONTENT + content;
     }
 }

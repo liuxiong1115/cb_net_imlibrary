@@ -11,6 +11,7 @@ public interface CustomAttachmentType {
     int RTS = 4;
     int RedPacket = 5;
     int OpenedRedPacket = 6;
+
     int ConfirmLetter = 301;  //确认函
     int Bill = 302;  //账单
 

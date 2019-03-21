@@ -22,7 +22,7 @@ public abstract class BaseAction implements Serializable {
 
     private transient int index;
     private transient Container container;
-
+    public static String sessionId;
     /**
      * 构造函数
      *
@@ -81,6 +81,10 @@ public abstract class BaseAction implements Serializable {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public static void setSession (String id) {
+        sessionId = id;
     }
 
 }

@@ -1,18 +1,5 @@
 package com.netease.nim.demo.rts;
 
-import com.netease.nim.uikit.api.NimUIKit;
-import com.netease.nim.uikit.business.session.helper.MessageListPanelHelper;
-import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
-import com.netease.nim.uikit.common.util.log.LogUtil;
-import com.netease.nimlib.sdk.NIMClient;
-import com.netease.nimlib.sdk.msg.MessageBuilder;
-import com.netease.nimlib.sdk.msg.MsgService;
-import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum;
-import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum;
-import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
-import com.netease.nimlib.sdk.msg.model.IMMessage;
-import com.netease.nimlib.sdk.uinfo.model.UserInfo;
-
 /**
  * Created by winnie on 2018/3/26.
  */

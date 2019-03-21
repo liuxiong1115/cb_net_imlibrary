@@ -99,6 +99,11 @@ public class UIKitOptions {
     public int messageRightBackground = R.drawable.nim_message_item_right_selector;
 
     /**
+     * IM 发送出去的消息（自定义消息），内容区域背景的drawable id
+     */
+    public int messageRightWhiteBackground = R.drawable.nim_message_item_right_white;
+
+    /**
      * chat room 接收到的消息时，内容区域背景的drawable id
      */
     public int chatRoomMsgLeftBackground = 0;

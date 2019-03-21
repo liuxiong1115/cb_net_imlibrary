@@ -1,37 +1,26 @@
 package com.netease.nim.demo;
 
 import android.app.Application;
-import android.content.Context;
-import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.netease.nim.demo.chatroom.ChatRoomSessionHelper;
-import com.netease.nim.demo.common.util.LogHelper;
 import com.netease.nim.demo.common.util.crash.AppCrashHandler;
 import com.netease.nim.demo.config.preference.Preferences;
 import com.netease.nim.demo.config.preference.UserPreferences;
 import com.netease.nim.demo.contact.ContactHelper;
 import com.netease.nim.demo.event.DemoOnlineStateContentProvider;
-import com.netease.nim.demo.main.activity.MainActivity;
-import com.netease.nim.demo.main.activity.WelcomeActivity;
 import com.netease.nim.demo.mixpush.DemoMixPushMessageHandler;
 import com.netease.nim.demo.mixpush.DemoPushContentProvider;
 import com.netease.nim.demo.redpacket.NIMRedPacketClient;
-import com.netease.nim.demo.rts.RTSHelper;
-import com.netease.nim.demo.session.NimDemoLocationProvider;
 import com.netease.nim.demo.session.SessionHelper;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.UIKitOptions;
 import com.netease.nim.uikit.business.contact.core.query.PinYin;
-import com.netease.nim.uikit.business.team.helper.TeamHelper;
-import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
 import com.netease.nimlib.sdk.NIMClient;
-import com.netease.nimlib.sdk.StatusBarNotificationConfig;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.mixpush.NIMPushClient;
-import com.netease.nimlib.sdk.uinfo.model.UserInfo;
 import com.netease.nimlib.sdk.util.NIMUtil;
 
 import io.fabric.sdk.android.Fabric;

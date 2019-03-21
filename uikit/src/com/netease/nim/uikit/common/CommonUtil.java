@@ -11,11 +11,19 @@ public class CommonUtil {
 
     public static String classbroRobot = "1008611";
 
+    public static int TEAC = 1;  //教师
+    public static int STUD = 2;  //学生
+    public static int SELLER= 3;//销售
     //当前已发送消息数量
     public static int sendMessageCount = 0;
     //是否开启留言  0-未开启   1-开启
     public static int isOPeenMessage = 0;
 
+    public static int role = 0;  //角色  1--教SELLER师   2--学生  3--销售
+
+    public void checkRole (int lable) {
+        role = lable;
+    }
 
     public static String getAvatarUrl(String url){
         if(null == url){
@@ -52,6 +60,16 @@ public class CommonUtil {
 
     public interface ChatItemOnClicklistener{
         void onClick(View view , Object o);
+    }
+
+
+    //排课点击事件回调
+    public static ScheduleClassOnClicklistener scheduleClassOnClicklistener;
+    public static void setScheduleClassOnClicklistener(ScheduleClassOnClicklistener listener){
+        scheduleClassOnClicklistener = listener;
+    }
+    public interface ScheduleClassOnClicklistener{
+        void onClick(long courseId);
     }
 
 }

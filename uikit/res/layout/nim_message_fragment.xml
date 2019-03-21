@@ -74,6 +74,6 @@
 
     </FrameLayout>
 
-    <include layout="@layout/nim_message_activity_bottom_layout"/>
+    <include layout="@layout/nim_message_activity_bottom_layout" />
 
 </LinearLayout>

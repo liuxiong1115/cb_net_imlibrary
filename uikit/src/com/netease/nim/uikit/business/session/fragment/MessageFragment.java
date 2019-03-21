@@ -1,6 +1,7 @@
 package com.netease.nim.uikit.business.session.fragment;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,7 +16,7 @@ import com.netease.nim.uikit.api.model.session.SessionCustomization;
 import com.netease.nim.uikit.business.ait.AitManager;
 import com.netease.nim.uikit.business.session.actions.BaseAction;
 import com.netease.nim.uikit.business.session.actions.ImageAction;
-import com.netease.nim.uikit.business.session.actions.LocationAction;
+import com.netease.nim.uikit.business.session.actions.ScheduleAction;
 import com.netease.nim.uikit.business.session.actions.VideoAction;
 import com.netease.nim.uikit.business.session.constant.Extras;
 import com.netease.nim.uikit.business.session.module.Container;
@@ -62,7 +63,7 @@ public class MessageFragment extends TFragment implements ModuleProxy {
     protected static final String TAG = "MessageActivity";
 
     // 聊天对象
-    protected String sessionId; // p2p对方Account或者群id
+    public String sessionId; // p2p对方Account或者群id
 
     protected SessionTypeEnum sessionType;
 
@@ -76,6 +77,7 @@ public class MessageFragment extends TFragment implements ModuleProxy {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         parseIntent();
+        BaseAction.setSession(sessionId);  //将sessionId传递到排课
     }
 
     @Override
@@ -230,7 +232,7 @@ public class MessageFragment extends TFragment implements ModuleProxy {
             message.setContent("该消息无法发送");
             message.setStatus(MsgStatusEnum.success);
             NIMClient.getService(MsgService.class).saveMessageToLocal(message, false);
-        }else {
+        } else {
             appendTeamMemberPush(message);
             message = changeToRobotMsg(message);
             final IMMessage msg = message;
@@ -255,7 +257,6 @@ public class MessageFragment extends TFragment implements ModuleProxy {
         }
 
 
-
         messageListPanel.onMsgSend(message);
 
         if (aitManager != null) {
@@ -263,10 +264,10 @@ public class MessageFragment extends TFragment implements ModuleProxy {
         }
 
         //发送消息外部回调
-        if(CommonUtil.classbroRobot.equals(sessionId)){
-            CommonUtil.sendMessageCount ++ ;
-            if(onSendMessageListener != null){
-                onSendMessageListener.messageSend(message , new Date().getTime() , CommonUtil.sendMessageCount);
+        if (CommonUtil.classbroRobot.equals(sessionId)) {
+            CommonUtil.sendMessageCount++;
+            if (onSendMessageListener != null) {
+                onSendMessageListener.messageSend(message, new Date().getTime(), CommonUtil.sendMessageCount);
             }
         }
 
@@ -343,7 +344,7 @@ public class MessageFragment extends TFragment implements ModuleProxy {
         if (customConfig != null) {
             String content = customConfig.getPushContent(message);
             Map<String, Object> payload = customConfig.getPushPayload(message);
-            if(!TextUtils.isEmpty(content)){
+            if (!TextUtils.isEmpty(content)) {
                 message.setPushContent(content);
             }
             if (payload != null) {
@@ -391,7 +392,7 @@ public class MessageFragment extends TFragment implements ModuleProxy {
 
     // 操作面板集合
     protected List<BaseAction> getActionList() {
-        List<BaseAction> actions = new ArrayList<>();
+        final List<BaseAction> actions = new ArrayList<>();
         actions.add(new ImageAction());
         actions.add(new VideoAction());
 //        actions.add(new LocationAction());
@@ -417,16 +418,13 @@ public class MessageFragment extends TFragment implements ModuleProxy {
     }
 
 
-
-
-
     OnSendMessageListener onSendMessageListener;
 
-    public interface OnSendMessageListener{
-        public void messageSend(IMMessage message , Long sendTime , int count);
+    public interface OnSendMessageListener {
+        public void messageSend(IMMessage message, Long sendTime, int count);
     }
 
-    public void setOnSendMessageListener(OnSendMessageListener onSendMessageListener){
+    public void setOnSendMessageListener(OnSendMessageListener onSendMessageListener) {
         this.onSendMessageListener = onSendMessageListener;
     }
 }

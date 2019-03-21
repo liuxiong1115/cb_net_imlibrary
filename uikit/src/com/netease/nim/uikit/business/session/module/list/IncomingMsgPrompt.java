@@ -53,6 +53,7 @@ public class IncomingMsgPrompt {
             newMessageTipHeadImageView.resetImageView();
         }
 
+        //TODO 新消息提醒
         MoonUtil.identifyFaceExpression(context, newMessageTipTextView, TeamNotificationHelper.getMsgShowText(newMessage),
                 ImageSpan.ALIGN_BOTTOM);
         newMessageTipLayout.setVisibility(View.VISIBLE);

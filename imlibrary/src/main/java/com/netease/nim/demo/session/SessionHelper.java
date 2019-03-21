@@ -3,29 +3,20 @@ package com.netease.nim.demo.session;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.netease.nim.demo.DemoCache;
 import com.netease.nim.demo.R;
 import com.netease.nim.demo.contact.activity.RobotProfileActivity;
-import com.netease.nim.demo.contact.activity.UserProfileActivity;
 import com.netease.nim.demo.redpacket.NIMRedPacketClient;
-import com.netease.nim.demo.session.action.AVChatAction;
-import com.netease.nim.demo.session.action.AckMessageAction;
 import com.netease.nim.demo.session.action.FileAction;
-import com.netease.nim.demo.session.action.GuessAction;
-import com.netease.nim.demo.session.action.RTSAction;
-import com.netease.nim.demo.session.action.RedPacketAction;
-import com.netease.nim.demo.session.action.SnapChatAction;
+import com.netease.nim.uikit.business.session.actions.ScheduleAction;
 import com.netease.nim.demo.session.action.TeamAVChatAction;
-import com.netease.nim.demo.session.action.TipAction;
 import com.netease.nim.demo.session.activity.AckMsgInfoActivity;
 import com.netease.nim.demo.session.activity.MessageHistoryActivity;
 import com.netease.nim.demo.session.activity.MessageInfoActivity;
 import com.netease.nim.demo.session.extension.CustomAttachParser;
-import com.netease.nim.demo.session.extension.CustomAttachment;
 import com.netease.nim.demo.session.extension.DefaultCustomAttachment;
 import com.netease.nim.demo.session.extension.GuessAttachment;
 import com.netease.nim.demo.session.extension.RedPacketAttachment;
@@ -45,12 +36,14 @@ import com.netease.nim.uikit.api.model.session.SessionCustomization;
 import com.netease.nim.uikit.api.model.session.SessionEventListener;
 import com.netease.nim.uikit.api.wrapper.NimMessageRevokeObserver;
 import com.netease.nim.uikit.business.session.actions.BaseAction;
+import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nim.uikit.business.session.helper.MessageListPanelHelper;
 import com.netease.nim.uikit.business.session.module.MsgForwardFilter;
 import com.netease.nim.uikit.business.session.module.MsgRevokeFilter;
 import com.netease.nim.uikit.business.session.viewholder.MsgViewHolderUnknown;
 import com.netease.nim.uikit.business.team.model.TeamExtras;
 import com.netease.nim.uikit.business.team.model.TeamRequestCode;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.ui.dialog.EasyAlertDialogHelper;
 import com.netease.nim.uikit.common.ui.popupmenu.NIMPopupMenu;
 import com.netease.nim.uikit.common.ui.popupmenu.PopupMenuItem;
@@ -65,7 +58,6 @@ import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
-import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum;
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
@@ -399,6 +391,12 @@ public class SessionHelper {
         return recentCustomization;
     }
 
+    /**
+     * 群聊
+     *
+     * @param tid
+     * @return
+     */
     private static SessionCustomization getTeamCustomization(String tid) {
         if (normalTeamCustomization == null) {
             //TODO Team actions 按钮自定义
@@ -410,11 +408,14 @@ public class SessionHelper {
 //            actions.add(avChatAction);
 //            actions.add(new GuessAction());
             actions.add(new FileAction());
+            //教师权限添加排课按钮
+            if (CommonUtil.role == CommonUtil.TEAC) {
+                actions.add(new ScheduleAction());
+            }
 //            if (NIMRedPacketClient.isEnable()) {
 //                actions.add(new RedPacketAction());
 //            }
 //            actions.add(new TipAction());
-
 
             SessionTeamCustomization.SessionTeamCustomListener listener = new SessionTeamCustomization.SessionTeamCustomListener() {
                 @Override
@@ -447,8 +448,12 @@ public class SessionHelper {
             final TeamAVChatAction avChatAction = new TeamAVChatAction(AVChatType.VIDEO);
 //            TeamAVChatProfile.sharedInstance().registerObserver(true);
 
-            ArrayList<BaseAction> actions = new ArrayList<>();
+            final ArrayList<BaseAction> actions = new ArrayList<>();
             actions.add(new FileAction());
+            //教师权限添加排课按钮
+            if (CommonUtil.role == CommonUtil.TEAC) {
+                actions.add(new ScheduleAction());
+            }
 //            actions.add(avChatAction);
 //            actions.add(new GuessAction());
 //            actions.add(new AckMessageAction());
@@ -456,7 +461,6 @@ public class SessionHelper {
 //                actions.add(new RedPacketAction());
 //            }
 //            actions.add(new TipAction());
-
             SessionTeamCustomization.SessionTeamCustomListener listener = new SessionTeamCustomization.SessionTeamCustomListener() {
 
                 @Override
