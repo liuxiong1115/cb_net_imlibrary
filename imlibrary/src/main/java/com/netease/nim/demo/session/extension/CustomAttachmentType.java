@@ -23,4 +23,6 @@ public interface CustomAttachmentType {
 
     int Course = 308; //评价课程
 
+    int notify = 309; //新访客
+
 }

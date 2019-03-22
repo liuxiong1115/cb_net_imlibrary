@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_grey_888888">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginRight="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingLeft="5dp"
+        android:textSize="@dimen/text_size_18"
+        android:text="强提醒"
+        android:textColor="@color/white" />
+    <View
+        android:layout_height="1dp"
+        android:textColor="@color/white"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent" ></View>
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingLeft="5dp"
+        android:textSize="@dimen/text_size_20"
+        android:text="您有一个新访客"
+        android:textColor="@color/white" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/notitfy_know"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" 我 知 道 了 "
+        android:textSize="18sp"
+        android:layout_margin="50dp"
+        android:textColor="@color/white"
+        android:layout_gravity="center"
+
+        android:background="@drawable/buttonknow_background"/>
+</LinearLayout>

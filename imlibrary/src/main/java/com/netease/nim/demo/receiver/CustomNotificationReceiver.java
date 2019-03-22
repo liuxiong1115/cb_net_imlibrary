@@ -35,6 +35,7 @@ public class CustomNotificationReceiver extends BroadcastReceiver {
                     String tip = String.format("自定义消息[%s]：%s", notification.getFromAccount(), content);
                     Toast.makeText(context, tip, Toast.LENGTH_SHORT).show();
                 }
+
             } catch (JSONException e) {
                 LogUtil.e("demo", e.getMessage());
             }

@@ -11,6 +11,8 @@ import com.netease.nim.demo.R;
 import com.netease.nim.demo.contact.activity.RobotProfileActivity;
 import com.netease.nim.demo.redpacket.NIMRedPacketClient;
 import com.netease.nim.demo.session.action.FileAction;
+import com.netease.nim.demo.session.extension.NotifyAttchment;
+import com.netease.nim.demo.session.viewholder.NotifyViewHolder;
 import com.netease.nim.uikit.business.session.actions.ScheduleAction;
 import com.netease.nim.demo.session.action.TeamAVChatAction;
 import com.netease.nim.demo.session.activity.AckMsgInfoActivity;
@@ -508,6 +510,7 @@ public class SessionHelper {
         NimUIKit.registerMsgItemViewHolder(DefaultCustomAttachment.class, MsgViewHolderDefCustom.class);
         NimUIKit.registerMsgItemViewHolder(StickerAttachment.class, MsgViewHolderSticker.class);
         NimUIKit.registerMsgItemViewHolder(SnapChatAttachment.class, MsgViewHolderSnapChat.class);
+        NimUIKit.registerMsgItemViewHolder(NotifyAttchment.class, NotifyViewHolder.class);  //新访客
 //        NimUIKit.registerMsgItemViewHolder(RTSAttachment.class, MsgViewHolderRTS.class);
         NimUIKit.registerTipMsgViewHolder(MsgViewHolderTip.class);
         registerRedPacketViewHolder();

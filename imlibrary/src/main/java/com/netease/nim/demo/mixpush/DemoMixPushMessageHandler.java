@@ -50,7 +50,6 @@ public class DemoMixPushMessageHandler implements MixPushMessageHandler {
             notifyIntent.setAction(Intent.ACTION_VIEW);
             notifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // 必须
             notifyIntent.putExtra(NimIntent.EXTRA_NOTIFY_CONTENT, imMessages);
-
             context.startActivity(notifyIntent);
             return true;
         } else {

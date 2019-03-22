@@ -203,8 +203,7 @@ public class SettingsActivity extends UI implements SettingsAdapter.SwitchChange
 //            items.add(SettingTemplate.makeSeperator());
 //        }
 
-        items.add(new SettingTemplate(TAG_MSG_IGNORE, "过滤通知",
-                SettingType.TYPE_TOGGLE, UserPreferences.getMsgIgnore()));
+        items.add(new SettingTemplate(TAG_MSG_IGNORE, "过滤通知",SettingType.TYPE_TOGGLE, UserPreferences.getMsgIgnore()));
 
         items.add(SettingTemplate.makeSeperator());
 
