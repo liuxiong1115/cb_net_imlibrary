@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.netease.nim.demo.R;
 import com.netease.nim.uikit.common.activity.UI;
@@ -20,7 +21,7 @@ import com.netease.nim.uikit.common.activity.UI;
 
 public class NotifyActivity extends UI{
 
-    Button know;
+    TextView know;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

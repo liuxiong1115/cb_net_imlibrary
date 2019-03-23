@@ -7,10 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import com.netease.nim.demo.DemoCache;
 import com.netease.nim.demo.session.activity.NotifyActivity;
 import com.netease.nim.demo.session.extension.NotifyAttchment;
-import com.netease.nim.demo.session.extension.RedPacketOpenedAttachment;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
@@ -41,7 +39,6 @@ public class CoustomNotifyFilter {
                         delete.put(imMessage.getUuid(), imMessage);
                         // 过滤掉，其他观察者不会再收到了
                         iterator.remove();
-                  //      NotifyAttchment attachment = (NotifyAttchment) imMessages.get(0).getAttachment();
                         if (CommonUtil.role == CommonUtil.SELLER) {  //新访客权限 -- 销售
                             KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
                             if (km.inKeyguardRestrictedInputMode()) {
@@ -51,7 +48,6 @@ public class CoustomNotifyFilter {
                                     context.startActivity(intent);
                                 }
                             }
-
                         }
                     }
                 }

@@ -23,7 +23,7 @@
         android:textColor="@color/white" />
     <View
         android:layout_height="1dp"
-        android:textColor="@color/white"
+        android:background="@color/white"
         android:layout_margin="10dp"
         android:layout_width="match_parent" ></View>
     <android.support.v7.widget.AppCompatTextView
@@ -38,15 +38,18 @@
         android:text="您有一个新访客"
         android:textColor="@color/white" />
     </LinearLayout>
-    <Button
+    <TextView
         android:id="@+id/notitfy_know"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" 我 知 道 了 "
+        android:text=" 我知道了 "
         android:textSize="18sp"
         android:layout_margin="50dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:textColor="@color/white"
         android:layout_gravity="center"
-
         android:background="@drawable/buttonknow_background"/>
 </LinearLayout>

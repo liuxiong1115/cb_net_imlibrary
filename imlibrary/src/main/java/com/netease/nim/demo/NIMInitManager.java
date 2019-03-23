@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.netease.nim.demo.config.preference.UserPreferences;
 import com.netease.nim.demo.event.OnlineStateEventManager;
+import com.netease.nim.demo.session.extension.NotifyAttchment;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.NimStrings;
 import com.netease.nimlib.sdk.Observer;

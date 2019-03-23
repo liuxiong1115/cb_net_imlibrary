@@ -20,7 +20,6 @@ public interface CustomAttachmentType {
     int ClassRoom2 = 305; //取消排课
     int ClassRoom3 = 306; //赠送时长
     int ClassRoom4 = 307;  //开始上课
-
     int Course = 308; //评价课程
 
     int notify = 309; //新访客

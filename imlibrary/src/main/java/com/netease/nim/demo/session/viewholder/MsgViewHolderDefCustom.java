@@ -1,5 +1,6 @@
 package com.netease.nim.demo.session.viewholder;
 
+import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.view.View;
 import android.widget.ImageView;
@@ -65,8 +66,10 @@ public class MsgViewHolderDefCustom extends MsgViewHolderBase {
         MoonUtil.identifyFaceExpressionAndATags(context, contentView, attachment.getSubTitle() == null ? "" : attachment.getSubTitle(), ImageSpan.ALIGN_BOTTOM);  //内容
 
         //图片
-        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.appicon);
-        GlideUtils.lxGlide(context, attachment.getImgUrl(), imageView, requestOptions);
+        if (!TextUtils.isEmpty(attachment.getImgUrl())) {
+            RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.appicon);
+            GlideUtils.lxGlide(context, attachment.getImgUrl(), imageView, requestOptions);
+        }
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
