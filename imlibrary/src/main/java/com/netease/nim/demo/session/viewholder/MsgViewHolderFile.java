@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.netease.nim.demo.R;
@@ -13,6 +14,8 @@ import com.netease.nim.uikit.business.session.viewholder.MsgViewHolderBase;
 import com.netease.nim.uikit.common.ui.recyclerview.adapter.BaseMultiItemFetchLoadAdapter;
 import com.netease.nim.uikit.common.util.file.AttachmentStore;
 import com.netease.nim.uikit.common.util.file.FileUtil;
+import com.netease.nim.uikit.common.util.sys.ScreenUtil;
+import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
 import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
@@ -26,6 +29,7 @@ public class MsgViewHolderFile extends MsgViewHolderBase {
     private TextView fileStatusLabel;
     private ProgressBar progressBar;
 
+    private RelativeLayout layout;
     private FileAttachment msgAttachment;
 
     public MsgViewHolderFile(BaseMultiItemFetchLoadAdapter adapter) {
@@ -43,6 +47,7 @@ public class MsgViewHolderFile extends MsgViewHolderBase {
         fileNameLabel = (TextView) view.findViewById(R.id.message_item_file_name_label);
         fileStatusLabel = (TextView) view.findViewById(R.id.message_item_file_status_label);
         progressBar = (ProgressBar) view.findViewById(R.id.message_item_file_transfer_progress_bar);
+        layout = view.findViewById(R.id.message_item_file_detail_layout);
     }
 
     @Override
@@ -70,6 +75,15 @@ public class MsgViewHolderFile extends MsgViewHolderBase {
                     updateFileStatusLabel();
                     break;
             }
+        }
+
+        //是否是接收消息
+        if (isReceivedMessage()) {
+            layout.setBackgroundResource(NimUIKitImpl.getOptions().messageLeftBackground);
+            layout.setPadding(ScreenUtil.dip2px(15), ScreenUtil.dip2px(8), ScreenUtil.dip2px(10), ScreenUtil.dip2px(8));
+        }else {
+            layout.setBackgroundResource(NimUIKitImpl.getOptions().messageRightWhiteBackground);
+            layout.setPadding(ScreenUtil.dip2px(10), ScreenUtil.dip2px(8), ScreenUtil.dip2px(15), ScreenUtil.dip2px(8));
         }
     }
 
@@ -112,6 +126,7 @@ public class MsgViewHolderFile extends MsgViewHolderBase {
         FileDownloadActivity.start(context, message);
 
     }
+
 /*
     @Override
     protected int leftBackground() {
