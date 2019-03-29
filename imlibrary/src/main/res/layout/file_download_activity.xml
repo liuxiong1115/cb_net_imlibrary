@@ -2,15 +2,30 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
 
-    <TextView
-        android:id="@+id/file_name"
+    <include layout="@layout/nim_layout_toolbar"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true">
+    <ImageView
+        android:id="@+id/file_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textSize="18sp"/>
-
+        android:layout_centerVertical="true" />
+        <TextView
+            android:id="@+id/file_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="18sp"/>
     <Button
         android:id="@+id/download_btn"
         android:layout_width="wrap_content"
@@ -22,4 +37,5 @@
         android:text="下载"
         android:textColor="@color/white"
         android:textSize="17sp" />
+    </LinearLayout>
 </RelativeLayout>

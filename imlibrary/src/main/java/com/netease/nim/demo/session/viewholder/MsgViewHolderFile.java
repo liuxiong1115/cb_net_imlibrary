@@ -15,6 +15,7 @@ import com.netease.nim.uikit.common.util.file.AttachmentStore;
 import com.netease.nim.uikit.common.util.file.FileUtil;
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
 import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum;
+import com.netease.nimlib.sdk.msg.model.IMMessage;
 
 /**
  * Created by zhoujianghua on 2015/8/6.
@@ -109,8 +110,9 @@ public class MsgViewHolderFile extends MsgViewHolderBase {
     @Override
     protected void onItemClick() {
         FileDownloadActivity.start(context, message);
-    }
 
+    }
+/*
     @Override
     protected int leftBackground() {
         return R.drawable.nim_message_left_white_bg;
@@ -119,5 +121,6 @@ public class MsgViewHolderFile extends MsgViewHolderBase {
     @Override
     protected int rightBackground() {
         return R.drawable.nim_message_right_blue_bg;
-    }
+    }*/
+
 }

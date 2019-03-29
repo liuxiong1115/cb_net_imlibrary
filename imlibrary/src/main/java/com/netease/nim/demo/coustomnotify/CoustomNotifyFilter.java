@@ -5,6 +5,7 @@ import android.app.KeyguardManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Vibrator;
 import android.text.TextUtils;
 
 import com.netease.nim.demo.session.activity.NotifyActivity;
@@ -26,6 +27,7 @@ import java.util.Map;
 
 
 public class CoustomNotifyFilter {
+    public static Vibrator vibrator = null;
     private static Context context;
     private static Map<String, IMMessage> delete = new HashMap<>();
     private static Observer<List<IMMessage>> messageObserver = new Observer<List<IMMessage>>() {
@@ -40,13 +42,19 @@ public class CoustomNotifyFilter {
                         // 过滤掉，其他观察者不会再收到了
                         iterator.remove();
                         if (CommonUtil.role == CommonUtil.SELLER) {  //新访客权限 -- 销售
+                            // 处于锁屏状态
                             KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
                             if (km.inKeyguardRestrictedInputMode()) {
-                                // 处于锁屏状态
+                                //是否出现在前台
                                 if (isForeground(context, NotifyActivity.class.getName()) == false) {
                                     Intent intent = new Intent(context, NotifyActivity.class);
                                     context.startActivity(intent);
                                 }
+                            } else {
+                                //震动
+                                vibrator = (Vibrator)context.getSystemService(context.VIBRATOR_SERVICE);
+                                long[] patter = {1000, 1000, 1000, 1000};
+                                vibrator.vibrate(patter, 0);
                             }
                         }
                     }
@@ -85,5 +93,8 @@ public class CoustomNotifyFilter {
                 return true;
         }
         return false;
+    }
+    public static void stopVibrator() {
+        vibrator.cancel();
     }
 }

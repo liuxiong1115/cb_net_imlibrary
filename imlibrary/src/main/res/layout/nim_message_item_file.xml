@@ -5,7 +5,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|top"
-                android:background="@drawable/nim_message_item_round_bg"
                 android:padding="10dp">
 
     <ImageView

@@ -1,5 +1,6 @@
 package com.netease.nim.uikit.common.util.file;
 
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
@@ -8,10 +9,21 @@ import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.common.util.string.StringUtil;
 
+import java.io.File;
 import java.util.Locale;
 
 public class FileUtil {
     private static final String TAG = "FileUtil";
+    public static String rootFile = Environment.getExternalStorageDirectory().getPath() + File.separator + "classbro";
+    /**
+     * 创建一个文件
+     * @param FileName 文件名
+     * @return
+     */
+    public static File createFile(String FileName) {
+        return new File(rootFile, FileName);
+    }
+
 
     public static boolean hasExtentsion(String filename) {
         int dot = filename.lastIndexOf('.');

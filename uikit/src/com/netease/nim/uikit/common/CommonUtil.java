@@ -16,11 +16,10 @@ public class CommonUtil {
     public static int SELLER= 3;//销售
     //当前已发送消息数量
     public static int sendMessageCount = 0;
-    //是否开启留言  0-未开启   1-开启
-    public static int isOPeenMessage = 0;
-
     public static int role = 0;  //角色  1--教师   2--学生  3--销售
 
+    //是否开启留言  0-未开启   1-开启
+    public static int isOPeenMessage = 0;
     public static void setRole (int lable) {
         role = lable;
     }

@@ -21,6 +21,23 @@ import java.nio.channels.FileChannel;
 public class FileUtils {
 
     private static final String TAG = "FileUtils";
+    public static String rootFile = Environment.getExternalStorageDirectory().getPath() + File.separator + "wannengbanzhang";
+    public static boolean isFileExist(String fileName) {
+        File file = new File(rootFile + "/" + fileName);
+//        Logger.d("文件路径：" + file.getAbsoluteFile() + "    是否为文件：" + file.isFile() + "    文件是否存在：" + file.exists());
+        file.isFile();
+        return file.exists();
+    }
+
+
+    /**
+     * 创建一个文件
+     * @param FileName 文件名
+     * @return
+     */
+    public static File createFile(String FileName) {
+        return new File(rootFile, FileName);
+    }
 
     public static File getFile(final String path) {
         try {

@@ -115,7 +115,6 @@
                 <!--<category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />-->
             <!--</intent-filter>-->
         <!--</activity>-->
-
         <!-- 主界面 -->
         <activity
             android:name=".main.activity.MainActivity"

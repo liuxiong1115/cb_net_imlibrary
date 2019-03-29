@@ -6,12 +6,19 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.netease.nim.demo.R;
+import com.netease.nim.demo.file.FileIcons;
+import com.netease.nim.demo.session.utils.AppKit;
+import com.netease.nim.uikit.api.wrapper.NimToolBarOptions;
+import com.netease.nim.uikit.common.activity.ToolBarOptions;
 import com.netease.nim.uikit.common.activity.UI;
 import com.netease.nim.uikit.common.ui.dialog.DialogMaker;
+import com.netease.nim.uikit.common.ui.widget.MyToolbar;
+import com.netease.nim.uikit.common.util.file.FileUtil;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.msg.MsgService;
@@ -29,8 +36,11 @@ public class FileDownloadActivity extends UI {
 
     private TextView fileNameText;
     private Button fileDownloadBtn;
+    private ImageView imageView;
 
     private IMMessage message;
+    private MyToolbar toolbar;
+    private boolean isSucceed;
 
     public static void start(Context context, IMMessage message) {
         Intent intent = new Intent();
@@ -64,15 +74,21 @@ public class FileDownloadActivity extends UI {
     private void findViews() {
         fileNameText = findView(R.id.file_name);
         fileDownloadBtn = findView(R.id.download_btn);
-
+        imageView = findView(R.id.file_icon);
+        ToolBarOptions options = new NimToolBarOptions();
+        options.titleString = "文件";
+        setToolBar(R.id.toolbar, options);
         fileDownloadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isOriginDataHasDownloaded(message)) {
-                    return;
+                if (isSucceed) {
+                    AppKit.openFile(getApplicationContext(),FileUtil.createFile(((FileAttachment) message.getAttachment()).getPath()));
+                } else {
+                    if (isOriginDataHasDownloaded(message)) {
+                        return;
+                    }
+                    downloadFile();
                 }
-
-                downloadFile();
             }
         });
     }
@@ -81,6 +97,8 @@ public class FileDownloadActivity extends UI {
         FileAttachment attachment = (FileAttachment) message.getAttachment();
         if (attachment != null) {
             fileNameText.setText(attachment.getDisplayName());
+            int iconResId = FileIcons.smallIcon(attachment.getDisplayName());
+            imageView.setImageResource(iconResId);
         }
 
         if (isOriginDataHasDownloaded(message)) {
@@ -130,14 +148,17 @@ public class FileDownloadActivity extends UI {
     };
 
     private void onDownloadSuccess() {
-        fileDownloadBtn.setText("已下载");
-        fileDownloadBtn.setEnabled(false);
-        fileDownloadBtn.setBackgroundResource(R.drawable.g_white_btn_pressed);
+        isSucceed = true;
+        fileDownloadBtn.setText("打开");
+        ToolBarOptions options = new NimToolBarOptions();
+        setToolBar(R.id.toolbar, options);
+      //  fileDownloadBtn.setBackgroundResource(R.drawable.g_white_btn_pressed);
+        fileDownloadBtn.setBackgroundResource(R.drawable.nim_team_create_btn_selector);
     }
 
     private void onDownloadFailed() {
+        isSucceed = false;
         fileDownloadBtn.setText("下载");
-        fileDownloadBtn.setEnabled(true);
         fileDownloadBtn.setBackgroundResource(R.drawable.nim_team_create_btn_selector);
     }
 }
