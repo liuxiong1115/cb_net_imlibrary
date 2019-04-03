@@ -83,7 +83,7 @@ public class MsgViewHolderFile extends MsgViewHolderBase {
             layout.setPadding(ScreenUtil.dip2px(15), ScreenUtil.dip2px(8), ScreenUtil.dip2px(10), ScreenUtil.dip2px(8));
         }else {
             layout.setBackgroundResource(NimUIKitImpl.getOptions().messageRightWhiteBackground);
-            layout.setPadding(ScreenUtil.dip2px(10), ScreenUtil.dip2px(8), ScreenUtil.dip2px(15), ScreenUtil.dip2px(8));
+            layout.setPadding(ScreenUtil.dip2px(15), ScreenUtil.dip2px(10), ScreenUtil.dip2px(15), ScreenUtil.dip2px(10));
         }
     }
 
@@ -127,7 +127,12 @@ public class MsgViewHolderFile extends MsgViewHolderBase {
 
     }
 
-/*
+    @Override
+    protected int rightBackground() {
+        return 0;
+    }
+
+    /*
     @Override
     protected int leftBackground() {
         return R.drawable.nim_message_left_white_bg;

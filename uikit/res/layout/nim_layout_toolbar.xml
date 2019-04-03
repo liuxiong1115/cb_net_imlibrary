@@ -30,17 +30,17 @@
             android:background="@color/transparent"
             android:minHeight="?attr/actionBarSize"
             android:paddingLeft="0dp"
-            app:backIcon="@drawable/ic_back"
+            app:backIcon="@drawable/back"
             app:backMarginLeft="15dp"
             app:backText=""
             app:backTextAppearance="?attr/actionMenuTextAppearance"
-            app:backTextColor="@android:color/white"
+            app:backTextColor="@android:color/black"
             app:contentInsetStart="0dp"
             app:menuMarginLeft="15dp"
             app:menuMarginRight="15dp"
             app:title=""
             app:titleTextAppearance="@style/NET_Title_Appearance"
-            app:titleTextColor="@android:color/white"
+            app:titleTextColor="@android:color/black"
             app:title_gravity="center">
 
         </com.netease.nim.uikit.common.ui.widget.MyToolbar>

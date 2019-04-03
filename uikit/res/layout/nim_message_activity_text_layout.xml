@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/nim_message_button_bottom_audio_selector"
             android:contentDescription="@string/empty"
+            android:visibility="gone"
             android:scaleType="center" />
 
         <ImageView

@@ -41,7 +41,7 @@ public abstract class UI extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setStatusBarMode(this,true);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         LogUtil.ui("activity: " + getClass().getSimpleName() + " onCreate()");
@@ -90,10 +90,12 @@ public abstract class UI extends AppCompatActivity {
     }
 
     public void setToolBar(int toolBarId, ToolBarOptions options) {
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             showBaseTopbar(this, R.id.baseTopbar, true);
         }
         toolbar = (MyToolbar) findViewById(toolBarId);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.black));
         if (options.titleId != 0) {
             toolbar.setTitle(options.titleId);
         }
@@ -120,6 +122,7 @@ public abstract class UI extends AppCompatActivity {
     public void setToolBar(int toolbarId, int titleId, int logoId) {
         toolbar = (MyToolbar) findViewById(toolbarId);
         toolbar.setTitle(titleId);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.black));
 //        toolbar.setLogo(logoId);
         setSupportActionBar(toolbar);
     }
@@ -142,6 +145,7 @@ public abstract class UI extends AppCompatActivity {
 
     @Override
     public void setTitle(CharSequence title) {
+        toolbar.setTitleTextColor(getResources().getColor(R.color.black));
         super.setTitle(title);
         if (toolbar != null) {
             toolbar.setTitle(title);
@@ -149,6 +153,7 @@ public abstract class UI extends AppCompatActivity {
     }
 
     public void setSubTitle(String subTitle) {
+        toolbar.setTitleTextColor(getResources().getColor(R.color.black));
         if (toolbar != null) {
             toolbar.setSubtitle(subTitle);
         }
@@ -320,4 +325,22 @@ public abstract class UI extends AppCompatActivity {
         return (T) (findViewById(resId));
     }
 
+    /**
+     * 状态栏字体
+     * @param activity
+     * @param bDark
+     */
+    public static void setStatusBarMode(Activity activity, boolean bDark) {
+        //6.0以上
+        View decorView = activity.getWindow().getDecorView();
+        if (decorView != null) {
+            int vis = decorView.getSystemUiVisibility();
+            if (bDark) {
+                vis |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            } else {
+                vis &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            }
+            decorView.setSystemUiVisibility(vis);
+        }
+    }
 }
