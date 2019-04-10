@@ -10,7 +10,6 @@ import com.netease.nim.demo.common.util.crash.AppCrashHandler;
 import com.netease.nim.demo.config.preference.Preferences;
 import com.netease.nim.demo.config.preference.UserPreferences;
 import com.netease.nim.demo.contact.ContactHelper;
-import com.netease.nim.demo.coustomnotify.CoustomNotifyClient;
 import com.netease.nim.demo.event.DemoOnlineStateContentProvider;
 import com.netease.nim.demo.mixpush.DemoMixPushMessageHandler;
 import com.netease.nim.demo.mixpush.DemoPushContentProvider;
@@ -19,7 +18,6 @@ import com.netease.nim.demo.session.SessionHelper;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.UIKitOptions;
 import com.netease.nim.uikit.business.contact.core.query.PinYin;
-import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.mixpush.NIMPushClient;
@@ -54,7 +52,7 @@ public class NimApplication extends Application {
             // 初始化红包模块，在初始化UIKit模块之前执行
             NIMRedPacketClient.init(this);
             //初始化新访客提醒功能
-            CoustomNotifyClient.init(this);
+       //     CoustomNotifyClient.init(this);
             // init pinyin
             PinYin.init(this);
             PinYin.validate();

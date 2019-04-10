@@ -1,16 +1,20 @@
 package com.netease.nim.demo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import com.netease.nim.demo.chatroom.activity.ChatRoomActivity;
 import com.netease.nim.demo.config.preference.UserPreferences;
+import com.netease.nim.demo.main.activity.MainActivity;
 import com.netease.nim.demo.main.activity.WelcomeActivity;
 import com.netease.nim.demo.session.extension.NotifyAttchment;
 import com.netease.nim.uikit.api.wrapper.MessageRevokeTip;
 import com.netease.nim.uikit.api.wrapper.NimUserInfoProvider;
 import com.netease.nim.uikit.business.session.viewholder.MsgViewHolderThumbBase;
+import com.netease.nimlib.sdk.NimIntent;
 import com.netease.nimlib.sdk.NosTokenSceneConfig;
 import com.netease.nimlib.sdk.SDKOptions;
 import com.netease.nimlib.sdk.ServerAddresses;
@@ -21,6 +25,7 @@ import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by hzchenkang on 2017/9/26.
@@ -221,4 +226,5 @@ class NimSDKOptionConfig {
 
         return config;
     }
+
 }

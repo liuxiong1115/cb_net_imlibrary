@@ -1,12 +1,14 @@
 package com.netease.nim.demo.session.viewholder;
 
-import android.graphics.Color;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.netease.nim.demo.R;
+import com.netease.nim.demo.session.extension.NotifyAttchment;
 import com.netease.nim.uikit.business.session.viewholder.MsgViewHolderBase;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.ui.recyclerview.adapter.BaseMultiItemFetchLoadAdapter;
-import com.netease.nim.uikit.common.util.sys.ScreenUtil;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
 
 /**
@@ -14,7 +16,7 @@ import com.netease.nim.uikit.impl.NimUIKitImpl;
  */
 
 public class NotifyViewHolder extends MsgViewHolderBase {
-    private TextView textView;
+    private LinearLayout layout;
 
     public NotifyViewHolder(BaseMultiItemFetchLoadAdapter adapter) {
         super(adapter);
@@ -27,19 +29,27 @@ public class NotifyViewHolder extends MsgViewHolderBase {
 
     @Override
     protected void inflateContentView() {
-        textView = findViewById(R.id.text);
+        layout = findViewById(R.id.layout);
     }
 
     @Override
     protected void bindContentView() {
         if (isReceivedMessage()) {
-            textView.setBackgroundResource(NimUIKitImpl.getOptions().messageLeftBackground);
-            textView.setTextColor(Color.BLACK);
-            textView.setPadding(ScreenUtil.dip2px(15), ScreenUtil.dip2px(8), ScreenUtil.dip2px(10), ScreenUtil.dip2px(8));
+            layout.setBackgroundResource(NimUIKitImpl.getOptions().messageLeftBackground);
         } else {
-            textView.setBackgroundResource(NimUIKitImpl.getOptions().messageRightBackground);
-            textView.setTextColor(Color.WHITE);
-            textView.setPadding(ScreenUtil.dip2px(10), ScreenUtil.dip2px(8), ScreenUtil.dip2px(15), ScreenUtil.dip2px(8));
+            layout.setBackgroundResource(NimUIKitImpl.getOptions().messageRightBackground);
         }
+        final NotifyAttchment attachment = (NotifyAttchment) message.getAttachment();
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonUtil.SellerAcceptOnClicklistener li = CommonUtil.sellerAcceptOnClicklistener;
+                if (li != null) {
+                    li.onClick(attachment.getId());
+                } else {
+                    System.err.println("ScheduleClassOnClicklistener is null !");
+                }
+            }
+        });
     }
 }

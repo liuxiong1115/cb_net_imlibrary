@@ -87,7 +87,7 @@ public class NIMInitManager {
         strings.status_bar_multi_messages_incoming = context.getString(R.string.nim_status_bar_multi_messages_incoming);
         strings.status_bar_image_message = context.getString(R.string.nim_status_bar_image_message);
         strings.status_bar_audio_message = context.getString(R.string.nim_status_bar_audio_message);
-        strings.status_bar_custom_message = context.getString(R.string.nim_status_bar_custom_message);
+        strings.status_bar_custom_message = context.getString(R.string.nim_status_bar_hidden_msg_content);
         strings.status_bar_file_message = context.getString(R.string.nim_status_bar_file_message);
         strings.status_bar_location_message = context.getString(R.string.nim_status_bar_location_message);
         strings.status_bar_notification_message = context.getString(R.string.nim_status_bar_notification_message);

@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.business.team.helper.TeamHelper;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.uinfo.model.UserInfo;
 
@@ -34,7 +35,16 @@ public class UserInfoHelper {
         } else {
             UserInfo userInfo = NimUIKit.getUserInfoProvider().getUserInfo(account);
             if (userInfo != null && !TextUtils.isEmpty(userInfo.getName())) {
-                return userInfo.getName();
+                if (CommonUtil.role == CommonUtil.SELLER) {
+                    if (userInfo.getName().equals("万能客服")) {
+                        return "系统通知";
+                    }else {
+                        return userInfo.getName();
+                    }
+                } else {
+                    return userInfo.getName();
+                }
+
             } else {
                 return account;
             }

@@ -13,6 +13,7 @@
         android:includeFontPadding="false"
         android:lineSpacingExtra="3dip"
         android:maxWidth="@dimen/max_text_bubble_width"
+        android:text="1111111111111"
         android:textColor="@color/color_black_b3000000"
         android:textSize="16sp"/>
 </LinearLayout>

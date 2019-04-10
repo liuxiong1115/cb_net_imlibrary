@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.netease.nim.demo.DemoCache;
@@ -14,6 +17,7 @@ import com.netease.nim.demo.config.preference.Preferences;
 import com.netease.nim.demo.login.LoginActivity;
 import com.netease.nim.demo.mixpush.DemoMixPushMessageHandler;
 import com.netease.nim.uikit.api.NimUIKit;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.activity.UI;
 import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nimlib.sdk.NIMClient;
@@ -39,11 +43,15 @@ public class WelcomeActivity extends UI {
 
     private static boolean firstEnter = true; // 是否首次进入
 
+    private FrameLayout frameLayout;
+    private TextView textView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-
+        frameLayout = findViewById(R.id.framelayout);
+        textView = findViewById(R.id.text_view);
         DemoCache.setMainTaskLaunching(true);
 
         if (savedInstanceState != null) {
@@ -59,7 +67,16 @@ public class WelcomeActivity extends UI {
 
     private void showSplashView() {
         // 首次进入，打开欢迎界面
-        getWindow().setBackgroundDrawableResource(R.drawable.splash_bg);
+        if (CommonUtil.role == CommonUtil.SELLER) {  //销售
+            frameLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            textView.setVisibility(View.VISIBLE);
+
+        } else if (CommonUtil.role == CommonUtil.STUD) {   //学生
+            getWindow().setBackgroundDrawableResource(R.drawable.stud_splash_bg);
+        } else {  //教师
+            getWindow().setBackgroundDrawableResource(R.drawable.teac_splash_bg);
+        }
+
         customSplash = true;
     }
 

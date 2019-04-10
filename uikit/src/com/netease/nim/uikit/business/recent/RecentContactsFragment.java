@@ -35,12 +35,16 @@ import com.netease.nimlib.sdk.ResponseCode;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
+import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.QueryDirectionEnum;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -119,10 +123,9 @@ public class RecentContactsFragment extends TFragment {
     }
 
 
-    public void addHeaderView(View view){
+    public void addHeaderView(View view) {
         adapter.addHeaderView(view);
     }
-
 
 
     /**
@@ -326,7 +329,8 @@ public class RecentContactsFragment extends TFragment {
                         if (code != ResponseCode.RES_SUCCESS || recents == null) {
                             return;
                         }
-                        loadedRecents = recents;
+
+                       loadedRecents = recents;
                         // 初次加载，更新离线的消息中是否有@我的消息
                         for (RecentContact loadedRecent : loadedRecents) {
                             if (loadedRecent.getSessionType() == SessionTypeEnum.Team) {

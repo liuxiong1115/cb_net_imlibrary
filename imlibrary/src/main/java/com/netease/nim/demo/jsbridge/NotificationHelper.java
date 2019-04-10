@@ -42,7 +42,7 @@ public class NotificationHelper {
             localIntent.setClass(context, MainActivity.class);
             localIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-            int iconId = R.drawable.ic_logo;
+            int iconId = R.drawable.appicon;
 
             PendingIntent pendingIntent = PendingIntent.getActivity(context, NOTIFY_ID, localIntent, PendingIntent
                     .FLAG_UPDATE_CURRENT);

@@ -2,6 +2,7 @@ package com.netease.nim.uikit.common;
 
 import android.view.View;
 
+import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 
 public class CommonUtil {
@@ -72,4 +73,12 @@ public class CommonUtil {
         void onClick(long courseId);
     }
 
+    //销售接待回调
+    public static SellerAcceptOnClicklistener sellerAcceptOnClicklistener;
+    public static void setSellerAcceptOnClicklistener(SellerAcceptOnClicklistener listener){
+        sellerAcceptOnClicklistener = listener;
+    }
+    public interface SellerAcceptOnClicklistener{
+        void onClick(long courseId);
+    }
 }

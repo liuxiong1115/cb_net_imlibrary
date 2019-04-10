@@ -126,6 +126,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
 
+        <activity android:name=".main.activity.WelcomeActivity"></activity>
         <!-- 多端登录管理 -->
         <activity
             android:name=".main.activity.MultiportActivity"

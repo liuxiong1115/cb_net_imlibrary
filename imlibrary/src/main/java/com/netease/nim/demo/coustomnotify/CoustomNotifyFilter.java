@@ -13,8 +13,10 @@ import com.netease.nim.demo.session.extension.NotifyAttchment;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
+import com.netease.nimlib.sdk.msg.model.RecentContact;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -52,7 +54,7 @@ public class CoustomNotifyFilter {
                                 }
                             } else {
                                 //震动
-                                vibrator = (Vibrator)context.getSystemService(context.VIBRATOR_SERVICE);
+                                vibrator = (Vibrator) context.getSystemService(context.VIBRATOR_SERVICE);
                                 long[] patter = {1000, 1000, 1000, 1000};
                                 vibrator.vibrate(patter, 0);
                             }
@@ -94,7 +96,10 @@ public class CoustomNotifyFilter {
         }
         return false;
     }
+
     public static void stopVibrator() {
         vibrator.cancel();
     }
+
+
 }

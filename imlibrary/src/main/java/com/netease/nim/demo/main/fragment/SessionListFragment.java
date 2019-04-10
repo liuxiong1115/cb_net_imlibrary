@@ -269,7 +269,7 @@ public class SessionListFragment extends MainTabFragment {
                     DefaultCustomAttachment customAttachment = (DefaultCustomAttachment) attachment;
                     return "[" + customAttachment.getTitle() + "]";
                 } else if (attachment instanceof NotifyAttchment) {
-                    return "Hello!";
+                    return "新访客到达!";
                 }
                 return null;
             }
