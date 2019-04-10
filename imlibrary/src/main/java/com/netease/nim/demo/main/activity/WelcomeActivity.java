@@ -113,7 +113,7 @@ public class WelcomeActivity extends UI {
                     if (canAutoLogin()) {
                         onIntent();
                     } else {
-                        LoginActivity.start(WelcomeActivity.this);
+//                        LoginActivity.start(WelcomeActivity.this);
                         finish();
                     }
                 }
@@ -219,7 +219,7 @@ public class WelcomeActivity extends UI {
     }
 
     private void showMainActivity(Intent intent) {
-        MainActivity.start(WelcomeActivity.this, intent);
+//        MainActivity.start(WelcomeActivity.this, intent);
         finish();
     }
 

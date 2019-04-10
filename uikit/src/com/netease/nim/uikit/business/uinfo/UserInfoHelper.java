@@ -29,26 +29,23 @@ public class UserInfoHelper {
      * @return
      */
     public static String getUserDisplayName(String account) {
+        if (CommonUtil.role == CommonUtil.SELLER) {
+            if (CommonUtil.classbroRobot.equals(account)) {
+                return "系统通知";
+            }
+        }
         String alias = NimUIKit.getContactProvider().getAlias(account);
         if (!TextUtils.isEmpty(alias)) {
             return alias;
         } else {
             UserInfo userInfo = NimUIKit.getUserInfoProvider().getUserInfo(account);
             if (userInfo != null && !TextUtils.isEmpty(userInfo.getName())) {
-                if (CommonUtil.role == CommonUtil.SELLER) {
-                    if (userInfo.getName().equals("万能客服")) {
-                        return "系统通知";
-                    }else {
-                        return userInfo.getName();
-                    }
-                } else {
-                    return userInfo.getName();
-                }
-
+                return userInfo.getName();
             } else {
                 return account;
             }
         }
+
     }
 
     // 获取用户原本的昵称

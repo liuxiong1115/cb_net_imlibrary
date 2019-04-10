@@ -34,20 +34,20 @@ public class NotifyViewHolder extends MsgViewHolderBase {
 
     @Override
     protected void bindContentView() {
-        if (isReceivedMessage()) {
+     /*   if (isReceivedMessage()) {
             layout.setBackgroundResource(NimUIKitImpl.getOptions().messageLeftBackground);
         } else {
             layout.setBackgroundResource(NimUIKitImpl.getOptions().messageRightBackground);
-        }
+        }*/
         final NotifyAttchment attachment = (NotifyAttchment) message.getAttachment();
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CommonUtil.SellerAcceptOnClicklistener li = CommonUtil.sellerAcceptOnClicklistener;
                 if (li != null) {
-                    li.onClick(attachment.getId());
+                    li.onClick(attachment.getId(),attachment.getFromAccessId());
                 } else {
-                    System.err.println("ScheduleClassOnClicklistener is null !");
+                    System.err.println("SellerAcceptOnClicklistener is null !");
                 }
             }
         });

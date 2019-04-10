@@ -79,6 +79,6 @@ public class CommonUtil {
         sellerAcceptOnClicklistener = listener;
     }
     public interface SellerAcceptOnClicklistener{
-        void onClick(long courseId);
+        void onClick(long courseId,String fromAccount);
     }
 }
