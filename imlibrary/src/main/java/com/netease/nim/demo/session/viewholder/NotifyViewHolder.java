@@ -43,9 +43,20 @@ public class NotifyViewHolder extends MsgViewHolderBase {
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*if (attachment.getId() != null && attachment.getFromAccessId() != null) {
+                  //  li.onClick(attachment.getId(),attachment.getFromAccessId());
+                    Toast.makeText(context, "成功", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(context, "当前数据有误！请前往访客列表继续操作", Toast.LENGTH_SHORT).show();
+                }*/
                 CommonUtil.SellerAcceptOnClicklistener li = CommonUtil.sellerAcceptOnClicklistener;
                 if (li != null) {
-                    li.onClick(attachment.getId(),attachment.getFromAccessId());
+                    if (attachment.getId() != null && attachment.getFromAccessId() != null) {
+                        li.onClick(attachment.getId(),attachment.getFromAccessId());
+                    } else {
+                        Toast.makeText(context, "当前数据有误！请前往访客列表继续操作", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     System.err.println("SellerAcceptOnClicklistener is null !");
                 }

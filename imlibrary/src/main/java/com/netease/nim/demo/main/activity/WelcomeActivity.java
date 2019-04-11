@@ -16,6 +16,7 @@ import com.netease.nim.demo.common.util.sys.SysInfoUtil;
 import com.netease.nim.demo.config.preference.Preferences;
 import com.netease.nim.demo.login.LoginActivity;
 import com.netease.nim.demo.mixpush.DemoMixPushMessageHandler;
+import com.netease.nim.demo.session.SessionHelper;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.activity.UI;
@@ -193,7 +194,20 @@ public class WelcomeActivity extends UI {
         if (messages == null || messages.size() > 1) {
             showMainActivity(null);
         } else {
-            showMainActivity(new Intent().putExtra(NimIntent.EXTRA_NOTIFY_CONTENT, messages.get(0)));
+        //    IMMessage imMessage = (IMMessage) getIntent().getSerializableExtra(NimIntent.EXTRA_NOTIFY_CONTENT);
+            switch (messages.get(0).getSessionType()) {
+                case P2P:
+                    SessionHelper.startP2PSession(this, messages.get(0).getSessionId());
+                    finish();
+                    break;
+                case Team:
+                    SessionHelper.startTeamSession(this, messages.get(0).getSessionId());
+                    finish();
+                    break;
+                default:
+                    break;
+            }
+         //   showMainActivity(new Intent().putExtra(NimIntent.EXTRA_NOTIFY_CONTENT, messages.get(0)));
         }
     }
 
