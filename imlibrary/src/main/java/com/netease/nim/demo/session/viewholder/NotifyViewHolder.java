@@ -2,6 +2,7 @@ package com.netease.nim.demo.session.viewholder;
 
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.netease.nim.demo.R;
@@ -16,8 +17,7 @@ import com.netease.nim.uikit.impl.NimUIKitImpl;
  */
 
 public class NotifyViewHolder extends MsgViewHolderBase {
-    private LinearLayout layout;
-
+    private TextView textView,accept;
     public NotifyViewHolder(BaseMultiItemFetchLoadAdapter adapter) {
         super(adapter);
     }
@@ -29,21 +29,22 @@ public class NotifyViewHolder extends MsgViewHolderBase {
 
     @Override
     protected void inflateContentView() {
-        layout = findViewById(R.id.layout);
+        accept = findViewById(R.id.text_accept);
+        textView = findViewById(R.id.notify_text);
     }
 
     @Override
     protected void bindContentView() {
-     /*   if (isReceivedMessage()) {
-            layout.setBackgroundResource(NimUIKitImpl.getOptions().messageLeftBackground);
-        } else {
-            layout.setBackgroundResource(NimUIKitImpl.getOptions().messageRightBackground);
-        }*/
         final NotifyAttchment attachment = (NotifyAttchment) message.getAttachment();
-        layout.setOnClickListener(new View.OnClickListener() {
+        if (attachment != null && attachment.getFromAccessId() != null) {
+            textView.setText("访客："+attachment.getFromAccessId()+"等待咨询");
+        } else {
+            textView.setText("有新访客等待咨询");
+        }
+        accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*if (attachment.getId() != null && attachment.getFromAccessId() != null) {
+               /* if (attachment.getId() != null && attachment.getFromAccessId() != null) {
                   //  li.onClick(attachment.getId(),attachment.getFromAccessId());
                     Toast.makeText(context, "成功", Toast.LENGTH_SHORT).show();
 
@@ -63,4 +64,5 @@ public class NotifyViewHolder extends MsgViewHolderBase {
             }
         });
     }
+
 }

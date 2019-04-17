@@ -26,6 +26,7 @@ import com.netease.nimlib.sdk.team.constant.TeamTypeEnum;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
@@ -35,6 +36,7 @@ import java.util.List;
  */
 public class TeamMessageActivity extends BaseMessageActivity {
 
+    public static WeakReference<TeamMessageActivity> instance;
     // model
     private Team team;
 
@@ -70,6 +72,7 @@ public class TeamMessageActivity extends BaseMessageActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        instance = new WeakReference<TeamMessageActivity>(this);
         backToClass = (Class<? extends Activity>) getIntent().getSerializableExtra(Extras.EXTRA_BACK_TO_CLASS);
         findViews();
 

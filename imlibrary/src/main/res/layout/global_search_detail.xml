@@ -12,14 +12,14 @@
         android:theme="@style/AppTheme.AppBarOverlay"
         app:elevation="0dp">
 
-        <android.support.v7.widget.Toolbar
+        <com.netease.nim.uikit.common.ui.widget.MyToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:titleTextAppearance="@style/Toolbar.TitleText">
 
-        </android.support.v7.widget.Toolbar>
+        </com.netease.nim.uikit.common.ui.widget.MyToolbar>
     </android.support.design.widget.AppBarLayout>
 
     <TextView

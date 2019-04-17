@@ -99,6 +99,10 @@ public class UIKitOptions {
     public int messageRightBackground = R.drawable.nim_message_item_right_selector;
 
     /**
+     * IM接收到的消息（新访客），内容区域背景
+     */
+    public int notifyRightBackground = R.drawable.newmsg;
+    /**
      * IM 发送出去的消息（自定义消息），内容区域背景的drawable id
      */
     public int messageRightWhiteBackground = R.drawable.nim_message_item_right_white;
