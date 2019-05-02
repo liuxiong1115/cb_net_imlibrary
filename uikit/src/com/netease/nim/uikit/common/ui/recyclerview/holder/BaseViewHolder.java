@@ -40,7 +40,7 @@ import android.widget.TextView;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 
-public class BaseViewHolder extends RecyclerView.ViewHolder {
+public class BaseViewHolder extends RecyclerView.ViewHolder{
 
     /**
      * Views indexed with their IDs

@@ -1,5 +1,6 @@
 package com.netease.nim.uikit.business.recent.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
 import com.netease.nim.uikit.R;
@@ -13,11 +14,12 @@ import com.netease.nimlib.sdk.msg.model.RecentContact;
 
 import java.util.List;
 
+
 /**
  * Created by huangjun on 2016/12/11.
  */
 
-public class RecentContactAdapter extends BaseMultiItemQuickAdapter<RecentContact, BaseViewHolder> {
+public class RecentContactAdapter extends BaseMultiItemQuickAdapter<RecentContact, BaseViewHolder>{
 
     interface ViewType {
         int VIEW_TYPE_COMMON = 1;
@@ -38,10 +40,15 @@ public class RecentContactAdapter extends BaseMultiItemQuickAdapter<RecentContac
     }
 
     @Override
+    protected void convert(BaseViewHolder baseHolder, RecentContact item, int position, boolean isScrolling) {
+        super.convert(baseHolder, item, position, isScrolling);
+        baseHolder.addOnClickListener(R.id.delete);
+    }
+
+    @Override
     protected String getItemKey(RecentContact item) {
         StringBuilder sb = new StringBuilder();
         sb.append(item.getSessionType().getValue()).append("_").append(item.getContactId());
-
         return sb.toString();
     }
 
@@ -52,4 +59,5 @@ public class RecentContactAdapter extends BaseMultiItemQuickAdapter<RecentContac
     public void setCallback(RecentContactsCallback callback) {
         this.callback = callback;
     }
+
 }

@@ -2,8 +2,8 @@ package com.testlib.netease;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         Button button = (Button)findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -83,10 +82,10 @@ public class MainActivity extends AppCompatActivity {
         // 在这里直接使用同步到云信服务器的帐号和token登录。
         // 这里为了简便起见，demo就直接使用了密码的md5作为token。
         // 如果开发者直接使用这个demo，只更改appkey，然后就登入自己的账户体系的话，需要传入同步到云信服务器的token，而不是用户密码。
-       /* final String account = "STUD111";
-        final String token = "ca3b942d-864f-4656-b6d6-cd33192dcc95";*/
-        final String account = "CRM45";
-        final String token = "dde46a008f55905b7b68f862125d3cd8";
+        final String account = "STUD111";
+        final String token = "ca3b942d-864f-4656-b6d6-cd33192dcc95";
+        /*final String account = "CRM45";
+        final String token = "dde46a008f55905b7b68f862125d3cd8";*/
         // 登录
         loginRequest = NimUIKit.login(new LoginInfo(account, token), new RequestCallback<LoginInfo>() {
             @Override

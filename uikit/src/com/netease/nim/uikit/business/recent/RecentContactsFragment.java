@@ -18,6 +18,7 @@ import com.netease.nim.uikit.api.model.team.TeamDataChangedObserver;
 import com.netease.nim.uikit.api.model.team.TeamMemberDataChangedObserver;
 import com.netease.nim.uikit.api.model.user.UserInfoObserver;
 import com.netease.nim.uikit.business.recent.adapter.RecentContactAdapter;
+import com.netease.nim.uikit.business.recent.adapter.SwipeItemLayout;
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.badger.Badger;
@@ -35,7 +36,6 @@ import com.netease.nimlib.sdk.ResponseCode;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
-import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.QueryDirectionEnum;
@@ -43,15 +43,11 @@ import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -65,7 +61,7 @@ import static com.netease.nim.uikit.common.ui.dialog.CustomAlertDialog.onSeparat
  * <p/>
  * Created by huangjun on 2015/2/1.
  */
-public class RecentContactsFragment extends TFragment {
+public class RecentContactsFragment extends TFragment{
 
     // 置顶功能可直接使用，也可作为思路，供开发者充分利用RecentContact的tag字段
     public static final long RECENT_TAG_STICKY = 0x0000000000000001; // 联系人置顶tag
@@ -154,6 +150,8 @@ public class RecentContactsFragment extends TFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addOnItemTouchListener(touchListener);
 
+        //侧滑监听
+        recyclerView.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(getContext()));
         // ios style
         OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
@@ -214,7 +212,7 @@ public class RecentContactsFragment extends TFragment {
                 RecentContact recent = adapter.getItem(position);
                 callback.onItemClick(recent);
             }
-        }
+         }
 
         @Override
         public void onItemLongClick(RecentContactAdapter adapter, View view, int position) {
@@ -223,7 +221,19 @@ public class RecentContactsFragment extends TFragment {
 
         @Override
         public void onItemChildClick(RecentContactAdapter adapter, View view, int position) {
-
+            RecentContact recentContact = adapter.getItem(position);
+            if (view.getId() == R.id.delete) {
+                CommonUtil.DeletedItemListener listener = CommonUtil.delectedItemListener;
+                if (listener != null) {
+                    listener.deleted(adapter,position,recentContact.getContactId());
+                }
+              /*  CommonUtil.setDelectedItemListener(new CommonUtil.DeletedItemListener() {
+                    @Override
+                    public void deleted(RecentContactAdapter adapter, int position, String contactId) {
+                          Toast.makeText(getContext(),contactId,Toast.LENGTH_SHORT).show();
+                    }
+                });*/
+            }
         }
 
         @Override
@@ -711,4 +721,5 @@ public class RecentContactsFragment extends TFragment {
         });
 
     }
+
 }

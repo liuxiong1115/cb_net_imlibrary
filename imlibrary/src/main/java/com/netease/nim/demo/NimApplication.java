@@ -18,6 +18,7 @@ import com.netease.nim.demo.session.SessionHelper;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.UIKitOptions;
 import com.netease.nim.uikit.business.contact.core.query.PinYin;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.mixpush.NIMPushClient;
@@ -37,7 +38,7 @@ public class NimApplication extends Application {
         super.onCreate();
         DemoCache.setContext(this);
 
-     //   CommonUtil.setRole(CommonUtil.SELLER);
+    //   CommonUtil.setRole(CommonUtil.TEAC);
         // 4.6.0 开始，第三方推送配置入口改为 SDKOption#mixPushConfig，旧版配置方式依旧支持。
         NIMClient.init(this, getLoginInfo(), NimSDKOptionConfig.getSDKOptions(this));
 

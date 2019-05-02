@@ -47,6 +47,8 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
 
     protected TextView tvDatetime;
 
+    protected View tvDelete,deleteLayout;
+
     // 消息发送错误状态标记，目前没有逻辑处理
     protected ImageView imgMsgStatus;
 
@@ -66,11 +68,11 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
 
     @Override
     public void convert(BaseViewHolder holder, RecentContact data, int position, boolean isScrolling) {
-        inflate(holder, data);
+        inflate(holder, data,position);
         refresh(holder, data, position);
     }
 
-    public void inflate(BaseViewHolder holder, final RecentContact recent) {
+    public void inflate(BaseViewHolder holder, final RecentContact recent,int position) {
         this.portraitPanel = holder.getView(R.id.portrait_panel);
         this.imgHead = holder.getView(R.id.img_head);
         this.tvNickname = holder.getView(R.id.tv_nickname);
@@ -83,7 +85,6 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
         this.topLine = holder.getView(R.id.top_line);
         this.tvOnlineState = holder.getView(R.id.tv_online_state);
         holder.addOnClickListener(R.id.unread_number_tip);
-
         this.tvUnread.setTouchListener(new DropFake.ITouchListener() {
             @Override
             public void onDown() {

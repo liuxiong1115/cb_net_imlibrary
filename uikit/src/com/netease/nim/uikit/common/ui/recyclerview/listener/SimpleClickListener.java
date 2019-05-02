@@ -154,7 +154,6 @@ public abstract class SimpleClickListener<T extends IRecyclerView> implements Re
                     onItemClick(baseAdapter, pressedView, vh.getLayoutPosition() - baseAdapter.getHeaderLayoutCount());
                 }
                 resetPressedView(pressedView);
-
             }
             return true;
         }

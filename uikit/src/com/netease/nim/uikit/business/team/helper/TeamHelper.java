@@ -9,6 +9,7 @@ import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.business.contact.core.item.ContactIdFilter;
 import com.netease.nim.uikit.business.contact.selector.activity.ContactSelectActivity;
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nimlib.sdk.team.constant.TeamBeInviteModeEnum;
 import com.netease.nimlib.sdk.team.constant.TeamInviteModeEnum;
 import com.netease.nimlib.sdk.team.constant.TeamMemberType;
@@ -18,6 +19,9 @@ import com.netease.nimlib.sdk.team.constant.TeamUpdateModeEnum;
 import com.netease.nimlib.sdk.team.constant.VerifyTypeEnum;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -271,8 +275,19 @@ public class TeamHelper {
 
     public static String getTeamName(String teamId) {
         Team team = NimUIKit.getTeamProvider().getTeamById(teamId);
-        return team == null ? teamId : TextUtils.isEmpty(team.getName()) ? team.getId() : team
-                .getName();
+        if (CommonUtil.role == CommonUtil.STUD) {
+            return team == null ? teamId : TextUtils.isEmpty(team.getName()) ? team.getId() : team.getName();
+        } else {
+            String result = team.getExtServer();
+            String name = null;
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                name = jsonObject.getString("orderNo");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return name == null ? teamId : name;
+        }
     }
 
     /**

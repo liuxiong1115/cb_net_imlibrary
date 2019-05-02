@@ -2,7 +2,7 @@ package com.netease.nim.uikit.common;
 
 import android.view.View;
 
-import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
+import com.netease.nim.uikit.business.recent.adapter.RecentContactAdapter;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 
 public class CommonUtil {
@@ -80,5 +80,14 @@ public class CommonUtil {
     }
     public interface SellerAcceptOnClicklistener{
         void onClick(long courseId,String fromAccount);
+    }
+
+
+    public static DeletedItemListener delectedItemListener;
+    public static void setDelectedItemListener(DeletedItemListener listener) {
+       delectedItemListener = listener;
+    }
+    public interface DeletedItemListener {
+        void deleted(RecentContactAdapter adapter, int position,String contactId);
     }
 }

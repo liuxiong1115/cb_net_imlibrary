@@ -42,7 +42,7 @@ public class ContactListFragment extends MainTabFragment {
     private ContactsFragment fragment;
 
     public ContactListFragment() {
-        setContainerId(MainTab.CONTACT.fragmentId);
+     //   setContainerId(MainTab.CONTACT.fragmentId);
     }
 
     /**

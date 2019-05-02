@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,12 +20,16 @@ import com.netease.nim.uikit.api.wrapper.NimToolBarOptions;
 import com.netease.nim.uikit.business.session.constant.Extras;
 import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nim.uikit.business.session.fragment.TeamMessageFragment;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.team.constant.TeamTypeEnum;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -131,9 +136,20 @@ public class TeamMessageActivity extends BaseMessageActivity {
 
         team = d;
         fragment.setTeam(team);
+        if (CommonUtil.role == CommonUtil.STUD) {
+            setTitle(team == null ? sessionId : team.getName() + "(" + team.getMemberCount() + "人)");
+        } else {
+            String result = team.getExtServer();
+            String name = null;
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                name = jsonObject.getString("orderNo");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            setTitle(name == null ? sessionId : name + "(" + team.getMemberCount() + "人)");
 
-        setTitle(team == null ? sessionId : team.getName() + "(" + team.getMemberCount() + "人)");
-
+        }
         invalidTeamTipText.setText(team.getType() == TeamTypeEnum.Normal ? R.string.normal_team_invalid_tip : R.string.team_invalid_tip);
         invalidTeamTipView.setVisibility(team.isMyTeam() ? View.GONE : View.VISIBLE);
     }
