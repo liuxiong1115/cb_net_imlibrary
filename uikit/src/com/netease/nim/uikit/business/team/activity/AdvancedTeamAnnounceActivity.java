@@ -25,6 +25,7 @@ import com.netease.nim.uikit.common.adapter.TAdapter;
 import com.netease.nim.uikit.common.adapter.TAdapterDelegate;
 import com.netease.nim.uikit.common.adapter.TViewHolder;
 import com.netease.nim.uikit.common.ui.listview.ListViewUtil;
+import com.netease.nim.uikit.common.ui.widget.MyToolbar;
 import com.netease.nimlib.sdk.team.constant.TeamMemberType;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
@@ -125,14 +126,22 @@ public class AdvancedTeamAnnounceActivity extends UI implements TAdapterDelegate
     }
 
     private void initActionbar() {
-        TextView toolbarView = findView(R.id.action_bar_right_clickable_textview);
+        MyToolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setMenuText("新建");
+        /*TextView toolbarView = findView(R.id.action_bar_right_clickable_textview);
         toolbarView.setText(R.string.create);
         toolbarView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AdvancedTeamCreateAnnounceActivity.startActivityForResult(AdvancedTeamAnnounceActivity.this, teamId, RES_ANNOUNCE_CREATE_CODE);
             }
-        });
+        });*/
+    }
+
+    @Override
+    public void menuItemClick(View v) {
+        super.menuItemClick(v);
+        AdvancedTeamCreateAnnounceActivity.startActivityForResult(AdvancedTeamAnnounceActivity.this, teamId, RES_ANNOUNCE_CREATE_CODE);
     }
 
     private void initAdapter() {

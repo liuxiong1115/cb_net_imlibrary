@@ -64,6 +64,8 @@ import com.netease.nimlib.sdk.robot.model.RobotMsgType;
 import com.netease.nimlib.sdk.team.constant.TeamMemberType;
 import com.netease.nimlib.sdk.team.model.TeamMember;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -852,7 +854,7 @@ public class MessageListPanelEx {
             // 3 revoke
             if (enableRevokeButton(selectedItem)) {
                 longClickRevokeMsg(selectedItem, alertDialog);
-            }
+           }
             // 4 delete
             longClickItemDelete(selectedItem, alertDialog);
             // 5 trans
@@ -1260,10 +1262,8 @@ public class MessageListPanelEx {
             if (robotAttachment.isRobotSend()) {
                 return null; // 机器人发的消息不能转发了
             }
-
             return MessageBuilder.createTextMessage(sessionId, sessionTypeEnum, forwardMessage.getContent());
         }
-
         return null;
     }
 }

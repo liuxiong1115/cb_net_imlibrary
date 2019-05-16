@@ -20,8 +20,11 @@ import com.netease.nim.uikit.api.wrapper.NimToolBarOptions;
 import com.netease.nim.uikit.business.session.constant.Extras;
 import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nim.uikit.business.session.fragment.TeamMessageFragment;
+import com.netease.nim.uikit.business.team.activity.AdvancedTeamInfoActivity;
+import com.netease.nim.uikit.business.team.activity.AdvancedTeamMemberActivity;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
+import com.netease.nim.uikit.common.ui.widget.MyToolbar;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.team.constant.TeamTypeEnum;
@@ -42,6 +45,7 @@ import java.util.List;
 public class TeamMessageActivity extends BaseMessageActivity {
 
     public static WeakReference<TeamMessageActivity> instance;
+    private static final int REQUEST_CODE_MEMBER_LIST = 102;
     // model
     private Team team;
 
@@ -251,8 +255,16 @@ public class TeamMessageActivity extends BaseMessageActivity {
         ToolBarOptions options = new NimToolBarOptions();
         options.titleString = "群聊";
         setToolBar(R.id.toolbar, options);
+        MyToolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setMenuDrawable(R.drawable.nim_ic_message_actionbar_team);
     }
 
+    @Override
+    public void menuItemClick(View v) {
+        super.menuItemClick(v);
+      //  AdvancedTeamMemberActivity.startActivityForResult(TeamMessageActivity.this, sessionId, REQUEST_CODE_MEMBER_LIST);
+        AdvancedTeamInfoActivity.start(TeamMessageActivity.this,sessionId);
+    }
     @Override
     protected boolean enableSensor() {
         return true;

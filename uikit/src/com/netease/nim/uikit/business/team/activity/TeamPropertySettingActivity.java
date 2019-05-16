@@ -17,6 +17,7 @@ import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.wrapper.NimToolBarOptions;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
 import com.netease.nim.uikit.common.activity.UI;
+import com.netease.nim.uikit.common.ui.widget.MyToolbar;
 import com.netease.nim.uikit.common.util.string.StringTextWatcher;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
@@ -28,7 +29,7 @@ import com.netease.nimlib.sdk.team.constant.TeamFieldEnum;
  * 群属性
  * Created by hzxuwen on 2015/4/10.
  */
-public class TeamPropertySettingActivity extends UI implements View.OnClickListener {
+public class TeamPropertySettingActivity extends UI {
 
     private static final String EXTRA_TID = "EXTRA_TID";
     public static final String EXTRA_DATA = "EXTRA_DATA";
@@ -89,9 +90,8 @@ public class TeamPropertySettingActivity extends UI implements View.OnClickListe
         findViews();
         parseIntent();
 
-        TextView toolbarView = findView(R.id.action_bar_right_clickable_textview);
-        toolbarView.setText(R.string.save);
-        toolbarView.setOnClickListener(this);
+        MyToolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setMenuText(getResources().getString(R.string.save));
     }
 
     private void parseIntent() {
@@ -164,13 +164,10 @@ public class TeamPropertySettingActivity extends UI implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.action_bar_right_clickable_textview) {
-            showKeyboard(false);
-            complete();
-        } else {
-        }
+    public void menuItemClick(View v) {
+        super.menuItemClick(v);
+        showKeyboard(false);
+        complete();
     }
 
     /**

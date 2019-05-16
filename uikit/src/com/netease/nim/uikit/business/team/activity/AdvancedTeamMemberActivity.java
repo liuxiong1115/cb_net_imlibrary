@@ -293,7 +293,7 @@ public class AdvancedTeamMemberActivity extends UI implements TAdapterDelegate,
 
     @Override
     public void onHeadImageViewClick(String account) {
-        AdvancedTeamMemberInfoActivity.startActivityForResult(AdvancedTeamMemberActivity.this, account, teamId);
+     //   AdvancedTeamMemberInfoActivity.startActivityForResult(AdvancedTeamMemberActivity.this, account, teamId);
     }
 
     @Override

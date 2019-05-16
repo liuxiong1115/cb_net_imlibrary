@@ -22,6 +22,7 @@ import com.netease.nim.uikit.business.session.audio.MessageAudioControl;
 import com.netease.nim.uikit.business.session.constant.Extras;
 import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nim.uikit.common.activity.UI;
+import com.netease.nim.uikit.common.ui.popupmenu.NIMPopupMenu;
 import com.netease.nim.uikit.common.util.AndroidBug5497Workaround;
 import com.netease.nim.uikit.common.util.sys.ScreenUtil;
 

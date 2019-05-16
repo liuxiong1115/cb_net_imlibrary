@@ -275,6 +275,9 @@ public class TeamHelper {
 
     public static String getTeamName(String teamId) {
         Team team = NimUIKit.getTeamProvider().getTeamById(teamId);
+        if (team == null) {
+            return teamId;
+        }
         if (CommonUtil.role == CommonUtil.STUD) {
             return team == null ? teamId : TextUtils.isEmpty(team.getName()) ? team.getId() : team.getName();
         } else {

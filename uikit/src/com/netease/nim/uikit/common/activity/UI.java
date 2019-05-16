@@ -110,15 +110,34 @@ public abstract class UI extends AppCompatActivity {
         if (options.isNeedNavigate) {
             toolbar.setNavigationIcon(options.navigateId);
             toolbar.setContentInsetStartWithNavigation(0);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        /*    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onNavigateUpClicked();
+                }
+            });*/
+            ((MyToolbar) toolbar).setOnOptionItemClickListener(new MyToolbar.OnOptionItemClickListener() {
+                @Override
+                public void onOptionItemClick(View v) {
+                    int i = v.getId();
+                    if (i == R.id.back) {
+                        onNavigateUpClicked();
+                    } else {
+                        menuItemClick(v);
+                    }
                 }
             });
         }
     }
 
+
+    /**
+     * toobar 其他View点击事件
+     * @param v
+     */
+    public void menuItemClick(View v){
+
+    }
     public void setToolBar(int toolbarId, int titleId, int logoId) {
         toolbar = (MyToolbar) findViewById(toolbarId);
         toolbar.setTitle(titleId);

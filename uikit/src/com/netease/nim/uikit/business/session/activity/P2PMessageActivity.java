@@ -3,7 +3,10 @@ package com.netease.nim.uikit.business.session.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -18,6 +21,8 @@ import com.netease.nim.uikit.business.session.constant.Extras;
 import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
+import com.netease.nim.uikit.common.ui.popupmenu.NIMPopupMenu;
+import com.netease.nim.uikit.common.ui.widget.MyToolbar;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.NimIntent;
@@ -223,6 +228,14 @@ public class P2PMessageActivity extends BaseMessageActivity {
     protected void initToolBar() {
         ToolBarOptions options = new NimToolBarOptions();
         setToolBar(R.id.toolbar, options);
+       /* MyToolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setMenuDrawable(R.drawable.appicon);*/
+    }
+
+    @Override
+    public void menuItemClick(View v) {
+        super.menuItemClick(v);
+     //   Toast.makeText(this,"1111",Toast.LENGTH_SHORT).show();
     }
 
     @Override

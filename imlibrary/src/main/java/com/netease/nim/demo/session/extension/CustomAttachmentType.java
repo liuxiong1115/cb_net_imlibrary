@@ -24,4 +24,6 @@ public interface CustomAttachmentType {
 
     int notify = 309; //新访客
 
+    int NewOrder = 312; //新订单
+    int Extend = 313; //扩展字段
 }

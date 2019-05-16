@@ -14,17 +14,19 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.wrapper.NimToolBarOptions;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
 import com.netease.nim.uikit.common.activity.UI;
+import com.netease.nim.uikit.common.ui.widget.MyToolbar;
 import com.netease.nim.uikit.common.util.string.StringUtil;
 
 /**
  * Created by hzxuwen on 2015/3/19.
  */
-public class AdvancedTeamNicknameActivity extends UI implements TextWatcher, View.OnClickListener {
+public class AdvancedTeamNicknameActivity extends UI implements TextWatcher{
 
     // constant
     public static final String EXTRA_NAME = "EXTRA_NAME";
@@ -58,9 +60,8 @@ public class AdvancedTeamNicknameActivity extends UI implements TextWatcher, Vie
             nickName = "";
         }
 
-        TextView toolbarView = findView(R.id.action_bar_right_clickable_textview);
-        toolbarView.setText(R.string.save);
-        toolbarView.setOnClickListener(this);
+        MyToolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setMenuText(getResources().getString(R.string.save));
 
         regularTeamNickname = (EditText) findViewById(R.id.regular_team_nickname);
         regularTeamNickname.setText(nickName);
@@ -123,14 +124,12 @@ public class AdvancedTeamNicknameActivity extends UI implements TextWatcher, Vie
         regularTeamNickname.addTextChangedListener(this);
     }
 
+
     @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.action_bar_right_clickable_textview) {
-            showKeyboard(false);
-            complete();
-        } else {
-        }
+    public void menuItemClick(View v) {
+        super.menuItemClick(v);
+        showKeyboard(false);
+        complete();
     }
 
     private void complete() {

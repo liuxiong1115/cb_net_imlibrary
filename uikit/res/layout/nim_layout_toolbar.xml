@@ -30,7 +30,7 @@
             android:background="@color/transparent"
             android:minHeight="?attr/actionBarSize"
             android:paddingLeft="0dp"
-            app:backIcon="@drawable/back"
+            app:backIcon="@drawable/back_black"
             app:backMarginLeft="15dp"
             app:backText=""
             app:backTextAppearance="?attr/actionMenuTextAppearance"

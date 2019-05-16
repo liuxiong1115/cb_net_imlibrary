@@ -6,9 +6,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.netease.nim.demo.R;
+import com.netease.nim.demo.session.extension.CustomAttachParser;
+import com.netease.nim.demo.session.extension.CustomAttachmentType;
 import com.netease.nim.demo.session.extension.DefaultCustomAttachment;
 import com.netease.nim.demo.session.utils.GlideUtils;
 import com.netease.nim.uikit.business.session.emoji.MoonUtil;
@@ -63,13 +66,22 @@ public class MsgViewHolderDefCustom extends MsgViewHolderBase {
     protected void bindContentView() {
         final DefaultCustomAttachment attachment = (DefaultCustomAttachment) message.getAttachment();
         MoonUtil.identifyFaceExpressionAndATags(context, titleView, attachment.getTitle() == null ? "" : attachment.getTitle(), ImageSpan.ALIGN_BASELINE);  //标题
-        MoonUtil.identifyFaceExpressionAndATags(context, contentView, attachment.getSubTitle() == null ? "" : attachment.getSubTitle(), ImageSpan.ALIGN_BOTTOM);  //内容
-
-        //图片
-        if (!TextUtils.isEmpty(attachment.getImgUrl())) {
-            RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.appicon);
-            GlideUtils.lxGlide(context, attachment.getImgUrl(), imageView, requestOptions);
+        if (attachment.getType() == CustomAttachmentType.Extend) {  //313扩展消息
+            MoonUtil.identifyFaceExpressionAndATags(context, contentView, attachment.getDesc() == null ? "" : attachment.getDesc(), ImageSpan.ALIGN_BOTTOM);  //内容
+            //图片
+            if (!TextUtils.isEmpty(attachment.getImgUrl())) {
+                RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.appicon);
+                GlideUtils.lxGlide(context, attachment.getIcon(), imageView, requestOptions);
+            }
+        } else {
+            MoonUtil.identifyFaceExpressionAndATags(context, contentView, attachment.getSubTitle() == null ? "" : attachment.getSubTitle(), ImageSpan.ALIGN_BOTTOM);  //内容
+            //图片
+            if (!TextUtils.isEmpty(attachment.getImgUrl())) {
+                RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.appicon);
+                GlideUtils.lxGlide(context, attachment.getImgUrl(), imageView, requestOptions);
+            }
         }
+
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +98,7 @@ public class MsgViewHolderDefCustom extends MsgViewHolderBase {
         if (isReceivedMessage()) {
             layout.setBackgroundResource(NimUIKitImpl.getOptions().messageLeftBackground);
             layout.setPadding(ScreenUtil.dip2px(15), ScreenUtil.dip2px(8), ScreenUtil.dip2px(10), ScreenUtil.dip2px(8));
-        }else {
+        } else {
             layout.setBackgroundResource(NimUIKitImpl.getOptions().messageRightWhiteBackground);
             layout.setPadding(ScreenUtil.dip2px(10), ScreenUtil.dip2px(8), ScreenUtil.dip2px(15), ScreenUtil.dip2px(8));
         }

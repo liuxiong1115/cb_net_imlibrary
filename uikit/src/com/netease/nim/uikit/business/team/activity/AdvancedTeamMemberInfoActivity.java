@@ -90,7 +90,6 @@ public class AdvancedTeamMemberInfoActivity extends UI implements View.OnClickLi
         ToolBarOptions options = new NimToolBarOptions();
         options.titleId = R.string.team_member_info;
         setToolBar(R.id.toolbar, options);
-
         parseIntentData();
 
         findViews();

@@ -106,16 +106,19 @@ public class MyToolbar extends Toolbar implements View.OnClickListener {
             mTitleLayout = new LinearLayoutCompat(context);
             mTitleLayout.setOrientation(LinearLayoutCompat.VERTICAL);
             mTitleLayout.setGravity(typedArray.getInt(
-                    R.styleable.TitleToolbar_title_gravity, Gravity.CENTER_VERTICAL));
+                    R.styleable.TitleToolbar_title_gravity, Gravity.CENTER));
 
             addView(mTitleLayout, new LayoutParams(
-                    LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, Gravity.CENTER));
+                    700, LayoutParams.MATCH_PARENT, Gravity.CENTER));
         }
 
         if (!isChild(mTitleTextView, mTitleLayout)) {
             mTitleTextView = new TextView(context);
             mTitleTextView.setSingleLine();
-            mTitleTextView.setEllipsize(TextUtils.TruncateAt.END);
+            mTitleTextView.setEllipsize(TextUtils.TruncateAt.MARQUEE);  //跑马灯效果
+            mTitleTextView.setMarqueeRepeatLimit(Integer.MAX_VALUE);  //次数
+            mTitleTextView.setFocusable(true);
+            mTitleTextView.setFocusableInTouchMode(true);
             mTitleTextView.setGravity(Gravity.CENTER);
 
             int titleTextAppearance = a.getResourceId(R.styleable.Toolbar_titleTextAppearance, 0);
@@ -135,9 +138,7 @@ public class MyToolbar extends Toolbar implements View.OnClickListener {
 
             setTitle(a.getText(R.styleable.Toolbar_title));
             setTitleVisible(typedArray.getBoolean(R.styleable.TitleToolbar_titleVisible, true));
-
-            mTitleLayout.addView(mTitleTextView,
-                    new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+            mTitleLayout.addView(mTitleTextView,new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         }
 
         if (!isChild(mSubtitleTextView, mTitleLayout)) {
@@ -195,7 +196,6 @@ public class MyToolbar extends Toolbar implements View.OnClickListener {
             }
 
 
-
             Drawable drawable = typedArray.getDrawable(R.styleable.TitleToolbar_backIcon);
             if (drawable != null) {
                 mBackTextView.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
@@ -221,7 +221,7 @@ public class MyToolbar extends Toolbar implements View.OnClickListener {
 //            mBackTextView.setBackgroundColor(Color.GREEN);
 //            mBackTextView.setPadding(10 , 10 , 10 , 10);
             //扩大返回按钮点击热区
-            expandViewTouchDelegate(mBackTextView ,10 , 10 , 15 , 80);
+            expandViewTouchDelegate(mBackTextView, 10, 10, 15, 80);
             addView(mBackTextView, layoutParams);
         }
 
@@ -577,7 +577,6 @@ public class MyToolbar extends Toolbar implements View.OnClickListener {
             mOnOptionItemClickListener.onOptionItemClick(v);
         }
     }
-
 
 
     /**

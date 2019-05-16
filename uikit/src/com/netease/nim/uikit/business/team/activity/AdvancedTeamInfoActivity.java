@@ -31,6 +31,7 @@ import com.netease.nim.uikit.business.team.helper.TeamHelper;
 import com.netease.nim.uikit.business.team.model.Announcement;
 import com.netease.nim.uikit.business.team.ui.TeamInfoGridView;
 import com.netease.nim.uikit.business.team.viewholder.TeamMemberHolder;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
 import com.netease.nim.uikit.common.activity.UI;
 import com.netease.nim.uikit.common.adapter.TAdapterDelegate;
@@ -57,6 +58,10 @@ import com.netease.nimlib.sdk.team.constant.TeamUpdateModeEnum;
 import com.netease.nimlib.sdk.team.constant.VerifyTypeEnum;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -183,7 +188,7 @@ public class AdvancedTeamInfoActivity extends UI implements
 
         parseIntentData();
         findViews();
-        initActionbar();
+     //   initActionbar();
         initAdapter();
         loadTeamInfo();
         requestMembers();
@@ -259,13 +264,13 @@ public class AdvancedTeamInfoActivity extends UI implements
 
     private void findViews() {
         headerLayout = findViewById(R.id.team_info_header);
-        headerLayout.setOnClickListener(new View.OnClickListener() {
+     /*   headerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showSelector(R.string.set_head_image, REQUEST_PICK_ICON);
             }
         });
-
+*/
         teamHeadImage = (HeadImageView) findViewById(R.id.team_head_image);
         teamNameText = (TextView) findViewById(R.id.team_name);
         teamIdText = (TextView) findViewById(R.id.team_id);
@@ -296,36 +301,37 @@ public class AdvancedTeamInfoActivity extends UI implements
 
         layoutTeamName = findViewById(R.id.team_name_layout);
         ((TextView) layoutTeamName.findViewById(R.id.item_title)).setText(R.string.team_name);
-        layoutTeamName.setOnClickListener(new View.OnClickListener() {
+
+       /* layoutTeamName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TeamPropertySettingActivity.start(AdvancedTeamInfoActivity.this, teamId, TeamFieldEnum.Name, team.getName());
             }
-        });
+        });*/
 
         layoutTeamIntroduce = findViewById(R.id.team_introduce_layout);
         ((TextView) layoutTeamIntroduce.findViewById(R.id.item_title)).setText(R.string.team_introduce);
         introduceEdit = ((TextView) layoutTeamIntroduce.findViewById(R.id.item_detail));
-        introduceEdit.setHint(R.string.team_introduce_hint);
+       /* introduceEdit.setHint(R.string.team_introduce_hint);
         layoutTeamIntroduce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TeamPropertySettingActivity.start(AdvancedTeamInfoActivity.this, teamId, TeamFieldEnum.Introduce, team.getIntroduce());
             }
-        });
+        });*/
 
         layoutTeamAnnouncement = findViewById(R.id.team_announcement_layout);
         ((TextView) layoutTeamAnnouncement.findViewById(R.id.item_title)).setText(R.string.team_annourcement);
         announcementEdit = ((TextView) layoutTeamAnnouncement.findViewById(R.id.item_detail));
-        announcementEdit.setHint(R.string.team_announce_hint);
+       /* announcementEdit.setHint(R.string.team_announce_hint);
         layoutTeamAnnouncement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AdvancedTeamAnnounceActivity.start(AdvancedTeamInfoActivity.this, teamId);
             }
-        });
+        });*/
 
-        layoutTeamExtension = findViewById(R.id.team_extension_layout);
+       /* layoutTeamExtension = findViewById(R.id.team_extension_layout);
         ((TextView) layoutTeamExtension.findViewById(R.id.item_title)).setText(R.string.team_extension);
         extensionTextView = ((TextView) layoutTeamExtension.findViewById(R.id.item_detail));
         extensionTextView.setHint(R.string.team_extension_hint);
@@ -334,7 +340,7 @@ public class AdvancedTeamInfoActivity extends UI implements
             public void onClick(View v) {
                 TeamPropertySettingActivity.start(AdvancedTeamInfoActivity.this, teamId, TeamFieldEnum.Extension, team.getExtension());
             }
-        });
+        });*/
 
         // 群消息提醒设置
         initNotify();
@@ -444,14 +450,14 @@ public class AdvancedTeamInfoActivity extends UI implements
     }
 
     private void initActionbar() {
-        TextView toolbarView = findView(R.id.action_bar_right_clickable_textview);
+      /*  TextView toolbarView = findView(R.id.action_bar_right_clickable_textview);
         toolbarView.setText(R.string.menu);
         toolbarView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showRegularTeamMenu();
             }
-        });
+        });*/
     }
 
     private void initAdapter() {
@@ -524,17 +530,31 @@ public class AdvancedTeamInfoActivity extends UI implements
                 isSelfAdmin = true;
             }
 
-            setTitle(team.getName());
+            setTitle("群资料");
         }
 
         teamHeadImage.loadTeamIconByTeam(team);
-        teamNameText.setText(team.getName());
+        if (CommonUtil.role == CommonUtil.STUD) {
+            teamNameText.setText(team == null ? teamId : team.getName());
+            ((TextView) layoutTeamName.findViewById(R.id.item_detail)).setText(team.getName() == null ? teamId : team.getName());
+        } else {
+            String result = team.getExtServer();
+            String name = null;
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                name = jsonObject.getString("orderNo");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            teamNameText.setText(name == null ? teamId : name);
+            ((TextView) layoutTeamName.findViewById(R.id.item_detail)).setText(name == null ? teamId : name);
+
+        }
         teamIdText.setText(team.getId());
         teamCreateTimeText.setText(TimeUtil.getTimeShowString(team.getCreateTime(), true));
 
-        ((TextView) layoutTeamName.findViewById(R.id.item_detail)).setText(team.getName());
         introduceEdit.setText(team.getIntroduce());
-        extensionTextView.setText(team.getExtension());
+      //  extensionTextView.setText(team.getExtension());
         memberCountText.setText(String.format("共%d人", team.getMemberCount()));
 
         setAnnouncement(team.getAnnouncement());
@@ -1134,8 +1154,11 @@ public class AdvancedTeamInfoActivity extends UI implements
             @Override
             public void onFailed(int code) {
                 DialogMaker.dismissProgressDialog();
-                Toast.makeText(AdvancedTeamInfoActivity.this, String.format(getString(R.string.update_failed), code),
-                        Toast.LENGTH_SHORT).show();
+                if (code == 802) {
+                    Toast.makeText(AdvancedTeamInfoActivity.this, String.format(getString(R.string.update_failed), code),
+                            Toast.LENGTH_SHORT).show();
+                }
+
             }
 
             @Override
@@ -1148,7 +1171,7 @@ public class AdvancedTeamInfoActivity extends UI implements
     @Override
     public void onHeadImageViewClick(String account) {
         // 打开群成员信息详细页面
-        AdvancedTeamMemberInfoActivity.startActivityForResult(AdvancedTeamInfoActivity.this, account, teamId);
+     //   AdvancedTeamMemberInfoActivity.startActivityForResult(AdvancedTeamInfoActivity.this, account, teamId);
     }
 
     /**

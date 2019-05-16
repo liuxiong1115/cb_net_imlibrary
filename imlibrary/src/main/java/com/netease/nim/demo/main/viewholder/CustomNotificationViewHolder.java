@@ -1,5 +1,6 @@
 package com.netease.nim.demo.main.viewholder;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -51,6 +52,7 @@ public class CustomNotificationViewHolder extends TViewHolder {
         // 设置头像
         if (notification.getSessionType() == SessionTypeEnum.P2P) {
             imgHead.loadBuddyAvatar(notification.getFromAccount());
+            Log.e("head",notification.getFromAccount());
         } else if (notification.getSessionType() == SessionTypeEnum.Team) {
             imgHead.setImageResource(R.drawable.nim_avatar_group);
         }

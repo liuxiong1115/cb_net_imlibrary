@@ -18,6 +18,7 @@ import com.netease.nim.uikit.business.team.helper.AnnouncementHelper;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
 import com.netease.nim.uikit.common.activity.UI;
 import com.netease.nim.uikit.common.ui.dialog.DialogMaker;
+import com.netease.nim.uikit.common.ui.widget.MyToolbar;
 import com.netease.nim.uikit.common.util.sys.NetworkUtil;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
@@ -76,14 +77,22 @@ public class AdvancedTeamCreateAnnounceActivity extends UI {
     }
 
     private void initActionbar() {
-        toolbarView = findView(R.id.action_bar_right_clickable_textview);
+        MyToolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setMenuText(getResources().getString(R.string.save));
+      /*  toolbarView = findView(R.id.action_bar_right_clickable_textview);
         toolbarView.setText(R.string.save);
         toolbarView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 requestAnnounceData();
             }
-        });
+        });*/
+    }
+
+    @Override
+    public void menuItemClick(View v) {
+        super.menuItemClick(v);
+        requestAnnounceData();
     }
 
     private void requestAnnounceData() {
