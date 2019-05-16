@@ -66,7 +66,7 @@ public class MsgViewHolderDefCustom extends MsgViewHolderBase {
     protected void bindContentView() {
         final DefaultCustomAttachment attachment = (DefaultCustomAttachment) message.getAttachment();
         MoonUtil.identifyFaceExpressionAndATags(context, titleView, attachment.getTitle() == null ? "" : attachment.getTitle(), ImageSpan.ALIGN_BASELINE);  //标题
-        if (attachment.getType() == CustomAttachmentType.Extend) {  //313扩展消息
+        if (attachment.getMsgType() == CustomAttachmentType.Extend) {  //313扩展消息
             MoonUtil.identifyFaceExpressionAndATags(context, contentView, attachment.getDesc() == null ? "" : attachment.getDesc(), ImageSpan.ALIGN_BOTTOM);  //内容
             //图片
             if (!TextUtils.isEmpty(attachment.getImgUrl())) {
