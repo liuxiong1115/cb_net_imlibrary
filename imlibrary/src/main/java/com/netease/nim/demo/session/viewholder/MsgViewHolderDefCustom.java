@@ -67,14 +67,16 @@ public class MsgViewHolderDefCustom extends MsgViewHolderBase {
         final DefaultCustomAttachment attachment = (DefaultCustomAttachment) message.getAttachment();
         MoonUtil.identifyFaceExpressionAndATags(context, titleView, attachment.getTitle() == null ? "" : attachment.getTitle(), ImageSpan.ALIGN_BASELINE);  //标题
         if (attachment.getMsgType() == CustomAttachmentType.Extend) {  //313扩展消息
-            MoonUtil.identifyFaceExpressionAndATags(context, contentView, attachment.getDesc() == null ? "" : attachment.getDesc(), ImageSpan.ALIGN_BOTTOM);  //内容
+            MoonUtil.identifyFaceExpressionAndATags(context, contentView, attachment.getDesc() == null ? ""
+                    : attachment.getDesc(), ImageSpan.ALIGN_BOTTOM);  //内容
             //图片
             if (!TextUtils.isEmpty(attachment.getImgUrl())) {
                 RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.appicon);
                 GlideUtils.lxGlide(context, attachment.getIcon(), imageView, requestOptions);
             }
         } else {
-            MoonUtil.identifyFaceExpressionAndATags(context, contentView, attachment.getSubTitle() == null ? "" : attachment.getSubTitle(), ImageSpan.ALIGN_BOTTOM);  //内容
+            MoonUtil.identifyFaceExpressionAndATags(context, contentView, attachment.getSubTitle() == null ? ""
+                    : attachment.getSubTitle(), ImageSpan.ALIGN_BOTTOM);  //内容
             //图片
             if (!TextUtils.isEmpty(attachment.getImgUrl())) {
                 RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.appicon);

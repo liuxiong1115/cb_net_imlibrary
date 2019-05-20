@@ -29,6 +29,15 @@ public class FileUtils {
         return file.exists();
     }
 
+    public static void existsFile() {
+        File file = new File(rootFile);
+        /**
+         *如果文件夹不存在就创建
+         */
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+    }
 
     /**
      * 创建一个文件

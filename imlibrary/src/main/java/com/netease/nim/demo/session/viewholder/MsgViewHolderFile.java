@@ -14,6 +14,7 @@ import com.netease.nim.uikit.business.session.viewholder.MsgViewHolderBase;
 import com.netease.nim.uikit.common.ui.recyclerview.adapter.BaseMultiItemFetchLoadAdapter;
 import com.netease.nim.uikit.common.util.file.AttachmentStore;
 import com.netease.nim.uikit.common.util.file.FileUtil;
+import com.netease.nim.uikit.common.util.log.sdk.util.FileUtils;
 import com.netease.nim.uikit.common.util.sys.ScreenUtil;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
@@ -112,8 +113,8 @@ public class MsgViewHolderFile extends MsgViewHolderBase {
         sb.append(FileUtil.formatFileSize(msgAttachment.getSize()));
         sb.append("  ");
         // 下载状态
-        String path = msgAttachment.getPathForSave();
-        if (AttachmentStore.isFileExist(path)) {
+        String path = msgAttachment.getDisplayName();
+        if (FileUtils.isFileExist(path)) {
             sb.append(context.getString(R.string.file_transfer_state_downloaded));
         } else {
             sb.append(context.getString(R.string.file_transfer_state_undownload));

@@ -112,7 +112,7 @@ public class GlobalSearchActivity extends UI implements OnItemClickListener {
         setContentView(R.layout.global_search_result);
 
         ToolBarOptions options = new NimToolBarOptions();
-        setToolBar(R.id.toolbars, options);
+        setToolBar(R.id.toolbar, options);
 
         lvContacts = (ListView) findViewById(R.id.searchResultList);
         lvContacts.setVisibility(View.GONE);

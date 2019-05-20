@@ -24,6 +24,8 @@ public interface CustomAttachmentType {
 
     int notify = 309; //新访客
 
+    int  findTeacher= 310;//钉下老师
+    int  classHour = 311; //课时不足
     int NewOrder = 312; //新订单
     int Extend = 313; //扩展字段
 }
