@@ -24,15 +24,6 @@
             android:value="39b5b8380a846355afbe1d31f0b83705" />
 
         <!-- 文件共享配置 -->
-        <provider
-            android:name="com.testlib.netease.MyFileProvider"
-            android:authorities="com.testlib.netease.provider.fileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
     </application>
 
 </manifest>

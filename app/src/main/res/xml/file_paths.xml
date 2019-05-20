@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <paths>
-        <external-path path="Android/data/com.classbro/" name="files_root" />
-        <external-path path="." name="classbro" />
-    </paths>
-</resources>
