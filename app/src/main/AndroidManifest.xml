@@ -23,7 +23,6 @@
             android:name="com.netease.nim.appKey"
             android:value="39b5b8380a846355afbe1d31f0b83705" />
 
-        <!-- 文件共享配置 -->
     </application>
 
 </manifest>
