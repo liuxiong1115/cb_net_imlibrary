@@ -687,7 +687,7 @@ public class AdvancedTeamInfoActivity extends UI implements
 
         // add item
         if (team.getTeamInviteMode() == TeamInviteModeEnum.All || isSelfAdmin || isSelfManager) {
-            dataSource.add(new TeamMemberAdapter.TeamMemberItem(TeamMemberAdapter.TeamMemberItemTag.ADD, null, null,
+            dataSource.add(new TeamMemberAdapter.TeamMemberItem(TeamMemberAdapter.TeamMemberItemTag.NORMAL, null, null,
                     null));
         }
 
