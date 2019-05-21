@@ -67,7 +67,7 @@ public class TeamMemberHolder extends TViewHolder {
         if (getAdapter().getMode() == TeamMemberAdapter.Mode.NORMAL) {
             view.setVisibility(View.VISIBLE);
             if (memberItem.getTag() == TeamMemberAdapter.TeamMemberItemTag.ADD) {
-                // add team member
+               /* // add team member
                 headImageView.setBackgroundResource(R.drawable.nim_team_member_add_selector);
                 nameTextView.setText(context.getString(R.string.add));
                 headImageView.setOnClickListener(new View.OnClickListener() {
@@ -75,9 +75,9 @@ public class TeamMemberHolder extends TViewHolder {
                     public void onClick(View v) {
                         getAdapter().getAddMemberCallback().onAddMember();
                     }
-                });
+                });*/
             } else if (memberItem.getTag() == TeamMemberAdapter.TeamMemberItemTag.DELETE) {
-                // delete team member
+            /*    // delete team member
                 headImageView.setBackgroundResource(R.drawable.nim_team_member_delete_selector);
                 nameTextView.setText(context.getString(R.string.remove));
                 headImageView.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +86,7 @@ public class TeamMemberHolder extends TViewHolder {
                         getAdapter().setMode(TeamMemberAdapter.Mode.DELETE);
                         getAdapter().notifyDataSetChanged();
                     }
-                });
+                });*/
             } else {
                 // show team member
                 refreshTeamMember(memberItem, false);

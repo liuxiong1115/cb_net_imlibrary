@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,17 +13,13 @@ import android.widget.Toast;
 
 import com.netease.nim.demo.R;
 import com.netease.nim.demo.config.preference.Preferences;
-import com.netease.nim.demo.contact.activity.AddFriendActivity;
 import com.netease.nim.demo.login.LoginActivity;
 import com.netease.nim.demo.login.LogoutHelper;
 import com.netease.nim.demo.main.fragment.HomeFragment;
 import com.netease.nim.demo.session.SessionHelper;
 import com.netease.nim.demo.team.TeamCreateHelper;
-import com.netease.nim.demo.team.activity.AdvancedTeamSearchActivity;
-import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.model.main.LoginSyncDataStatusObserver;
 import com.netease.nim.uikit.business.contact.selector.activity.ContactSelectActivity;
-import com.netease.nim.uikit.business.team.helper.TeamHelper;
 import com.netease.nim.uikit.common.activity.UI;
 import com.netease.nim.uikit.common.ui.dialog.DialogMaker;
 import com.netease.nim.uikit.common.util.log.LogUtil;
@@ -85,7 +80,6 @@ public class MainActivity extends UI {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tab);
         requestBasicPermission();
-
         onParseIntent();
 
         // 等待同步数据完成
@@ -102,7 +96,9 @@ public class MainActivity extends UI {
         }
 
         onInit();
+
     }
+
 
     /**
      * 基本权限管理
@@ -195,6 +191,9 @@ public class MainActivity extends UI {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.search_btn) {
+                            GlobalSearchActivity.start(MainActivity.this);
+        }
         switch (item.getItemId()) {
 //            case R.id.about:
 //                startActivity(new Intent(MainActivity.this, SettingsActivity.class));

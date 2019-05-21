@@ -342,7 +342,7 @@ public class AdvancedTeamInfoActivity extends UI implements
             }
         });*/
 
-        // 群消息提醒设置
+      /*  // 群消息提醒设置
         initNotify();
         // 身份验证
         findLayoutAuthentication();
@@ -351,7 +351,7 @@ public class AdvancedTeamInfoActivity extends UI implements
         // 群资料修改权限
         findLayoutInfoUpdate();
         // 被邀请人身份验证
-        findLayoutInviteeAuthen();
+        findLayoutInviteeAuthen();*/
     }
 
     /**
@@ -654,20 +654,20 @@ public class AdvancedTeamInfoActivity extends UI implements
      * 更新身份验证是否显示
      */
     private void updateAuthenView() {
-        if (isSelfAdmin || isSelfManager) {
-            layoutAuthentication.setVisibility(View.VISIBLE);
-            layoutInvite.setVisibility(View.VISIBLE);
-            layoutInfoUpdate.setVisibility(View.VISIBLE);
-            layoutInviteeAuthen.setVisibility(View.VISIBLE);
-            announcementEdit.setHint(R.string.without_content);
-        } else {
-            layoutAuthentication.setVisibility(View.GONE);
-            layoutInvite.setVisibility(View.GONE);
-            layoutInfoUpdate.setVisibility(View.GONE);
-            layoutInviteeAuthen.setVisibility(View.GONE);
-            introduceEdit.setHint(R.string.without_content);
-            announcementEdit.setHint(R.string.without_content);
-        }
+//        if (isSelfAdmin || isSelfManager) {
+//            layoutAuthentication.setVisibility(View.VISIBLE);
+//            layoutInvite.setVisibility(View.VISIBLE);
+//            layoutInfoUpdate.setVisibility(View.VISIBLE);
+//            layoutInviteeAuthen.setVisibility(View.VISIBLE);
+//            announcementEdit.setHint(R.string.without_content);
+//        } else {
+//            layoutAuthentication.setVisibility(View.GONE);
+//            layoutInvite.setVisibility(View.GONE);
+//            layoutInfoUpdate.setVisibility(View.GONE);
+//            layoutInviteeAuthen.setVisibility(View.GONE);
+//            introduceEdit.setHint(R.string.without_content);
+//            announcementEdit.setHint(R.string.without_content);
+//        }
     }
 
     /**
@@ -1223,17 +1223,17 @@ public class AdvancedTeamInfoActivity extends UI implements
      * @param type 验证类型
      */
     private void setAuthenticationText(VerifyTypeEnum type) {
-        authenticationText.setText(TeamHelper.getVerifyString(type));
+//        authenticationText.setText(TeamHelper.getVerifyString(type));
     }
 
     private void updateTeamNotifyText(TeamMessageNotifyTypeEnum typeEnum) {
-        if (typeEnum == TeamMessageNotifyTypeEnum.All) {
+       /* if (typeEnum == TeamMessageNotifyTypeEnum.All) {
             notificationConfigText.setText(getString(R.string.team_notify_all));
         } else if (typeEnum == TeamMessageNotifyTypeEnum.Manager) {
             notificationConfigText.setText(getString(R.string.team_notify_manager));
         } else if (typeEnum == TeamMessageNotifyTypeEnum.Mute) {
             notificationConfigText.setText(getString(R.string.team_notify_mute));
-        }
+        }*/
     }
 
     /**
@@ -1271,7 +1271,7 @@ public class AdvancedTeamInfoActivity extends UI implements
      * @param type 邀请他人类型
      */
     private void updateInviteText(TeamInviteModeEnum type) {
-        inviteText.setText(TeamHelper.getInviteModeString(type));
+    //    inviteText.setText(TeamHelper.getInviteModeString(type));
     }
 
     /**
@@ -1309,7 +1309,7 @@ public class AdvancedTeamInfoActivity extends UI implements
      * @param type 群资料修改类型
      */
     private void updateInfoUpateText(TeamUpdateModeEnum type) {
-        infoUpdateText.setText(TeamHelper.getInfoUpdateModeString(type));
+     //   infoUpdateText.setText(TeamHelper.getInfoUpdateModeString(type));
     }
 
     /**
@@ -1347,7 +1347,7 @@ public class AdvancedTeamInfoActivity extends UI implements
      * @param type 被邀请人类型
      */
     private void updateBeInvitedText(TeamBeInviteModeEnum type) {
-        inviteeAutenText.setText(TeamHelper.getBeInvitedModeString(type));
+    //    inviteeAutenText.setText(TeamHelper.getBeInvitedModeString(type));
     }
 
     /**

@@ -187,18 +187,22 @@
 
             <include
                 android:id="@+id/team_authentication_layout"
+                android:visibility="gone"
                 layout="@layout/nim_advanced_team_info_divider_item" />
 
             <include
                 android:id="@+id/team_invite_layout"
+                android:visibility="gone"
                 layout="@layout/nim_advanced_team_info_divider_item" />
 
             <include
                 android:id="@+id/team_info_update_layout"
+                android:visibility="gone"
                 layout="@layout/nim_advanced_team_info_divider_item" />
 
             <include
                 android:id="@+id/team_invitee_authen_layout"
+                android:visibility="gone"
                 layout="@layout/nim_advanced_team_info_divider_item" />
         </LinearLayout>
     </ScrollView>
