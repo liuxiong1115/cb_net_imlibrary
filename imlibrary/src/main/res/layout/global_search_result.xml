@@ -24,7 +24,7 @@
         </com.netease.nim.uikit.common.ui.widget.MyToolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/nim_layout_toolbar"></include>
+  <!--  <include layout="@layout/nim_layout_toolbar"></include>-->
     <ListView
         android:id="@+id/searchResultList"
         android:layout_width="fill_parent"
