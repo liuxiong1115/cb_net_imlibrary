@@ -44,7 +44,15 @@ public class RecentContactAdapter extends BaseMultiItemQuickAdapter<RecentContac
         super.convert(baseHolder, item, position, isScrolling);
         baseHolder.addOnClickListener(R.id.delete);
         if (CommonUtil.role == CommonUtil.SELLER) {
-            baseHolder.setText(R.id.delete,"结束咨询");
+            if (item.getSessionType() == SessionTypeEnum.P2P) {
+                if (CommonUtil.classbroRobot.equals(item.getContactId())) {
+                    baseHolder.setText(R.id.delete,"删除");
+                } else {
+                    baseHolder.setText(R.id.delete, "结束咨询");
+                }
+            } else {
+                baseHolder.setText(R.id.delete,"删除");
+            }
         }
     }
 

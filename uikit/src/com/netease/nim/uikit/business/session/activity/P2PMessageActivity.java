@@ -71,6 +71,12 @@ public class P2PMessageActivity extends BaseMessageActivity {
         displayOnlineState();
         registerObservers(true);
         registerOnlineStateChangeListener(true);
+        if (CommonUtil.role == CommonUtil.SELLER) {
+            if (!CommonUtil.classbroRobot.equals(sessionId) ) {
+                MyToolbar toolbar = findViewById(R.id.toolbar);
+                toolbar.setMenuText("结束咨询");
+            }
+        }
     }
 
     @Override
@@ -229,10 +235,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
     protected void initToolBar() {
         ToolBarOptions options = new NimToolBarOptions();
         setToolBar(R.id.toolbar, options);
-        if (CommonUtil.role == CommonUtil.SELLER) {
-            MyToolbar toolbar = findViewById(R.id.toolbar);
-            toolbar.setMenuText("结束咨询");
-        }
+
     }
 
     @Override
