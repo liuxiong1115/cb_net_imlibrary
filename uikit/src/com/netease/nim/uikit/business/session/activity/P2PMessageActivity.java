@@ -20,6 +20,7 @@ import com.netease.nim.uikit.api.wrapper.NimToolBarOptions;
 import com.netease.nim.uikit.business.session.constant.Extras;
 import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
 import com.netease.nim.uikit.common.ui.popupmenu.NIMPopupMenu;
 import com.netease.nim.uikit.common.ui.widget.MyToolbar;
@@ -228,14 +229,19 @@ public class P2PMessageActivity extends BaseMessageActivity {
     protected void initToolBar() {
         ToolBarOptions options = new NimToolBarOptions();
         setToolBar(R.id.toolbar, options);
-       /* MyToolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setMenuDrawable(R.drawable.appicon);*/
+        if (CommonUtil.role == CommonUtil.SELLER) {
+            MyToolbar toolbar = findViewById(R.id.toolbar);
+            toolbar.setMenuText("结束咨询");
+        }
     }
 
     @Override
     public void menuItemClick(View v) {
         super.menuItemClick(v);
-     //   Toast.makeText(this,"1111",Toast.LENGTH_SHORT).show();
+        CommonUtil.MenuDeleteListener listener = CommonUtil.menuDeleteListener;
+        if (listener != null) {
+            listener.deleted(sessionId);
+        }
     }
 
     @Override

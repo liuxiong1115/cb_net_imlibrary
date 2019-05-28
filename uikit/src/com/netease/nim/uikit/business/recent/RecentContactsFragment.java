@@ -225,7 +225,7 @@ public class RecentContactsFragment extends TFragment{
             if (view.getId() == R.id.delete) {
                 CommonUtil.DeletedItemListener listener = CommonUtil.delectedItemListener;
                 if (listener != null) {
-                    listener.deleted(adapter,position,recentContact.getContactId());
+                    listener.deleted(adapter,position,recentContact);
                 }
               /*  CommonUtil.setDelectedItemListener(new CommonUtil.DeletedItemListener() {
                     @Override

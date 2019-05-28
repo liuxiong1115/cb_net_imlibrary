@@ -1,12 +1,12 @@
 package com.netease.nim.uikit.business.recent.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.business.recent.RecentContactsCallback;
 import com.netease.nim.uikit.business.recent.holder.CommonRecentViewHolder;
 import com.netease.nim.uikit.business.recent.holder.TeamRecentViewHolder;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.ui.recyclerview.adapter.BaseMultiItemQuickAdapter;
 import com.netease.nim.uikit.common.ui.recyclerview.holder.BaseViewHolder;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
@@ -43,6 +43,9 @@ public class RecentContactAdapter extends BaseMultiItemQuickAdapter<RecentContac
     protected void convert(BaseViewHolder baseHolder, RecentContact item, int position, boolean isScrolling) {
         super.convert(baseHolder, item, position, isScrolling);
         baseHolder.addOnClickListener(R.id.delete);
+        if (CommonUtil.role == CommonUtil.SELLER) {
+            baseHolder.setText(R.id.delete,"结束咨询");
+        }
     }
 
     @Override

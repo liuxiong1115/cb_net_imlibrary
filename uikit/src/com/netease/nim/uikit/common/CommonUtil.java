@@ -82,12 +82,21 @@ public class CommonUtil {
         void onClick(long courseId,String fromAccount);
     }
 
-
+    //右滑删除回调
     public static DeletedItemListener delectedItemListener;
     public static void setDelectedItemListener(DeletedItemListener listener) {
        delectedItemListener = listener;
     }
     public interface DeletedItemListener {
-        void deleted(RecentContactAdapter adapter, int position,String contactId);
+        void deleted(RecentContactAdapter adapter, int position, RecentContact recentContact);
+    }
+
+    //结束咨询删除回调
+    public static MenuDeleteListener menuDeleteListener;
+    public static void setDelectedItemListener(MenuDeleteListener listener) {
+        menuDeleteListener = listener;
+    }
+    public interface MenuDeleteListener {
+        void deleted(String contactId);
     }
 }
