@@ -94,7 +94,7 @@ public class HeadImageView extends CircleImageView {
          * 如果图片来源是非网易云信云存储，请不要使用NosThumbImageUtil
          */
         String dealUrl = "";
-        if (url != null) {
+        if (!TextUtils.isEmpty(url)) {
             dealUrl = url.substring(0,4).equals("http") ? url: CommonUtil.getAvatarUrl(url);
         }
         final String thumbUrl = makeAvatarThumbNosUrl(dealUrl, thumbSize);
