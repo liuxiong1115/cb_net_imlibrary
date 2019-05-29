@@ -55,7 +55,7 @@ public class HeadImageView extends CircleImageView {
      */
     public void loadBuddyAvatar(String account) {
         final UserInfo userInfo = NimUIKit.getUserInfoProvider().getUserInfo(account);
-        doLoadImage(userInfo != null ? CommonUtil.getAvatarUrl(userInfo.getAvatar()) : null, DEFAULT_AVATAR_RES_ID, DEFAULT_AVATAR_THUMB_SIZE);
+        doLoadImage(userInfo != null ? userInfo.getAvatar() : null, DEFAULT_AVATAR_RES_ID, DEFAULT_AVATAR_THUMB_SIZE);
     }
 
 
@@ -82,7 +82,7 @@ public class HeadImageView extends CircleImageView {
      * @param team 群
      */
     public void loadTeamIconByTeam(final Team team) {
-        doLoadImage(team != null ? CommonUtil.getAvatarUrl(team.getIcon()) : null, R.drawable.nim_avatar_group, DEFAULT_AVATAR_THUMB_SIZE);
+        doLoadImage(team != null ? team.getIcon() : null, R.drawable.nim_avatar_group, DEFAULT_AVATAR_THUMB_SIZE);
     }
 
     /**
@@ -93,7 +93,11 @@ public class HeadImageView extends CircleImageView {
          * 若使用网易云信云存储，这里可以设置下载图片的压缩尺寸，生成下载URL
          * 如果图片来源是非网易云信云存储，请不要使用NosThumbImageUtil
          */
-        final String thumbUrl = makeAvatarThumbNosUrl(url, thumbSize);
+        String dealUrl = "";
+        if (url != null) {
+            dealUrl = url.substring(0,4).equals("http") ? url: CommonUtil.getAvatarUrl(url);
+        }
+        final String thumbUrl = makeAvatarThumbNosUrl(dealUrl, thumbSize);
         RequestOptions requestOptions = new RequestOptions()
                 .centerCrop()
                 .placeholder(defaultResId)
