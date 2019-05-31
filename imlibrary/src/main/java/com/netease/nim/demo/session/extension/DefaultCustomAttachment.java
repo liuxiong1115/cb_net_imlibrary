@@ -82,6 +82,13 @@ public class DefaultCustomAttachment extends CustomAttachment {
             data.put(KEY_COURSEID, courseId);
             data.put(KEY_ORDERNO, orderNo);
             data.put(KEY_SHAREURL,shareUrl);
+            data.put(KEY_DESC,desc);
+            data.put(KEY_ICON,icon);
+            data.put(KEY_URL,url);
+            data.put(KEY_CHAT,chatSid);
+            data.put(KEY_PACK,packName);
+            data.put(KEY_ACTION,action);
+            data.put(KEY_CONTENT,content);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -123,6 +130,8 @@ public class DefaultCustomAttachment extends CustomAttachment {
     public String getShareUrl() {
         return shareUrl;
     }
+
+    
 
     public String getIcon() {
         return icon;

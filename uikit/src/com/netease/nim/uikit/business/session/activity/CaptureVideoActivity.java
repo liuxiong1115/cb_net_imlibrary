@@ -141,7 +141,7 @@ public class CaptureVideoActivity extends UI implements SurfaceHolder.Callback {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.nim_capture_video_activity);
-        setTitle(R.string.video_record);
+//        setTitle(getResources().getString(R.string.video_record));
 
         parseIntent();
         findViews();

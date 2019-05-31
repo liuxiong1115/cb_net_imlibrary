@@ -22,10 +22,11 @@ public interface CustomAttachmentType {
     int ClassRoom4 = 307;  //开始上课
     int Course = 308; //评价课程
 
-    int notify = 309; //新访客
+    int Notify = 309; //新访客
 
-    int  findTeacher= 310;//钉下老师
-    int  classHour = 311; //课时不足
+    int  FindTeacher= 310;//钉下老师
+    int  ClassHour = 311; //课时不足
     int NewOrder = 312; //新订单
     int Extend = 313; //扩展字段
+    int Evaluate = 314;  //评价
 }
