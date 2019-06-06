@@ -11,6 +11,8 @@ public class CommonUtil {
     public static String BaseUrl = "http://www.classbro.com/";
 
     public static String classbroRobot = "1008611";
+    public static String appId = "";
+    public static String appKey = "";
 
     public static int TEAC = 1;  //教师
     public static int STUD = 2;  //学生

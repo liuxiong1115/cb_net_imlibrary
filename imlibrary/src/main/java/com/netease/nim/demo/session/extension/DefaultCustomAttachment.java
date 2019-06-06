@@ -131,7 +131,7 @@ public class DefaultCustomAttachment extends CustomAttachment {
         return shareUrl;
     }
 
-    
+
 
     public String getIcon() {
         return icon;

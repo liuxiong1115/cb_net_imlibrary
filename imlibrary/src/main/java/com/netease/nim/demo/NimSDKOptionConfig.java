@@ -1,31 +1,25 @@
 package com.netease.nim.demo;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Environment;
 import android.text.TextUtils;
 
-import com.netease.nim.demo.chatroom.activity.ChatRoomActivity;
 import com.netease.nim.demo.config.preference.UserPreferences;
-import com.netease.nim.demo.main.activity.MainActivity;
 import com.netease.nim.demo.main.activity.WelcomeActivity;
-import com.netease.nim.demo.session.extension.NotifyAttchment;
 import com.netease.nim.uikit.api.wrapper.MessageRevokeTip;
 import com.netease.nim.uikit.api.wrapper.NimUserInfoProvider;
 import com.netease.nim.uikit.business.session.viewholder.MsgViewHolderThumbBase;
-import com.netease.nimlib.sdk.NimIntent;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nimlib.sdk.NosTokenSceneConfig;
 import com.netease.nimlib.sdk.SDKOptions;
 import com.netease.nimlib.sdk.ServerAddresses;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
 import com.netease.nimlib.sdk.mixpush.MixPushConfig;
 import com.netease.nimlib.sdk.msg.MessageNotifierCustomization;
-import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by hzchenkang on 2017/9/26.
@@ -209,20 +203,22 @@ class NimSDKOptionConfig {
         MixPushConfig config = new MixPushConfig();
 
         // 小米推送
-        config.xmAppId = "2882303761517502883";
-        config.xmAppKey = "5671750254883";
-        config.xmCertificateName = "DEMO_MI_PUSH";
+//        config.xmAppId = "2882303761517502883";
+//        config.xmAppKey = "5671750254883";
+        config.xmAppId = CommonUtil.appId;
+        config.xmAppKey = CommonUtil.appKey;
+        config.xmCertificateName = "CLASSBRO_MI_PUSH";
 
         // 华为推送
-        config.hwCertificateName = "DEMO_HW_PUSH";
+        config.hwCertificateName = "CLASSBRO_HW_PUSH";
 
         // 魅族推送
         config.mzAppId = "111710";
         config.mzAppKey = "282bdd3a37ec4f898f47c5bbbf9d2369";
-        config.mzCertificateName = "DEMO_MZ_PUSH";
+        config.mzCertificateName = "CLASSBRO_MZ_PUSH";
 
         // fcm 推送，适用于海外用户，不使用fcm请不要配置
-        config.fcmCertificateName = "DEMO_FCM_PUSH";
+        config.fcmCertificateName = "CLASSBRO_FCM_PUSH";
 
         return config;
     }
