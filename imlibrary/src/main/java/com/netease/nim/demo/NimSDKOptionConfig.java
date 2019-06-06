@@ -207,10 +207,10 @@ class NimSDKOptionConfig {
 //        config.xmAppKey = "5671750254883";
         config.xmAppId = CommonUtil.appId;
         config.xmAppKey = CommonUtil.appKey;
-        config.xmCertificateName = CommonUtil.certificateName;
+        config.xmCertificateName = CommonUtil.xmCertificateName;
 
         // 华为推送
-        config.hwCertificateName = CommonUtil.certificateName;
+        config.hwCertificateName = CommonUtil.hwCertificateName;
 
         // 魅族推送
         config.mzAppId = "111710";
@@ -218,7 +218,7 @@ class NimSDKOptionConfig {
         config.mzCertificateName = "CLASSBRO_MZ_PUSH";
 
         // fcm 推送，适用于海外用户，不使用fcm请不要配置
-        config.fcmCertificateName = CommonUtil.certificateName;
+        config.fcmCertificateName = CommonUtil.gcmCertificateName;
 
         return config;
     }
