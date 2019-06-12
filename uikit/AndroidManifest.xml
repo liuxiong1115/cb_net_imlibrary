@@ -142,5 +142,14 @@
         <activity android:name=".business.session.activity.WatchPicAndVideoMenuActivity"
             android:configChanges="keyboardHidden"
             android:theme="@style/DarkTheme"/>
+        <provider
+            android:authorities="com.testlib.netease.generic.file.provider"
+            android:name=".common.media.picker.model.GenericFileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 </manifest>

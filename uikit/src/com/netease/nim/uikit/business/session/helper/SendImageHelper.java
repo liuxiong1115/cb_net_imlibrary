@@ -65,7 +65,7 @@ public class SendImageHelper {
     }
 
     public static void sendImageAfterSelfImagePicker(Context context, Intent data, final Callback callback) {
-        boolean isOrig = data.getBooleanExtra(Extras.EXTRA_IS_ORIGINAL, false);
+        boolean isOrig = true;
 
         List<PhotoInfo> photos = PickerContract.getPhotos(data);
         if (photos == null) {
@@ -96,7 +96,7 @@ public class SendImageHelper {
 
         public SendImageTask(Context context, boolean isOrig, PhotoInfo info, Callback callback) {
             this.context = context;
-            this.isOrig = isOrig;
+            this.isOrig = true;
             this.info = info;
             this.callback = callback;
         }

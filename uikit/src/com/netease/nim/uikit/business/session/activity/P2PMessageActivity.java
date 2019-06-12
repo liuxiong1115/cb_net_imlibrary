@@ -72,7 +72,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
         registerObservers(true);
         registerOnlineStateChangeListener(true);
         if (CommonUtil.role == CommonUtil.SELLER) {
-            if (!CommonUtil.classbroRobot.equals(sessionId) ) {
+            if (!CommonUtil.classbroRobot.equals(sessionId) || !CommonUtil.systemNotify.equals(sessionId)) {
                 MyToolbar toolbar = findViewById(R.id.toolbar);
                 toolbar.setMenuText("结束咨询");
             }

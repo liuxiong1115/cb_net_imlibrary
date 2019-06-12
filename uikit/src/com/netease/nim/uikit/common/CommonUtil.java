@@ -11,6 +11,7 @@ public class CommonUtil {
     public static String BaseUrl = "http://www.classbro.com/";
 
     public static String classbroRobot = "1008611";
+    public static String systemNotify = "10001";
     public static String appId = "";
     public static String appKey = "";
     public static String hwCertificateName= "";

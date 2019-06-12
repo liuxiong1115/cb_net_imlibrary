@@ -134,7 +134,8 @@ public class PickImageActivity extends UI {
             File outputFile = new File(outPath);
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (Build.VERSION.SDK_INT > 23) {
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, GenericFileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".generic.file.provider", outputFile));
+                String packName = this.getApplicationContext().getPackageName();
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, GenericFileProvider.getUriForFile(this, packName + ".generic.file.provider", outputFile));
             } else {
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(outputFile));
             }
