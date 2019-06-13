@@ -24,6 +24,8 @@ public class DefaultCustomAttachment extends CustomAttachment {
     private String url;
     private String chatSid;
     private boolean taxed;
+    private float money;
+    private String body_url;
 
     private static final String KEY_SUBTITLE = "subtitle";
     private static final String KEY_ID = "messageId";
@@ -36,6 +38,8 @@ public class DefaultCustomAttachment extends CustomAttachment {
     private static final String KEY_CONTENT = "content";
     private static final String KEY_SHAREURL = "shareUrl";
     private static final String KEY_TAXED="taxed";   //是否缴费
+    private static final String KEY_MONEY="money";  //讲师金额
+    private static final String KEY_BODY_URL = "url";
 
     private static final String KEY_ICON = "icon";
     private static final String KEY_DESC= "description";
@@ -59,6 +63,8 @@ public class DefaultCustomAttachment extends CustomAttachment {
         imgUrl = data.getString(KEY_IMGURL);
         picType = data.getInteger(KEY_PICTYPE);
         taxed = data.getBoolean(KEY_TAXED);
+        money = data.getFloat(KEY_MONEY);
+        body_url = data.getString(KEY_BODY_URL);
 
         content = data.getJSONObject(KEY_CONTENT);
         courseId = content.getInteger(KEY_COURSEID);
@@ -93,6 +99,8 @@ public class DefaultCustomAttachment extends CustomAttachment {
             data.put(KEY_ACTION,action);
             data.put(KEY_CONTENT,content);
             data.put(KEY_TAXED,taxed);
+            data.put(KEY_BODY_URL,body_url);
+            data.put(KEY_MONEY,money);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -162,4 +170,8 @@ public class DefaultCustomAttachment extends CustomAttachment {
     }
 
     public boolean isTaxed(){return taxed;}
+    
+    public String getBody_url () {return body_url;}
+
+    public float getMoney () {return money;}
 }
