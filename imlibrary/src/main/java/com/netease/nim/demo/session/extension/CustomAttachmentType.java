@@ -29,4 +29,6 @@ public interface CustomAttachmentType {
     int NewOrder = 312; //新订单
     int Extend = 313; //扩展字段
     int Evaluate = 314;  //评价
+
+    int TeacPayroll = 350;  //讲师工资单
 }
