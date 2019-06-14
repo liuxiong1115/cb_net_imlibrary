@@ -1,5 +1,8 @@
 package com.netease.nim.uikit.business.recent;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +30,7 @@ import com.netease.nim.uikit.common.ui.dialog.CustomAlertDialog;
 import com.netease.nim.uikit.common.ui.drop.DropCover;
 import com.netease.nim.uikit.common.ui.drop.DropManager;
 import com.netease.nim.uikit.common.ui.recyclerview.listener.SimpleClickListener;
+import com.netease.nim.uikit.common.util.string.StringUtil;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
@@ -291,8 +295,18 @@ public class RecentContactsFragment extends TFragment{
                 refreshMessages(false);
             }
         });
+        if (CommonUtil.role == CommonUtil.SELLER || CommonUtil.role == CommonUtil.TEAC) {  // 复制订单号
+            if (recent.getSessionType() == SessionTypeEnum.Team) {
+                alertDialog.addItem("复制订单号", new onSeparateItemClickListener() {
+                    @Override
+                    public void onClick() {
+                        StringUtil.copyToClipBoard(getContext(),UserInfoHelper.getUserTitleName(recent.getContactId(),recent.getSessionType()));
+                    }
+                });
+            }
+        }
 
-        alertDialog.addItem("删除该聊天（仅服务器）", new onSeparateItemClickListener() {
+       /* alertDialog.addItem("删除该聊天（仅服务器）", new onSeparateItemClickListener() {
             @Override
             public void onClick() {
                 NIMClient.getService(MsgService.class)
@@ -314,7 +328,7 @@ public class RecentContactsFragment extends TFragment{
                             }
                         });
             }
-        });
+        });*/
         alertDialog.show();
     }
 

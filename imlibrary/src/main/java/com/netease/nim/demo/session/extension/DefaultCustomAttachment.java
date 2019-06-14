@@ -170,7 +170,7 @@ public class DefaultCustomAttachment extends CustomAttachment {
     }
 
     public boolean isTaxed(){return taxed;}
-    
+
     public String getBody_url () {return body_url;}
 
     public float getMoney () {return money;}

@@ -1,6 +1,10 @@
 package com.netease.nim.uikit.common.util.string;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import java.util.Locale;
 import java.util.UUID;
@@ -9,6 +13,13 @@ public class StringUtil {
 
     public static String getPercentString(float percent) {
         return String.format(Locale.US, "%d%%", (int) (percent * 100));
+    }
+
+    public static void copyToClipBoard(Context context, String text) {
+        ClipboardManager cm = (ClipboardManager) context.getSystemService(
+                Context.CLIPBOARD_SERVICE);
+        cm.setPrimaryClip(ClipData.newPlainText("xdroid_copy", text));
+        Toast.makeText(context, "复制成功", Toast.LENGTH_SHORT).show();
     }
 
     /**
