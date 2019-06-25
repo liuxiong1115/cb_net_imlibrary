@@ -15,7 +15,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:screenOrientation">portrait</item>
-        <item name="android:windowBackground">#ffffff</item>
+        <!--<item name="android:windowBackground">#ffffff</item>-->
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar">

@@ -31,7 +31,6 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_above="@+id/rlCtrl"
-            android:layout_below="@id/app_bar_layout"
             android:background="@color/transparent">
 
             <ListView
