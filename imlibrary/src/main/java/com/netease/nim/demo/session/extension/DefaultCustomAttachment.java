@@ -26,6 +26,7 @@ public class DefaultCustomAttachment extends CustomAttachment {
     private boolean taxed;
     private float money;
     private String body_url;
+    private String time;
 
     private static final String KEY_SUBTITLE = "subtitle";
     private static final String KEY_ID = "messageId";
@@ -40,6 +41,7 @@ public class DefaultCustomAttachment extends CustomAttachment {
     private static final String KEY_TAXED="taxed";   //是否缴费
     private static final String KEY_MONEY="money";  //讲师金额
     private static final String KEY_BODY_URL = "url";
+    private static final String KEY_TIME = "time"; //时间
 
     private static final String KEY_ICON = "icon";
     private static final String KEY_DESC= "description";
@@ -65,6 +67,7 @@ public class DefaultCustomAttachment extends CustomAttachment {
         taxed = data.getBoolean(KEY_TAXED);
         money = data.getFloat(KEY_MONEY);
         body_url = data.getString(KEY_BODY_URL);
+        time = data.getString(KEY_TIME);
 
         content = data.getJSONObject(KEY_CONTENT);
         courseId = content.getInteger(KEY_COURSEID);
@@ -101,6 +104,7 @@ public class DefaultCustomAttachment extends CustomAttachment {
             data.put(KEY_TAXED,taxed);
             data.put(KEY_BODY_URL,body_url);
             data.put(KEY_MONEY,money);
+            data.put(KEY_TIME,time);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -174,4 +178,6 @@ public class DefaultCustomAttachment extends CustomAttachment {
     public String getBody_url () {return body_url;}
 
     public float getMoney () {return money;}
+
+    public String getTime (){return time;}
 }

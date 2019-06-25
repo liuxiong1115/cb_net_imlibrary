@@ -1,7 +1,9 @@
 package com.netease.nim.uikit.common;
 
+import android.graphics.drawable.Drawable;
 import android.view.View;
 
+import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.business.recent.adapter.RecentContactAdapter;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 

@@ -31,4 +31,6 @@ public interface CustomAttachmentType {
     int Evaluate = 314;  //评价
 
     int TeacPayroll = 350;  //讲师工资单
+    int WithdrawFail = 351; //提现失败
+    int WithdrawSucceed = 352;//提现成功
 }
