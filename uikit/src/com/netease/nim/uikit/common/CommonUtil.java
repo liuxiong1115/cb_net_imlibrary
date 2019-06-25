@@ -16,9 +16,12 @@ public class CommonUtil {
     public static String systemNotify = "10001";
     public static String appId = "";
     public static String appKey = "";
-    public static String hwCertificateName= "";
+    public static String hwCertificateName= "teacherHwPush";
     public static String xmCertificateName= "";
     public static String gcmCertificateName= "";
+    public static String mzCertificateName = "CLASSBRO_MZ_PUSH";
+    public static String mzAppId ="111710";
+    public static String mzappKey="282bdd3a37ec4f898f47c5bbbf9d2369";
 
     public static int TEAC = 1;  //教师
     public static int STUD = 2;  //学生

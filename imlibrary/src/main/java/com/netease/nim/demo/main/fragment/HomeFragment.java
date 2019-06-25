@@ -36,7 +36,7 @@ public class HomeFragment extends TFragment implements OnPageChangeListener, Rem
 
     private ViewPager pager;
 
-    
+
     private int scrollState;
 
     private MainTabPagerAdapter adapter;

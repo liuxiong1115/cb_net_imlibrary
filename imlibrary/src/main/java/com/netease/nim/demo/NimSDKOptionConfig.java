@@ -89,7 +89,7 @@ class NimSDKOptionConfig {
     public static final String TEST_NOS_SCENE_KEY = "test_nos_scene_key";
 
     /**
-     *nos 场景配置
+     * nos 场景配置
      */
     private static NosTokenSceneConfig createNosTokenScene() {
         NosTokenSceneConfig nosTokenSceneConfig = new NosTokenSceneConfig();
@@ -213,10 +213,12 @@ class NimSDKOptionConfig {
         config.hwCertificateName = CommonUtil.hwCertificateName;
 
         // 魅族推送
-        config.mzAppId = "111710";
+        /*config.mzAppId = "111710";
         config.mzAppKey = "282bdd3a37ec4f898f47c5bbbf9d2369";
-        config.mzCertificateName = "CLASSBRO_MZ_PUSH";
-
+        config.mzCertificateName = "CLASSBRO_MZ_PUSH";*/
+        config.mzAppId = CommonUtil.mzAppId;
+        config.mzAppKey = CommonUtil.mzappKey;
+        config.mzCertificateName = CommonUtil.mzCertificateName;
         // fcm 推送，适用于海外用户，不使用fcm请不要配置
         config.fcmCertificateName = CommonUtil.gcmCertificateName;
 
