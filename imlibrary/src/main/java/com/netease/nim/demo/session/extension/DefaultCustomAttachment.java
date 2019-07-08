@@ -9,12 +9,12 @@ public class DefaultCustomAttachment extends CustomAttachment {
 
     private String title;
     private String subTitle;
-    private int msgType;
+    private Integer msgType;
     private String messageId;  //消息传递id
     private String imgUrl;
-    private int picType;
+    private Integer picType;
     private String orderNo;
-    private int courseId;
+    private Integer courseId;
     private JSONObject content;
     private String shareUrl;
     private String icon;
@@ -23,8 +23,8 @@ public class DefaultCustomAttachment extends CustomAttachment {
     private String desc;
     private String url;
     private String chatSid;
-    private boolean taxed;
-    private float money;
+    private Boolean taxed;
+    private Float money;
     private String body_url;
     private String time;
 
