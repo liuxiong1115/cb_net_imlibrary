@@ -106,6 +106,7 @@ public class CommonUtil {
     public static MenuDeleteListener menuDeleteListener;
     public static void setDelectedItemListener(MenuDeleteListener listener) {
         menuDeleteListener = listener;
+
     }
     public interface MenuDeleteListener {
         void deleted(String contactId);

@@ -65,7 +65,7 @@ import static com.netease.nim.uikit.common.ui.dialog.CustomAlertDialog.onSeparat
  * <p/>
  * Created by huangjun on 2015/2/1.
  */
-public class RecentContactsFragment extends TFragment{
+public class RecentContactsFragment extends TFragment {
 
     // 置顶功能可直接使用，也可作为思路，供开发者充分利用RecentContact的tag字段
     public static final long RECENT_TAG_STICKY = 0x0000000000000001; // 联系人置顶tag
@@ -107,11 +107,15 @@ public class RecentContactsFragment extends TFragment{
         return inflater.inflate(R.layout.nim_recent_contacts, container, false);
     }
 
-    private void notifyDataSetChanged() {
+    public void notifyDataSetChanged() {
         adapter.notifyDataSetChanged();
         boolean empty = items.isEmpty() && msgLoaded;
         emptyBg.setVisibility(empty ? View.VISIBLE : View.GONE);
-        emptyHint.setHint("还没有会话，在通讯录中找个人聊聊吧！");
+        if (CommonUtil.role == CommonUtil.STUD) {
+            emptyHint.setHint("还没有消息哦，快去找我们课程顾问聊聊吧");
+        } else {
+            emptyHint.setHint("暂无消息");
+        }
     }
 
     @Override
@@ -216,7 +220,7 @@ public class RecentContactsFragment extends TFragment{
                 RecentContact recent = adapter.getItem(position);
                 callback.onItemClick(recent);
             }
-         }
+        }
 
         @Override
         public void onItemLongClick(RecentContactAdapter adapter, View view, int position) {
@@ -227,9 +231,23 @@ public class RecentContactsFragment extends TFragment{
         public void onItemChildClick(RecentContactAdapter adapter, View view, int position) {
             RecentContact recentContact = adapter.getItem(position);
             if (view.getId() == R.id.delete) {
-                CommonUtil.DeletedItemListener listener = CommonUtil.delectedItemListener;
-                if (listener != null) {
-                    listener.deleted(adapter,position,recentContact);
+                if (CommonUtil.role == CommonUtil.SELLER) {
+                    CommonUtil.DeletedItemListener listener = CommonUtil.delectedItemListener;
+                    if (listener != null) {
+                        listener.deleted(adapter, position, recentContact);
+                        refreshMessages(true);
+                    }
+                } else {
+                    // 删除会话，删除后，消息历史被一起删除
+                    NIMClient.getService(MsgService.class).deleteRecentContact2(recentContact.getContactId(), recentContact.getSessionType());
+                    //   NIMClient.getService(MsgService.class).clearChattingHistory(recentContact.getContactId(), recentContact.getSessionType());
+                    adapter.remove(position);
+                    postRunnable(new Runnable() {
+                        @Override
+                        public void run() {
+                            refreshMessages(true);
+                        }
+                    });
                 }
               /*  CommonUtil.setDelectedItemListener(new CommonUtil.DeletedItemListener() {
                     @Override
@@ -300,7 +318,7 @@ public class RecentContactsFragment extends TFragment{
                 alertDialog.addItem("复制订单号", new onSeparateItemClickListener() {
                     @Override
                     public void onClick() {
-                        StringUtil.copyToClipBoard(getContext(),UserInfoHelper.getUserTitleName(recent.getContactId(),recent.getSessionType()));
+                        StringUtil.copyToClipBoard(getContext(), UserInfoHelper.getUserTitleName(recent.getContactId(), recent.getSessionType()));
                     }
                 });
             }
@@ -354,7 +372,7 @@ public class RecentContactsFragment extends TFragment{
                             return;
                         }
 
-                       loadedRecents = recents;
+                        loadedRecents = recents;
                         // 初次加载，更新离线的消息中是否有@我的消息
                         for (RecentContact loadedRecent : loadedRecents) {
                             if (loadedRecent.getSessionType() == SessionTypeEnum.Team) {
@@ -387,7 +405,7 @@ public class RecentContactsFragment extends TFragment{
         }
     }
 
-    private void refreshMessages(boolean unreadChanged) {
+    public void refreshMessages(boolean unreadChanged) {
         sortRecentContacts(items);
         notifyDataSetChanged();
 

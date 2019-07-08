@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.netease.nim.uikit.api.NimUIKit;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.framework.NimSingleThreadExecutor;
 import com.netease.nim.uikit.common.ui.imageview.HeadImageView;
 import com.netease.nimlib.sdk.uinfo.model.UserInfo;
@@ -56,10 +57,17 @@ public class ImageLoaderKit {
         final int imageSize = HeadImageView.DEFAULT_AVATAR_NOTIFICATION_ICON_SIZE;
 
         Bitmap cachedBitmap = null;
+        String dealUrl = "";
+        if (!TextUtils.isEmpty(url)) {
+            if (url.substring(0,1).equals("/")) {
+                url = url.substring(1);
+            }
+            dealUrl = url.substring(0,4).equals("http") ? url: CommonUtil.getAvatarUrl(url);
+        }
         try {
             cachedBitmap = Glide.with(context)
                     .asBitmap()
-                    .load(url)
+                    .load(dealUrl)
                     .apply(new RequestOptions()
                             .centerCrop()
                             .override(imageSize, imageSize))
