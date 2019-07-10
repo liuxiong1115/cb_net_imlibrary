@@ -12,6 +12,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import com.netease.nim.uikit.common.CommonUtil;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -31,7 +33,7 @@ import java.util.zip.ZipFile;
 
 public class FileUtils {
 
-    public static String rootFile = Environment.getExternalStorageDirectory().getPath() + File.separator + "wannengbanzhang";
+    public static String rootFile = Environment.getExternalStorageDirectory().getPath() + File.separator + CommonUtil.fileName;
     public static String thumbFile = File.separator + "thumb";
 //    public static String SDPATH = Environment.getExternalStorageDirectory() + "/formats/";
 

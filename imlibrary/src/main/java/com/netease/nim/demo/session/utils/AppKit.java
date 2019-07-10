@@ -1,13 +1,11 @@
 package com.netease.nim.demo.session.utils;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.FileProvider;
-import android.view.View;
 import android.widget.Toast;
 
 import java.io.File;

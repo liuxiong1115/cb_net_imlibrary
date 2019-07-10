@@ -12,6 +12,8 @@ public class CommonUtil {
     //TODO Base URL 加载头像时使用
     public static String BaseUrl = "http://www.classbro.com/";
 
+    public static String fileName=""; //im文件下载文件夹名称
+
     public static String classbroRobot = "1008611";
     public static String systemNotify = "10001";
     public static String appId = "";
@@ -19,6 +21,7 @@ public class CommonUtil {
     public static String hwCertificateName= "teacherHwPush";
     public static String xmCertificateName= "";
     public static String gcmCertificateName= "";
+
     public static String mzCertificateName = "CLASSBRO_MZ_PUSH";
     public static String mzAppId ="111710";
     public static String mzappKey="282bdd3a37ec4f898f47c5bbbf9d2369";
