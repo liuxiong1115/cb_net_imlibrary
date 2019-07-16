@@ -151,7 +151,7 @@ public class TeamMessageActivity extends BaseMessageActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            setTitle(name == null ? sessionId : name + "(" + team.getMemberCount() + "人)");
+            setTitle(name == null ? d.getName() : name + "(" + team.getMemberCount() + "人)");
 
         }
         invalidTeamTipText.setText(team.getType() == TeamTypeEnum.Normal ? R.string.normal_team_invalid_tip : R.string.team_invalid_tip);

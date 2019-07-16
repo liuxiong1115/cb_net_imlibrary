@@ -289,7 +289,7 @@ public class TeamHelper {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            return name == null ? teamId : name;
+            return name == null ? team.getName() : name;
         }
     }
 
