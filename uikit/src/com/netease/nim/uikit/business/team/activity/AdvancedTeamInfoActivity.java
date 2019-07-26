@@ -541,8 +541,11 @@ public class AdvancedTeamInfoActivity extends UI implements
             String result = team.getExtServer();
             String name = null;
             try {
-                JSONObject jsonObject = new JSONObject(result);
-                name = jsonObject.getString("orderNo");
+                if (!TextUtils.isEmpty(result)) {
+                    JSONObject jsonObject = new JSONObject(result);
+                    name = jsonObject.getString("orderNo");
+                }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }

@@ -7,7 +7,7 @@
     android:background="@color/color_message_default_bg"
     android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
+  <!--  <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +21,8 @@
             android:background="?attr/colorPrimary"
             app:titleTextAppearance="@style/Toolbar.TitleText">
         </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
+    </android.support.design.widget.AppBarLayout>-->
+    <include layout="@layout/nim_layout_toolbar"></include>
 
     <FrameLayout
         android:id="@+id/message_activity_list_view_container"

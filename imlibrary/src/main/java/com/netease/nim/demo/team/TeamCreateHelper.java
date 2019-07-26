@@ -2,7 +2,9 @@ package com.netease.nim.demo.team;
 
 import android.content.Context;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.netease.nim.demo.DemoCache;
@@ -40,9 +42,12 @@ public class TeamCreateHelper {
     /**
      * 创建讨论组
      */
-    public static void createNormalTeam(final Context context, List<String> memberAccounts, final boolean isNeedBack, final RequestCallback<CreateTeamResult> callback) {
+    public static void createNormalTeam(final String teamName,final Context context, List<String> memberAccounts, final boolean isNeedBack, final RequestCallback<CreateTeamResult> callback) {
 
-        String teamName = "讨论组";
+        String tName = "讨论组";
+        if (!TextUtils.isEmpty(teamName)) {
+            tName = teamName;
+        }
 
         DialogMaker.showProgressDialog(context, context.getString(com.netease.nim.uikit.R.string.empty), true);
         // 创建群

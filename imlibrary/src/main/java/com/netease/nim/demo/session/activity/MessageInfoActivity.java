@@ -39,6 +39,7 @@ public class MessageInfoActivity extends UI {
     private String account;
     // view
     private SwitchButton switchButton;
+    private String teamName ="";
 
     public static void startActivity(Context context, String account) {
         Intent intent = new Intent();
@@ -157,7 +158,7 @@ public class MessageInfoActivity extends UI {
             if (requestCode == REQUEST_CODE_NORMAL) {
                 final ArrayList<String> selected = data.getStringArrayListExtra(ContactSelectActivity.RESULT_DATA);
                 if (selected != null && !selected.isEmpty()) {
-                    TeamCreateHelper.createNormalTeam(MessageInfoActivity.this, selected, true, new RequestCallback<CreateTeamResult>() {
+                    TeamCreateHelper.createNormalTeam(teamName,MessageInfoActivity.this, selected, true, new RequestCallback<CreateTeamResult>() {
                         @Override
                         public void onSuccess(CreateTeamResult param) {
                             finish();

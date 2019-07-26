@@ -1,11 +1,13 @@
 package com.netease.nim.uikit.business.uinfo;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.business.team.helper.TeamHelper;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 import com.netease.nimlib.sdk.uinfo.model.UserInfo;
 
 public class UserInfoHelper {
@@ -38,7 +40,9 @@ public class UserInfoHelper {
         if (!TextUtils.isEmpty(alias)) {
             return alias;
         } else {
-            UserInfo userInfo = NimUIKit.getUserInfoProvider().getUserInfo(account);
+            NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(account);
+            String content = userInfo.getExtension();
+            Log.e("content",content);
             if (userInfo != null && !TextUtils.isEmpty(userInfo.getName())) {
                 return userInfo.getName();
             } else {

@@ -2,6 +2,7 @@ package com.netease.nim.uikit.business.team.helper;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.netease.nim.uikit.R;
@@ -283,9 +284,13 @@ public class TeamHelper {
         } else {
             String result = team.getExtServer();
             String name = null;
+            String content = team.getExtension();
+            Log.e("content",content="-------------------------"+result);
             try {
-                JSONObject jsonObject = new JSONObject(result);
-                name = jsonObject.getString("orderNo");
+                if (!TextUtils.isEmpty(result)) {
+                    JSONObject jsonObject = new JSONObject(result);
+                    name = jsonObject.getString("orderNo");
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

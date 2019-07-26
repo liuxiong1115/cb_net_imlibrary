@@ -22,16 +22,20 @@
                 style="@style/horizontal_light_thin_divider"
                 android:layout_marginLeft="70dip" />
 
+            <View
+                android:id="@+id/bottom_line"
+                style="@style/horizontal_light_thin_divider"
+                android:layout_marginLeft="70dip" />
+
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dip"
-                android:minHeight="75dip">
+                android:layout_marginTop="1dip">
 
                 <FrameLayout
                     android:id="@+id/portrait_panel"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true">
 
@@ -44,25 +48,67 @@
                         android:layout_marginRight="12dp" />
                 </FrameLayout>
 
-                <TextView
-                    android:id="@+id/tv_nickname"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/nickLayout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="6dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_toRightOf="@id/portrait_panel"
-                    android:ellipsize="end"
-                    android:includeFontPadding="false"
-                    android:singleLine="true"
-                    android:textColor="@color/color_black_333333"
-                    android:textSize="16sp" />
+                    android:layout_toRightOf="@id/portrait_panel">
+
+                    <TextView
+                        android:id="@+id/tv_nickname"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="6dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_weight="1.3"
+                        android:ellipsize="end"
+                        android:includeFontPadding="false"
+                        android:singleLine="true"
+                        android:textColor="@color/color_black_333333"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginRight="10dp">
+
+                        <TextView
+                            android:id="@+id/contacts_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="6dp"
+                            android:layout_marginTop="16dp"
+                            android:background="@drawable/inside_bg"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:singleLine="true"
+                            android:text="外部"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/contacts_source"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="6dp"
+                            android:layout_marginTop="16dp"
+                            android:background="@drawable/outside_bg"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:singleLine="true"
+                            android:text="微信"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/content_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@id/portrait_panel"
-                    android:layout_below="@id/tv_nickname"
+                    android:layout_below="@id/nickLayout"
                     android:layout_marginBottom="10dp"
                     android:layout_marginRight="40dip"
                     android:layout_marginTop="6dp"
@@ -117,9 +163,8 @@
                     android:id="@+id/unread_number_tip"
                     android:layout_width="28dip"
                     android:layout_height="28dip"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/tv_nickname"
-                    android:layout_marginRight="6dip"
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@+id/unread_number_explosion"
                     android:gravity="center"
                     android:singleLine="true"
                     android:textColor="@android:color/white"
@@ -131,16 +176,11 @@
                     android:layout_width="35dip"
                     android:layout_height="35dip"
                     android:layout_alignParentRight="true"
-                    android:layout_below="@id/tv_nickname"
+                    android:layout_below="@id/nickLayout"
                     android:layout_marginRight="6dip"
                     android:gravity="center"
                     android:visibility="gone" />
             </RelativeLayout>
-
-            <View
-                android:id="@+id/bottom_line"
-                style="@style/horizontal_light_thin_divider"
-                android:layout_marginLeft="70dip" />
         </LinearLayout>
     </LinearLayout><!-- 屏幕右侧外边部分，正常时在屏幕中处于不可见 -->
 

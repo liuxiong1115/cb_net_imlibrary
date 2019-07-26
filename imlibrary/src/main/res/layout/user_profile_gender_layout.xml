@@ -6,7 +6,7 @@
     android:background="@color/color_background"
     android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
+   <!-- <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +23,10 @@
             <include layout="@layout/nim_action_bar_right_clickable_tv" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
+-->
 
+    <include layout="@layout/nim_layout_toolbar"></include>
+    <include layout="@layout/nim_action_bar_right_clickable_tv" />
     <View
         android:layout_width="match_parent"
         android:layout_height="2px"

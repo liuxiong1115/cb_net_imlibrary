@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
+  <!--  <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,8 +21,9 @@
 
             <include layout="@layout/nim_action_bar_right_clickable_tv" />
         </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
+    </android.support.design.widget.AppBarLayout>-->
 
+    <include layout="@layout/nim_layout_toolbar"></include>
     <include
         android:id="@+id/notify_bar"
         layout="@layout/network_status_bar" />

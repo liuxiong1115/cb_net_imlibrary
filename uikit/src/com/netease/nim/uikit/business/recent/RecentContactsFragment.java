@@ -153,6 +153,7 @@ public class RecentContactsFragment extends TFragment {
         initCallBack();
         adapter.setCallback(callback);
 
+
         // recyclerView
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

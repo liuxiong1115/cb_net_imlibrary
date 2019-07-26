@@ -65,18 +65,18 @@ public final class R {
         public static int notification_top_pad_large_text = 0x7f0800d2;
     }
     public static final class drawable {
-        public static int notification_action_background = 0x7f090123;
-        public static int notification_bg = 0x7f090124;
-        public static int notification_bg_low = 0x7f090125;
-        public static int notification_bg_low_normal = 0x7f090126;
-        public static int notification_bg_low_pressed = 0x7f090127;
-        public static int notification_bg_normal = 0x7f090128;
-        public static int notification_bg_normal_pressed = 0x7f090129;
-        public static int notification_icon_background = 0x7f09012a;
-        public static int notification_template_icon_bg = 0x7f09012b;
-        public static int notification_template_icon_low_bg = 0x7f09012c;
-        public static int notification_tile_bg = 0x7f09012d;
-        public static int notify_panel_notification_icon_bg = 0x7f09012e;
+        public static int notification_action_background = 0x7f090124;
+        public static int notification_bg = 0x7f090125;
+        public static int notification_bg_low = 0x7f090126;
+        public static int notification_bg_low_normal = 0x7f090127;
+        public static int notification_bg_low_pressed = 0x7f090128;
+        public static int notification_bg_normal = 0x7f090129;
+        public static int notification_bg_normal_pressed = 0x7f09012a;
+        public static int notification_icon_background = 0x7f09012b;
+        public static int notification_template_icon_bg = 0x7f09012c;
+        public static int notification_template_icon_low_bg = 0x7f09012d;
+        public static int notification_tile_bg = 0x7f09012e;
+        public static int notify_panel_notification_icon_bg = 0x7f09012f;
     }
     public static final class id {
         public static int action_container = 0x7f0c000f;
@@ -87,24 +87,24 @@ public final class R {
         public static int async = 0x7f0c0027;
         public static int blocking = 0x7f0c002f;
         public static int chronometer = 0x7f0c0040;
-        public static int forever = 0x7f0c008c;
-        public static int icon = 0x7f0c0092;
-        public static int icon_group = 0x7f0c0093;
-        public static int info = 0x7f0c00a1;
-        public static int italic = 0x7f0c00a4;
-        public static int item_touch_helper_previous_elevation = 0x7f0c00a7;
-        public static int line1 = 0x7f0c00b0;
-        public static int line3 = 0x7f0c00b1;
-        public static int normal = 0x7f0c00f5;
-        public static int notification_background = 0x7f0c00f6;
-        public static int notification_main_column = 0x7f0c00f7;
-        public static int notification_main_column_container = 0x7f0c00f8;
-        public static int right_icon = 0x7f0c0129;
-        public static int right_side = 0x7f0c012a;
-        public static int text = 0x7f0c0185;
-        public static int text2 = 0x7f0c0186;
-        public static int time = 0x7f0c0191;
-        public static int title = 0x7f0c0196;
+        public static int forever = 0x7f0c008e;
+        public static int icon = 0x7f0c0094;
+        public static int icon_group = 0x7f0c0095;
+        public static int info = 0x7f0c00a3;
+        public static int italic = 0x7f0c00a6;
+        public static int item_touch_helper_previous_elevation = 0x7f0c00a9;
+        public static int line1 = 0x7f0c00b2;
+        public static int line3 = 0x7f0c00b3;
+        public static int normal = 0x7f0c00f8;
+        public static int notification_background = 0x7f0c00f9;
+        public static int notification_main_column = 0x7f0c00fa;
+        public static int notification_main_column_container = 0x7f0c00fb;
+        public static int right_icon = 0x7f0c012c;
+        public static int right_side = 0x7f0c012d;
+        public static int text = 0x7f0c0188;
+        public static int text2 = 0x7f0c0189;
+        public static int time = 0x7f0c0194;
+        public static int title = 0x7f0c0199;
     }
     public static final class integer {
         public static int status_bar_notification_info_maxnum = 0x7f0d000a;

@@ -13,13 +13,17 @@ import android.widget.Toast;
 
 import com.netease.nim.demo.R;
 import com.netease.nim.demo.config.preference.Preferences;
+import com.netease.nim.demo.contact.activity.AddFriendActivity;
 import com.netease.nim.demo.login.LoginActivity;
 import com.netease.nim.demo.login.LogoutHelper;
 import com.netease.nim.demo.main.fragment.HomeFragment;
 import com.netease.nim.demo.session.SessionHelper;
 import com.netease.nim.demo.team.TeamCreateHelper;
+import com.netease.nim.demo.team.activity.AdvancedTeamSearchActivity;
+import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.model.main.LoginSyncDataStatusObserver;
 import com.netease.nim.uikit.business.contact.selector.activity.ContactSelectActivity;
+import com.netease.nim.uikit.business.team.helper.TeamHelper;
 import com.netease.nim.uikit.common.activity.UI;
 import com.netease.nim.uikit.common.ui.dialog.DialogMaker;
 import com.netease.nim.uikit.common.util.log.LogUtil;
@@ -48,6 +52,7 @@ public class MainActivity extends UI {
     private static final int BASIC_PERMISSION_REQUEST_CODE = 100;
 
     private HomeFragment mainFragment;
+    private static final String teamName="测试讨论组";
 
     public static void start(Context context) {
         start(context, null);
@@ -192,31 +197,30 @@ public class MainActivity extends UI {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.search_btn) {
-                            GlobalSearchActivity.start(MainActivity.this);
+            GlobalSearchActivity.start(MainActivity.this);
         }
-        switch (item.getItemId()) {
-//            case R.id.about:
-//                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-//                break;
-//            case R.id.create_normal_team:
-//                ContactSelectActivity.Option option = TeamHelper.getCreateContactSelectOption(null, 50);
-//                NimUIKit.startContactSelector(MainActivity.this, option, REQUEST_CODE_NORMAL);
-//                break;
-//            case R.id.create_regular_team:
-//                ContactSelectActivity.Option advancedOption = TeamHelper.getCreateContactSelectOption(null, 50);
-//                NimUIKit.startContactSelector(MainActivity.this, advancedOption, REQUEST_CODE_ADVANCED);
-//                break;
-//            case R.id.search_advanced_team:
-//                AdvancedTeamSearchActivity.start(MainActivity.this);
-//                break;
-//            case R.id.add_buddy:
-//                AddFriendActivity.start(MainActivity.this);
-//                break;
-//            case R.id.search_btn:
-//                GlobalSearchActivity.start(MainActivity.this);
-//                break;
-//            default:
-//                break;
+        int i = item.getItemId();
+        if (i == R.id.about) {
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+
+        } else if (i == R.id.create_normal_team) {
+            ContactSelectActivity.Option option = TeamHelper.getCreateContactSelectOption(null, 50);
+            NimUIKit.startContactSelector(MainActivity.this, option, REQUEST_CODE_NORMAL);
+
+        } else if (i == R.id.create_regular_team) {
+            ContactSelectActivity.Option advancedOption = TeamHelper.getCreateContactSelectOption(null, 50);
+            NimUIKit.startContactSelector(MainActivity.this, advancedOption, REQUEST_CODE_ADVANCED);
+
+        } else if (i == R.id.search_advanced_team) {
+            AdvancedTeamSearchActivity.start(MainActivity.this);
+
+        } else if (i == R.id.add_buddy) {
+            AddFriendActivity.start(MainActivity.this);
+
+        } else if (i == R.id.search_btn) {
+            GlobalSearchActivity.start(MainActivity.this);
+
+        } else {
         }
         return super.onOptionsItemSelected(item);
     }
@@ -270,7 +274,6 @@ public class MainActivity extends UI {
 //    }
 
 
-
     private void showMainFragment() {
         if (mainFragment == null && !isDestroyedCompatible()) {
             mainFragment = new HomeFragment();
@@ -285,7 +288,7 @@ public class MainActivity extends UI {
             if (requestCode == REQUEST_CODE_NORMAL) {
                 final ArrayList<String> selected = data.getStringArrayListExtra(ContactSelectActivity.RESULT_DATA);
                 if (selected != null && !selected.isEmpty()) {
-                    TeamCreateHelper.createNormalTeam(MainActivity.this, selected, false, null);
+                    TeamCreateHelper.createNormalTeam(teamName,MainActivity.this, selected, false, null);
                 } else {
                     Toast.makeText(MainActivity.this, "请选择至少一个联系人！", Toast.LENGTH_SHORT).show();
                 }
@@ -294,7 +297,6 @@ public class MainActivity extends UI {
                 TeamCreateHelper.createAdvancedTeam(MainActivity.this, selected);
             }
         }
-
     }
 
     // 注销
