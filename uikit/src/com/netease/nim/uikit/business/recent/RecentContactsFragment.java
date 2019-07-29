@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,10 @@ import com.netease.nimlib.sdk.msg.model.QueryDirectionEnum;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
+import com.netease.nimlib.sdk.uinfo.UserService;
+import com.netease.nimlib.sdk.uinfo.constant.UserInfoFieldEnum;
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
+import com.netease.nimlib.sdk.uinfo.model.UserInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -380,7 +385,28 @@ public class RecentContactsFragment extends TFragment {
                                 updateOfflineContactAited(loadedRecent);
                             }
                         }
+                        List<String> list = new ArrayList<>();
+                        for (int i = 0; i < loadedRecents.size(); i++) {
+                            list.add(loadedRecents.get(i).getContactId());
+                        }
 
+                        NIMClient.getService(UserService.class).fetchUserInfo(list)
+                                .setCallback(new RequestCallback<List<NimUserInfo>>() {
+                                    @Override
+                                    public void onSuccess(List<NimUserInfo> nimUserInfos) {
+                                        Log.e("userInfo",nimUserInfos.toString());
+                                    }
+
+                                    @Override
+                                    public void onFailed(int i) {
+
+                                    }
+
+                                    @Override
+                                    public void onException(Throwable throwable) {
+
+                                    }
+                                });
                         // 此处如果是界面刚初始化，为了防止界面卡顿，可先在后台把需要显示的用户资料和群组资料在后台加载好，然后再刷新界面
                         //
                         msgLoaded = true;

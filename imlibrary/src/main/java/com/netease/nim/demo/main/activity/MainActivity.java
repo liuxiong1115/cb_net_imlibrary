@@ -52,7 +52,7 @@ public class MainActivity extends UI {
     private static final int BASIC_PERMISSION_REQUEST_CODE = 100;
 
     private HomeFragment mainFragment;
-    private static final String teamName="测试讨论组";
+    private static final String teamName="测试讨论组测试测试测试测试讨论组测试测试测试";
 
     public static void start(Context context) {
         start(context, null);
