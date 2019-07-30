@@ -3,6 +3,7 @@ package com.netease.nim.uikit.business.recent.holder;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -28,6 +29,10 @@ import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.netease.nimlib.sdk.team.model.Team;
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapter, BaseViewHolder, RecentContact> {
 
@@ -45,9 +50,9 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
 
     protected TextView tvMessage;
 
-    protected TextView tvDatetime;
+    protected TextView tvDatetime, contacts_type, contacts_source;
 
-    protected View tvDelete,deleteLayout;
+    protected View tvDelete, deleteLayout;
 
     // 消息发送错误状态标记，目前没有逻辑处理
     protected ImageView imgMsgStatus;
@@ -68,11 +73,11 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
 
     @Override
     public void convert(BaseViewHolder holder, RecentContact data, int position, boolean isScrolling) {
-        inflate(holder, data,position);
+        inflate(holder, data, position);
         refresh(holder, data, position);
     }
 
-    public void inflate(BaseViewHolder holder, final RecentContact recent,int position) {
+    public void inflate(BaseViewHolder holder, final RecentContact recent, int position) {
         this.portraitPanel = holder.getView(R.id.portrait_panel);
         this.imgHead = holder.getView(R.id.img_head);
         this.tvNickname = holder.getView(R.id.tv_nickname);
@@ -84,6 +89,8 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
         this.bottomLine = holder.getView(R.id.bottom_line);
         this.topLine = holder.getView(R.id.top_line);
         this.tvOnlineState = holder.getView(R.id.tv_online_state);
+        //   this.contacts_source = holder.getView(R.id.contacts_source);
+        this.contacts_type = holder.getView(R.id.contacts_type);
         holder.addOnClickListener(R.id.unread_number_tip);
         this.tvUnread.setTouchListener(new DropFake.ITouchListener() {
             @Override
@@ -113,7 +120,7 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
 
         loadPortrait(recent);
 
-      //  String userTitleName = UserInfoHelper.getUserTitleName(recent.getContactId(), recent.getSessionType());
+        //  String userTitleName = UserInfoHelper.getUserTitleName(recent.getContactId(), recent.getSessionType());
         updateNickLabel(UserInfoHelper.getUserTitleName(recent.getContactId(), recent.getSessionType()));
 
         updateOnlineState(recent);
@@ -121,6 +128,8 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
         updateMsgLabel(holder, recent);
 
         updateNewIndicator(recent);
+
+        setWXTip(recent);
 
         if (shouldBoom) {
             Object o = DropManager.getInstance().getCurrentId();
@@ -153,6 +162,7 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
 
     /**
      * TODO 加载用户头像
+     *
      * @param recent
      */
     protected void loadPortrait(RecentContact recent) {
@@ -231,5 +241,50 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
 
     protected RecentContactsCallback getCallback() {
         return ((RecentContactAdapter) getAdapter()).getCallback();
+    }
+
+    /**
+     * 设置内外部标签
+     *
+     * @param recentContact
+     */
+    protected void setWXTip(RecentContact recentContact) {
+        contacts_type.setVisibility(View.INVISIBLE);
+        //学生和老师不用设置标签
+        if (CommonUtil.role != CommonUtil.STUD || CommonUtil.role != CommonUtil.TEAC) {
+            if (recentContact.getSessionType() == SessionTypeEnum.Team) {
+                contacts_type.setVisibility(View.GONE);
+            } else {
+                NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(recentContact.getContactId());
+                Log.e("contactId",recentContact.getContactId());
+                if (userInfo == null) {
+                    contacts_type.setVisibility(View.GONE);
+                } else {
+                    String content = userInfo.getExtension();
+                    Log.e("userInfo", content.toString());
+                    if (TextUtils.isEmpty(content)) {
+                        contacts_type.setVisibility(View.GONE);
+                    } else {
+                        try {
+                            JSONObject jsonObject = new JSONObject(content);
+                            int type = jsonObject.getInt("isInternal");
+                            String source = jsonObject.getString("fromWx");
+                            //isInternal 是内部  1和0
+                            if (type == 1) {
+                                contacts_type.setVisibility(View.VISIBLE);
+                                contacts_type.setBackgroundResource(R.drawable.inside_bg);
+                                contacts_type.setText("内部");
+                            } else {
+                                contacts_type.setVisibility(View.VISIBLE);
+                                contacts_type.setBackgroundResource(R.drawable.outside_bg);
+                                contacts_type.setText(source == null ?"微信":source);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
     }
 }

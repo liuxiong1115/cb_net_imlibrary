@@ -385,7 +385,7 @@ public class RecentContactsFragment extends TFragment {
                                 updateOfflineContactAited(loadedRecent);
                             }
                         }
-                        List<String> list = new ArrayList<>();
+                      /*  List<String> list = new ArrayList<>();
                         for (int i = 0; i < loadedRecents.size(); i++) {
                             list.add(loadedRecents.get(i).getContactId());
                         }
@@ -406,7 +406,7 @@ public class RecentContactsFragment extends TFragment {
                                     public void onException(Throwable throwable) {
 
                                     }
-                                });
+                                });*/
                         // 此处如果是界面刚初始化，为了防止界面卡顿，可先在后台把需要显示的用户资料和群组资料在后台加载好，然后再刷新界面
                         //
                         msgLoaded = true;

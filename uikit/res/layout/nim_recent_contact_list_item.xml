@@ -62,16 +62,15 @@
                         android:layout_marginTop="16dp"
                         android:ellipsize="end"
                         android:includeFontPadding="false"
-                        android:maxLength="10"
                         android:singleLine="true"
+                        android:maxLength="14"
                         android:textColor="@color/color_black_333333"
                         android:textSize="16sp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="0.8"
+                        android:layout_weight="1"
                         android:gravity="left">
 
                         <TextView
@@ -80,27 +79,26 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="6dp"
                             android:layout_marginTop="16dp"
-                            android:background="@drawable/inside_bg"
                             android:paddingLeft="5dp"
                             android:paddingRight="5dp"
                             android:singleLine="true"
-                            android:text="外部"
+                            android:text=""
+                            android:visibility="invisible"
                             android:textColor="@color/white"
                             android:textSize="13sp" />
 
-                        <TextView
+                       <!-- <TextView
                             android:id="@+id/contacts_source"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="6dp"
                             android:layout_marginTop="16dp"
-                            android:background="@drawable/outside_bg"
                             android:paddingLeft="5dp"
                             android:paddingRight="5dp"
                             android:singleLine="true"
                             android:text="微信"
                             android:textColor="@color/white"
-                            android:textSize="13sp" />
+                            android:textSize="13sp" />-->
 
                     </LinearLayout>
 

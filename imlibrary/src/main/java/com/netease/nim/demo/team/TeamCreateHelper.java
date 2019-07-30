@@ -44,10 +44,10 @@ public class TeamCreateHelper {
      */
     public static void createNormalTeam(final String teamName,final Context context, List<String> memberAccounts, final boolean isNeedBack, final RequestCallback<CreateTeamResult> callback) {
 
-        String tName = "讨论组";
+       /* String tName = "讨论组";
         if (!TextUtils.isEmpty(teamName)) {
             tName = teamName;
-        }
+        }*/
 
         DialogMaker.showProgressDialog(context, context.getString(com.netease.nim.uikit.R.string.empty), true);
         // 创建群
