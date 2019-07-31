@@ -22,8 +22,11 @@ import com.netease.nim.demo.team.TeamCreateHelper;
 import com.netease.nim.demo.team.activity.AdvancedTeamSearchActivity;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.model.main.LoginSyncDataStatusObserver;
+import com.netease.nim.uikit.business.contact.core.item.ContactIdFilter;
 import com.netease.nim.uikit.business.contact.selector.activity.ContactSelectActivity;
+import com.netease.nim.uikit.business.team.activity.NormalTeamInfoActivity;
 import com.netease.nim.uikit.business.team.helper.TeamHelper;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.activity.UI;
 import com.netease.nim.uikit.common.ui.dialog.DialogMaker;
 import com.netease.nim.uikit.common.util.log.LogUtil;
@@ -101,6 +104,23 @@ public class MainActivity extends UI {
         }
 
         onInit();
+
+      /*  CommonUtil.setAddMemberListener(new CommonUtil.AddMemberListener() {
+            @Override
+            public void addMember(Context context) {
+                ContactSelectActivity.Option option = new ContactSelectActivity.Option();
+                option.title = "邀请成员";
+                ArrayList<String> disableAccounts = new ArrayList<>();
+             //   disableAccounts.addAll(memberAccounts);
+                option.itemDisableFilter = new ContactIdFilter(disableAccounts);
+
+                // 限制群成员数量在群容量范围内
+                int capacity = 200;
+                option.maxSelectNum = capacity;
+            //    option.maxSelectedTip = getString(R.string.reach_team_member_capacity, teamCapacity);
+                NimUIKit.startContactSelector(context, option, 102);
+            }
+        });*/
 
     }
 

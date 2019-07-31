@@ -77,7 +77,7 @@ public class TeamMemberHolder extends TViewHolder {
                       //  getAdapter().getAddMemberCallback().onAddMember();
                         CommonUtil.AddMemberListener listener= CommonUtil.addMemberListener;
                         if (listener != null) {
-                            listener.addMember();
+                            listener.addMember(context);
                         }
                     }
                 });

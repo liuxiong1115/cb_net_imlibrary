@@ -1,5 +1,6 @@
 package com.netease.nim.uikit.common;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
@@ -122,6 +123,6 @@ public class CommonUtil {
 
     }
     public interface AddMemberListener {
-        void addMember();
+        void addMember(Context context);
     }
 }

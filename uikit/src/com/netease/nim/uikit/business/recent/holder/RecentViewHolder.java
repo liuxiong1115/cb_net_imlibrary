@@ -259,16 +259,16 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
                 contacts_type.setVisibility(View.GONE);
             } else {
                 NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(recentContact.getContactId());
-                Log.e("contactId", recentContact.getContactId());
                 if (userInfo == null) {
                     contacts_type.setVisibility(View.GONE);
                 } else {
                     String content = userInfo.getExtension();
-                    Log.e("userInfo", content.toString());
+
                     if (TextUtils.isEmpty(content)) {
                         contacts_type.setVisibility(View.GONE);
                     } else {
                         try {
+                            Log.e("userInfo", content.toString());
                             JSONObject jsonObject = new JSONObject(content);
                             Integer type = jsonObject.getInt("isInternal");
                             String source = jsonObject.getString("wxNo");
