@@ -9,6 +9,7 @@ import android.view.View;
 import com.netease.nim.demo.DemoCache;
 import com.netease.nim.demo.R;
 import com.netease.nim.demo.contact.activity.RobotProfileActivity;
+import com.netease.nim.demo.contact.activity.UserProfileActivity;
 import com.netease.nim.demo.redpacket.NIMRedPacketClient;
 import com.netease.nim.demo.session.action.FileAction;
 import com.netease.nim.demo.session.extension.NotifyAttchment;
@@ -60,6 +61,7 @@ import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
+import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum;
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
@@ -532,14 +534,20 @@ public class SessionHelper {
             public void onAvatarClicked(Context context, IMMessage message) {
                 //TODO 用户头像点击事件处理
                 // 一般用于打开用户资料页面
-//                if (message.getMsgType() == MsgTypeEnum.robot && message.getDirect() == MsgDirectionEnum.In) {
-//                    RobotAttachment attachment = (RobotAttachment) message.getAttachment();
-//                    if (attachment.isRobotSend()) {
-//                        RobotProfileActivity.start(context, attachment.getFromRobotAccount());
-//                        return;
-//                    }
-//                }
-//                UserProfileActivity.start(context, message.getFromAccount());
+                if (CommonUtil.role == CommonUtil.SELLER) {
+                    Team team = NimUIKit.getTeamProvider().getTeamById(message.getSessionId());
+                    if (team.getType() == TeamTypeEnum.Normal) {
+                        /*if (message.getMsgType() == MsgTypeEnum.robot && message.getDirect() == MsgDirectionEnum.In) {
+                            RobotAttachment attachment = (RobotAttachment) message.getAttachment();
+                            if (attachment.isRobotSend()) {
+                                RobotProfileActivity.start(context, attachment.getFromRobotAccount());
+                                return;
+                            }
+                        }*/
+                        UserProfileActivity.start(context, message.getFromAccount());
+                    }
+                }
+
             }
 
             @Override

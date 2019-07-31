@@ -19,6 +19,7 @@ import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.UIKitOptions;
 import com.netease.nim.uikit.business.contact.core.query.PinYin;
 import com.netease.nim.uikit.common.CommonUtil;
+import com.netease.nim.uikit.common.util.sys.ScreenUtil;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.mixpush.NIMPushClient;
@@ -76,6 +77,7 @@ public class NimApplication extends Application {
 
         // Initialize Fabric with the debug-disabled crashlytics.
         Fabric.with(this, crashlyticsKit);
+
     }
 
     private LoginInfo getLoginInfo() {

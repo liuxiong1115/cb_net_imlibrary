@@ -8,6 +8,7 @@ import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.business.team.adapter.TeamMemberAdapter;
 import com.netease.nim.uikit.business.team.helper.TeamHelper;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.adapter.TViewHolder;
 import com.netease.nim.uikit.common.ui.imageview.HeadImageView;
 
@@ -49,11 +50,11 @@ public class TeamMemberHolder extends TViewHolder {
 
     @Override
     protected void inflate() {
-        headImageView = (HeadImageView) view.findViewById(R.id.imageViewHeader);
-        nameTextView = (TextView) view.findViewById(R.id.textViewName);
-        ownerImageView = (ImageView) view.findViewById(R.id.imageViewOwner);
-        adminImageView = (ImageView) view.findViewById(R.id.imageViewAdmin);
-        deleteImageView = (ImageView) view.findViewById(R.id.imageViewDeleteTag);
+        headImageView = view.findViewById(R.id.imageViewHeader);
+        nameTextView = view.findViewById(R.id.textViewName);
+        ownerImageView = view.findViewById(R.id.imageViewOwner);
+        adminImageView = view.findViewById(R.id.imageViewAdmin);
+        deleteImageView = view.findViewById(R.id.imageViewDeleteTag);
     }
 
     @Override
@@ -66,19 +67,22 @@ public class TeamMemberHolder extends TViewHolder {
 
         if (getAdapter().getMode() == TeamMemberAdapter.Mode.NORMAL) {
             view.setVisibility(View.VISIBLE);
-            refreshTeamMember(memberItem, false);
-          /*  if (memberItem.getTag() == TeamMemberAdapter.TeamMemberItemTag.ADD) {
-               *//* // add team member
+            if (memberItem.getTag() == TeamMemberAdapter.TeamMemberItemTag.ADD) {
+                // add team member
                 headImageView.setBackgroundResource(R.drawable.nim_team_member_add_selector);
                 nameTextView.setText(context.getString(R.string.add));
                 headImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        getAdapter().getAddMemberCallback().onAddMember();
+                      //  getAdapter().getAddMemberCallback().onAddMember();
+                        CommonUtil.AddMemberListener listener= CommonUtil.addMemberListener;
+                        if (listener != null) {
+                            listener.addMember();
+                        }
                     }
-                });*//*
+                });
             } else if (memberItem.getTag() == TeamMemberAdapter.TeamMemberItemTag.DELETE) {
-            *//*    // delete team member
+                // delete team member
                 headImageView.setBackgroundResource(R.drawable.nim_team_member_delete_selector);
                 nameTextView.setText(context.getString(R.string.remove));
                 headImageView.setOnClickListener(new View.OnClickListener() {
@@ -87,11 +91,11 @@ public class TeamMemberHolder extends TViewHolder {
                         getAdapter().setMode(TeamMemberAdapter.Mode.DELETE);
                         getAdapter().notifyDataSetChanged();
                     }
-                });*//*
+                });
             } else {
                 // show team member
                 refreshTeamMember(memberItem, false);
-            }*/
+            }
         } else if (getAdapter().getMode() == TeamMemberAdapter.Mode.DELETE) {
             if (memberItem.getTag() == TeamMemberAdapter.TeamMemberItemTag.NORMAL) {
                 refreshTeamMember(memberItem, true);

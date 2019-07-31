@@ -25,6 +25,7 @@ import com.netease.nim.uikit.business.team.activity.AdvancedTeamMemberActivity;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
 import com.netease.nim.uikit.common.ui.widget.MyToolbar;
+import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.team.constant.TeamTypeEnum;
@@ -84,7 +85,6 @@ public class TeamMessageActivity extends BaseMessageActivity {
         instance = new WeakReference<TeamMessageActivity>(this);
         backToClass = (Class<? extends Activity>) getIntent().getSerializableExtra(Extras.EXTRA_BACK_TO_CLASS);
         findViews();
-
         registerTeamUpdateObserver(true);
     }
 
@@ -264,9 +264,15 @@ public class TeamMessageActivity extends BaseMessageActivity {
     @Override
     public void menuItemClick(View v) {
         super.menuItemClick(v);
-      //  AdvancedTeamMemberActivity.startActivityForResult(TeamMessageActivity.this, sessionId, REQUEST_CODE_MEMBER_LIST);
-        AdvancedTeamInfoActivity.start(TeamMessageActivity.this,sessionId);
+        //  AdvancedTeamMemberActivity.startActivityForResult(TeamMessageActivity.this, sessionId, REQUEST_CODE_MEMBER_LIST);
+        Team team = NimUIKit.getTeamProvider().getTeamById(sessionId);
+        if (team.getType() == TeamTypeEnum.Normal) {
+            NimUIKitImpl.startTeamInfo(this,sessionId);
+        } else {
+            AdvancedTeamInfoActivity.start(TeamMessageActivity.this, sessionId);
+        }
     }
+
     @Override
     protected boolean enableSensor() {
         return true;

@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.netease.nim.uikit.common.ToastHelper;
 
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.NimUIKit;
@@ -245,7 +245,7 @@ public class NormalTeamInfoActivity extends UI implements OnClickListener, TAdap
             // 标记创建者（群主）
             if (member.getType() == TeamMemberType.Owner) {
                 creator = member.getAccount();
-                if (creator.equals(NimUIKit.getAccount())) {
+                if (creator.equals(NimUIKit.getAccount().toLowerCase())) {
                     isSelfAdmin = true;
                 }
             }
@@ -260,7 +260,7 @@ public class NormalTeamInfoActivity extends UI implements OnClickListener, TAdap
 
     private void initToggleBtn() {
         toggleLayout = findView(R.id.toggle_layout);
-        noticeBtn = addToggleItemView(KEY_MSG_NOTICE, R.string.team_notification_config, true);
+    //    noticeBtn = addToggleItemView(KEY_MSG_NOTICE, R.string.team_notification_config, true);
     }
 
     private void setToggleBtn(Team team) {
@@ -269,7 +269,7 @@ public class NormalTeamInfoActivity extends UI implements OnClickListener, TAdap
         }
     }
 
-    private SwitchButton addToggleItemView(String key, int titleResId, boolean initState) {
+   /* private SwitchButton addToggleItemView(String key, int titleResId, boolean initState) {
         ViewGroup vp = (ViewGroup) getLayoutInflater().inflate(R.layout.nim_user_profile_toggle_item, null);
         ViewGroup.LayoutParams vlp = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, (int) getResources().getDimension(R.dimen.isetting_item_height));
@@ -286,13 +286,13 @@ public class NormalTeamInfoActivity extends UI implements OnClickListener, TAdap
         toggleLayout.addView(vp);
 
         return switchButton;
-    }
+    }*/
 
     private SwitchButton.OnChangedListener onChangedListener = new SwitchButton.OnChangedListener() {
         @Override
         public void OnChanged(View v, final boolean checkState) {
             if (!NetworkUtil.isNetAvailable(NormalTeamInfoActivity.this)) {
-                Toast.makeText(NormalTeamInfoActivity.this, R.string.network_is_not_available, Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(NormalTeamInfoActivity.this, R.string.network_is_not_available);
                 noticeBtn.setCheck(!checkState);
                 return;
             }
@@ -301,18 +301,18 @@ public class NormalTeamInfoActivity extends UI implements OnClickListener, TAdap
                 @Override
                 public void onSuccess(Void param) {
                     if (checkState) {
-                        Toast.makeText(NormalTeamInfoActivity.this, "开启消息提醒", Toast.LENGTH_SHORT).show();
+                        ToastHelper.showToast(NormalTeamInfoActivity.this, "开启消息提醒");
                     } else {
-                        Toast.makeText(NormalTeamInfoActivity.this, "关闭消息提醒", Toast.LENGTH_SHORT).show();
+                        ToastHelper.showToast(NormalTeamInfoActivity.this, "关闭消息提醒");
                     }
                 }
 
                 @Override
                 public void onFailed(int code) {
                     if (code == 408) {
-                        Toast.makeText(NormalTeamInfoActivity.this, R.string.network_is_not_available, Toast.LENGTH_SHORT).show();
+                        ToastHelper.showToast(NormalTeamInfoActivity.this, R.string.network_is_not_available);
                     } else {
-                        Toast.makeText(NormalTeamInfoActivity.this, "on failed:" + code, Toast.LENGTH_SHORT).show();
+                        ToastHelper.showToast(NormalTeamInfoActivity.this, "on failed:" + code);
                     }
                     noticeBtn.setCheck(!checkState);
                 }
@@ -366,7 +366,7 @@ public class NormalTeamInfoActivity extends UI implements OnClickListener, TAdap
     }
 
     private void onGetTeamInfoFailed() {
-        Toast.makeText(this, getString(R.string.normal_team_not_exist), Toast.LENGTH_SHORT).show();
+        ToastHelper.showToast(this, getString(R.string.normal_team_not_exist));
         finish();
     }
 
@@ -433,7 +433,7 @@ public class NormalTeamInfoActivity extends UI implements OnClickListener, TAdap
                     if (success && members != null && !members.isEmpty()) {
                         refreshMembers(members);
                     } else {
-                        Toast.makeText(NormalTeamInfoActivity.this, "获取成员列表失败", Toast.LENGTH_SHORT).show();
+                        ToastHelper.showToast(NormalTeamInfoActivity.this, "获取成员列表失败");
                     }
                 }
             });
@@ -562,13 +562,13 @@ public class NormalTeamInfoActivity extends UI implements OnClickListener, TAdap
             public void onSuccess(Void param) {
                 DialogMaker.dismissProgressDialog();
                 removeMember(account);
-                Toast.makeText(NormalTeamInfoActivity.this, R.string.remove_member_success, Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(NormalTeamInfoActivity.this, R.string.remove_member_success);
             }
 
             @Override
             public void onFailed(int code) {
                 DialogMaker.dismissProgressDialog();
-                Toast.makeText(NormalTeamInfoActivity.this, R.string.remove_member_failed, Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(NormalTeamInfoActivity.this, R.string.remove_member_failed);
             }
 
             @Override
@@ -593,14 +593,14 @@ public class NormalTeamInfoActivity extends UI implements OnClickListener, TAdap
                 if (failedAccounts != null && !failedAccounts.isEmpty()) {
                     TeamHelper.onMemberTeamNumOverrun(failedAccounts, NormalTeamInfoActivity.this);
                 } else {
-                    Toast.makeText(NormalTeamInfoActivity.this, R.string.invite_member_success, Toast.LENGTH_SHORT).show();
+                    ToastHelper.showToast(NormalTeamInfoActivity.this, R.string.invite_member_success);
                 }
             }
 
             @Override
             public void onFailed(int code) {
                 DialogMaker.dismissProgressDialog();
-                Toast.makeText(NormalTeamInfoActivity.this, R.string.invite_member_failed, Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(NormalTeamInfoActivity.this, R.string.invite_member_failed);
             }
 
             @Override
@@ -619,7 +619,7 @@ public class NormalTeamInfoActivity extends UI implements OnClickListener, TAdap
             @Override
             public void onSuccess(Void param) {
                 DialogMaker.dismissProgressDialog();
-                Toast.makeText(NormalTeamInfoActivity.this, R.string.quit_normal_team_success, Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(NormalTeamInfoActivity.this, R.string.quit_normal_team_success);
                 setResult(Activity.RESULT_OK, new Intent().putExtra(TeamExtras.RESULT_EXTRA_REASON, TeamExtras.RESULT_EXTRA_REASON_QUIT));
 
                 NIMClient.getService(MsgService.class).deleteRecentContact2(teamId, SessionTypeEnum.Team);
@@ -629,7 +629,7 @@ public class NormalTeamInfoActivity extends UI implements OnClickListener, TAdap
             @Override
             public void onFailed(int code) {
                 DialogMaker.dismissProgressDialog();
-                Toast.makeText(NormalTeamInfoActivity.this, R.string.quit_normal_team_failed, Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(NormalTeamInfoActivity.this, R.string.quit_normal_team_failed);
             }
 
             @Override

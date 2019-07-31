@@ -284,8 +284,6 @@ public class TeamHelper {
         } else {
             String result = team.getExtServer();
             String name = null;
-            String content = team.getExtension();
-            Log.e("content",content="-------------------------"+result);
             try {
                 if (!TextUtils.isEmpty(result)) {
                     JSONObject jsonObject = new JSONObject(result);

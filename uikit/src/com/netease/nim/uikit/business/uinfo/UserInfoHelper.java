@@ -41,9 +41,12 @@ public class UserInfoHelper {
             return alias;
         } else {
             NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(account);
+            if (userInfo == null) {
+                return account;
+            }
             String content = userInfo.getExtension();
-            Log.e("content",content == null ?"" :content);
             if (userInfo != null && !TextUtils.isEmpty(userInfo.getName())) {
+                Log.e("content",content == null ?"" :content);
                 return userInfo.getName();
             } else {
                 return account;

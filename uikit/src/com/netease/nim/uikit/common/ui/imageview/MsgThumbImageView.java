@@ -115,12 +115,17 @@ public class MsgThumbImageView extends ImageView {
                     .fitCenter()
                     .placeholder(R.drawable.nim_image_default)
                     .error(R.drawable.nim_image_default);
-
-            builder = Glide.with(getContext().getApplicationContext())
-                    .asBitmap()
-                    .apply(options)
-                    .load(new File(path))
-            ;
+          /*  if (path.substring(0, 4).equals("http")) {
+                builder = Glide.with(getContext().getApplicationContext())
+                        .asBitmap()
+                        .apply(options)
+                        .load(path);
+            } else {*/
+                builder = Glide.with(getContext().getApplicationContext())
+                        .asBitmap()
+                        .apply(options)
+                        .load(new File(path));
+        //    }
         }
         builder.into(this);
     }

@@ -3,10 +3,9 @@ package com.netease.nim.uikit.business.session.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -22,19 +21,19 @@ import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
-import com.netease.nim.uikit.common.ui.popupmenu.NIMPopupMenu;
 import com.netease.nim.uikit.common.ui.widget.MyToolbar;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nimlib.sdk.NIMClient;
-import com.netease.nimlib.sdk.NimIntent;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
+
+import org.json.JSONException;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -100,6 +99,29 @@ public class P2PMessageActivity extends BaseMessageActivity {
 
     private void requestBuddyInfo() {
         setTitle(UserInfoHelper.getUserTitleName(sessionId, SessionTypeEnum.P2P));
+        if (CommonUtil.role == CommonUtil.SELLER) {
+            NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(sessionId);
+            if (userInfo == null) {
+                return;
+            }
+            try {
+                String content = userInfo.getExtension();
+                if (TextUtils.isEmpty(content)) {
+                    return;
+                }
+                org.json.JSONObject jsonObject = new org.json.JSONObject(content);
+                String source = jsonObject.getString("wxNo");
+                MyToolbar toolbar = findViewById(R.id.toolbar);
+                toolbar.setSubtitleVisible(true);
+                toolbar.setSubtitleTextSize(14);
+                toolbar.setSubtitleTextColor(getResources().getColor(R.color.color_aaaaaa_content_text));
+                toolbar.setSubtitle(source == null ? "" : source);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     private void registerObservers(boolean register) {
@@ -159,7 +181,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
             return;
         }
         String detailContent = NimUIKitImpl.getOnlineStateContentProvider().getDetailDisplay(sessionId);
-        setSubTitle(detailContent);
+        //setSubTitle(detailContent);
     }
 
     private void registerUserInfoObserver() {

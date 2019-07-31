@@ -296,11 +296,11 @@ public class UserProfileActivity extends UI {
     private void updateUserOperatorView() {
         chatBtn.setVisibility(View.VISIBLE);
         if (NIMClient.getService(FriendService.class).isMyFriend(account)) {
-            removeFriendBtn.setVisibility(View.VISIBLE);
+            removeFriendBtn.setVisibility(View.GONE);
             addFriendBtn.setVisibility(View.GONE);
             updateAlias(true);
         } else {
-            addFriendBtn.setVisibility(View.VISIBLE);
+            addFriendBtn.setVisibility(View.GONE);
             removeFriendBtn.setVisibility(View.GONE);
             updateAlias(false);
         }
@@ -311,7 +311,7 @@ public class UserProfileActivity extends UI {
             boolean black = NIMClient.getService(FriendService.class).isInBlackList(account);
             boolean notice = NIMClient.getService(FriendService.class).isNeedMessageNotify(account);
 
-            if (blackSwitch == null) {
+          /*  if (blackSwitch == null) {
                 blackSwitch = addToggleItemView(KEY_BLACK_LIST, R.string.black_list, black);
             } else {
                 setToggleBtn(blackSwitch, black);
@@ -331,7 +331,7 @@ public class UserProfileActivity extends UI {
                 } else {
                     setToggleBtn(stickySwitch, isSticky);
                 }
-            }
+            }*/
             updateUserOperatorView();
         }
     }

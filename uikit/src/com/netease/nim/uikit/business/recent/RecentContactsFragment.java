@@ -32,6 +32,7 @@ import com.netease.nim.uikit.common.ui.drop.DropCover;
 import com.netease.nim.uikit.common.ui.drop.DropManager;
 import com.netease.nim.uikit.common.ui.recyclerview.listener.SimpleClickListener;
 import com.netease.nim.uikit.common.util.string.StringUtil;
+import com.netease.nim.uikit.common.util.sys.ScreenUtil;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
@@ -94,6 +95,7 @@ public class RecentContactsFragment extends TFragment {
     private RecentContactsCallback callback;
 
     private UserInfoObserver userInfoObserver;
+    public static Integer width = 1080;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -105,6 +107,7 @@ public class RecentContactsFragment extends TFragment {
         registerObservers(true);
         registerDropCompletedListener(true);
         registerOnlineStateChangeListener(true);
+        width = ScreenUtil.getScreenWidth(getContext());
     }
 
     @Override

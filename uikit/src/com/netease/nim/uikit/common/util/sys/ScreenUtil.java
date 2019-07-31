@@ -1,9 +1,13 @@
 package com.netease.nim.uikit.common.util.sys;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Point;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.netease.nim.uikit.api.NimUIKit;
 
@@ -31,6 +35,13 @@ public class ScreenUtil {
 
     static {
         init(NimUIKit.getContext());
+    }
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    public static int getScreenWidth(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Point p = new Point();
+        wm.getDefaultDisplay().getSize(p);
+        return p.x;
     }
 
     public static int dip2px(float dipValue) {

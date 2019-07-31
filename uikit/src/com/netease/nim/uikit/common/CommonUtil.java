@@ -114,4 +114,14 @@ public class CommonUtil {
     public interface MenuDeleteListener {
         void deleted(String contactId);
     }
+
+    //添加讨论组成员回调
+    public static AddMemberListener addMemberListener;
+    public static void setAddMemberListener(AddMemberListener listener) {
+        addMemberListener = listener;
+
+    }
+    public interface AddMemberListener {
+        void addMember();
+    }
 }

@@ -4,9 +4,12 @@ import android.graphics.drawable.AnimationDrawable;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.netease.nim.uikit.R;
@@ -129,13 +132,13 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
 
         updateNewIndicator(recent);
 
-        setWXTip(recent);
+        setWXTip(recent, holder);
 
         if (shouldBoom) {
             Object o = DropManager.getInstance().getCurrentId();
             if (o instanceof String && o.equals("0")) {
                 imgUnreadExplosion.setImageResource(R.drawable.nim_explosion);
-                imgUnreadExplosion.setVisibility(View.VISIBLE);
+                imgUnreadExplosion.setVisibility(View.GONE);
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {
@@ -248,15 +251,15 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
      *
      * @param recentContact
      */
-    protected void setWXTip(RecentContact recentContact) {
+    protected void setWXTip(RecentContact recentContact, BaseViewHolder holder) {
         contacts_type.setVisibility(View.INVISIBLE);
         //学生和老师不用设置标签
-        if (CommonUtil.role != CommonUtil.STUD || CommonUtil.role != CommonUtil.TEAC) {
+        if (CommonUtil.role == CommonUtil.SELLER) {
             if (recentContact.getSessionType() == SessionTypeEnum.Team) {
                 contacts_type.setVisibility(View.GONE);
             } else {
                 NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(recentContact.getContactId());
-                Log.e("contactId",recentContact.getContactId());
+                Log.e("contactId", recentContact.getContactId());
                 if (userInfo == null) {
                     contacts_type.setVisibility(View.GONE);
                 } else {
@@ -267,17 +270,29 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
                     } else {
                         try {
                             JSONObject jsonObject = new JSONObject(content);
-                            int type = jsonObject.getInt("isInternal");
-                            String source = jsonObject.getString("fromWx");
-                            //isInternal 是内部  1和0
-                            if (type == 1) {
+                            Integer type = jsonObject.getInt("isInternal");
+                            String source = jsonObject.getString("wxNo");
+                            //isInternal 0是内部  1和0
+                            if (type == 0) {
                                 contacts_type.setVisibility(View.VISIBLE);
                                 contacts_type.setBackgroundResource(R.drawable.inside_bg);
                                 contacts_type.setText("内部");
                             } else {
-                                contacts_type.setVisibility(View.VISIBLE);
-                                contacts_type.setBackgroundResource(R.drawable.outside_bg);
-                                contacts_type.setText(source == null ?"微信":source);
+//                                Integer typeW = holder.getView(R.id.contacts_type).getMeasuredWidth();
+//                                Integer timeW = holder.getView(R.id.tv_date_time).getMeasuredWidth();
+//                                Integer imgW = holder.getView(R.id.img_head).getMeasuredWidth();
+//                                tvNickname.setMaxWidth(RecentContactsFragment.width - timeW - typeW - imgW);
+
+                                if (!TextUtils.isEmpty(source)) {
+                                    if (source.length()>10) {
+                                        tvNickname.setMaxWidth(RecentContactsFragment.width / 4);
+                                    } else {
+                                        tvNickname.setMaxWidth(RecentContactsFragment.width / 3);
+                                    }
+                                    contacts_type.setVisibility(View.VISIBLE);
+                                    contacts_type.setBackgroundResource(R.drawable.outside_bg);
+                                    contacts_type.setText(source);
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
