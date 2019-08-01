@@ -1,6 +1,7 @@
 package com.netease.nim.demo.team;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
@@ -42,7 +43,7 @@ public class TeamCreateHelper {
     /**
      * 创建讨论组
      */
-    public static void createNormalTeam(final String teamName,final Context context, List<String> memberAccounts, final boolean isNeedBack, final RequestCallback<CreateTeamResult> callback) {
+    public static void createNormalTeam(final String teamName,String icon,final Context context, List<String> memberAccounts, final boolean isNeedBack, final RequestCallback<CreateTeamResult> callback) {
 
        /* String tName = "讨论组";
         if (!TextUtils.isEmpty(teamName)) {
@@ -53,6 +54,9 @@ public class TeamCreateHelper {
         // 创建群
         HashMap<TeamFieldEnum, Serializable> fields = new HashMap<TeamFieldEnum, Serializable>();
         fields.put(TeamFieldEnum.Name, teamName);
+        if (!TextUtils.isEmpty(icon)) { //头像
+            fields.put(TeamFieldEnum.ICON,icon);
+        }
         NIMClient.getService(TeamService.class).createTeam(fields, TeamTypeEnum.Normal, "",
                 memberAccounts).setCallback(
                 new RequestCallback<CreateTeamResult>() {

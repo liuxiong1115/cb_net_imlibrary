@@ -284,7 +284,7 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
 //                                tvNickname.setMaxWidth(RecentContactsFragment.width - timeW - typeW - imgW);
 
                                 if (!TextUtils.isEmpty(source)) {
-                                    if (source.length()>10) {
+                                    if (source.length() > 10) {
                                         tvNickname.setMaxWidth(RecentContactsFragment.width / 4);
                                     } else {
                                         tvNickname.setMaxWidth(RecentContactsFragment.width / 3);

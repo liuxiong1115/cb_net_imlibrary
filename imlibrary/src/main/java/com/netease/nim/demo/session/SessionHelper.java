@@ -535,8 +535,9 @@ public class SessionHelper {
                 //TODO 用户头像点击事件处理
                 // 一般用于打开用户资料页面
                 if (CommonUtil.role == CommonUtil.SELLER) {
-                    Team team = NimUIKit.getTeamProvider().getTeamById(message.getSessionId());
-                    if (team.getType() == TeamTypeEnum.Normal) {
+                   if (message.getSessionType() != SessionTypeEnum.P2P) {
+                        Team team = NimUIKit.getTeamProvider().getTeamById(message.getSessionId());
+                        if (team.getType() == TeamTypeEnum.Normal) {
                         /*if (message.getMsgType() == MsgTypeEnum.robot && message.getDirect() == MsgDirectionEnum.In) {
                             RobotAttachment attachment = (RobotAttachment) message.getAttachment();
                             if (attachment.isRobotSend()) {
@@ -544,8 +545,10 @@ public class SessionHelper {
                                 return;
                             }
                         }*/
-                        UserProfileActivity.start(context, message.getFromAccount());
+                            UserProfileActivity.start(context, message.getFromAccount());
+                        }
                     }
+
                 }
 
             }

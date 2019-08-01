@@ -308,7 +308,7 @@ public class MainActivity extends UI {
             if (requestCode == REQUEST_CODE_NORMAL) {
                 final ArrayList<String> selected = data.getStringArrayListExtra(ContactSelectActivity.RESULT_DATA);
                 if (selected != null && !selected.isEmpty()) {
-                    TeamCreateHelper.createNormalTeam(teamName,MainActivity.this, selected, false, null);
+                    TeamCreateHelper.createNormalTeam(teamName,"/storage/emulated/0/classbromarketing/1564631203779.png",MainActivity.this, selected, false, null);
                 } else {
                     Toast.makeText(MainActivity.this, "请选择至少一个联系人！", Toast.LENGTH_SHORT).show();
                 }
