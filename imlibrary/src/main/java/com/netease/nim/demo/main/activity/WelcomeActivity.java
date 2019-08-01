@@ -69,8 +69,9 @@ public class WelcomeActivity extends UI {
     private void showSplashView() {
         // 首次进入，打开欢迎界面
         if (CommonUtil.role == CommonUtil.SELLER) {  //销售
-            frameLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            textView.setVisibility(View.VISIBLE);
+//            frameLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+//            textView.setVisibility(View.VISIBLE);
+            getWindow().setBackgroundDrawableResource(R.drawable.sell_splash_bg);
 
         } else if (CommonUtil.role == CommonUtil.STUD) {   //学生
             getWindow().setBackgroundDrawableResource(R.drawable.stud_splash_bg);

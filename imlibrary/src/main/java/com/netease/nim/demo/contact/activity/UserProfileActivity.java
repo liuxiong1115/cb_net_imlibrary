@@ -204,8 +204,8 @@ public class UserProfileActivity extends UI {
     }
 
     private void initActionbar() {
-        TextView toolbarView = findView(R.id.action_bar_right_clickable_textview);
-        if (!TextUtils.equals(account, DemoCache.getAccount())) {
+        /*TextView toolbarView = findView(R.id.action_bar_right_clickable_textview);
+        if (!TextUtils.equals(account, DemoCache.getAccount().toLowerCase())) {
             toolbarView.setVisibility(View.GONE);
             return;
         } else {
@@ -217,7 +217,7 @@ public class UserProfileActivity extends UI {
             public void onClick(View v) {
                 UserProfileSettingActivity.start(UserProfileActivity.this, account);
             }
-        });
+        });*/
     }
 
     private void setToggleBtn(SwitchButton btn, boolean isChecked) {
