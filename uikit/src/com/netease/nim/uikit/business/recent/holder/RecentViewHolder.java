@@ -271,18 +271,14 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
                             Log.e("userInfo", content.toString());
                             JSONObject jsonObject = new JSONObject(content);
                             Integer type = jsonObject.getInt("isInternal");
-                            String source = jsonObject.getString("wxNo");
                             //isInternal 0是内部  1和0
                             if (type == 0) {
                                 contacts_type.setVisibility(View.VISIBLE);
                                 contacts_type.setBackgroundResource(R.drawable.inside_bg);
                                 contacts_type.setText("内部");
                             } else {
-//                                Integer typeW = holder.getView(R.id.contacts_type).getMeasuredWidth();
-//                                Integer timeW = holder.getView(R.id.tv_date_time).getMeasuredWidth();
-//                                Integer imgW = holder.getView(R.id.img_head).getMeasuredWidth();
-//                                tvNickname.setMaxWidth(RecentContactsFragment.width - timeW - typeW - imgW);
-
+                                //外部联系人
+                                String source = jsonObject.getString("wxNo");
                                 if (!TextUtils.isEmpty(source)) {
                                     if (source.length() > 10) {
                                         tvNickname.setMaxWidth(RecentContactsFragment.width / 4);

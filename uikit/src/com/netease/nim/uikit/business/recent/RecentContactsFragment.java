@@ -1,18 +1,13 @@
 package com.netease.nim.uikit.business.recent;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.NimUIKit;
@@ -36,7 +31,6 @@ import com.netease.nim.uikit.common.util.sys.ScreenUtil;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
-import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.RequestCallbackWrapper;
 import com.netease.nimlib.sdk.ResponseCode;
 import com.netease.nimlib.sdk.msg.MsgService;
@@ -48,10 +42,6 @@ import com.netease.nimlib.sdk.msg.model.QueryDirectionEnum;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
-import com.netease.nimlib.sdk.uinfo.UserService;
-import com.netease.nimlib.sdk.uinfo.constant.UserInfoFieldEnum;
-import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
-import com.netease.nimlib.sdk.uinfo.model.UserInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;
