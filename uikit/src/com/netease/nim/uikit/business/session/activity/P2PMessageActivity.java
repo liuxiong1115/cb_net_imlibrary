@@ -42,6 +42,7 @@ import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 
+import org.apache.lucene.util.LongValues;
 import org.json.JSONException;
 
 import java.lang.ref.WeakReference;
@@ -67,6 +68,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
     public MyToolbar toolbar;
     public Spinner country, school, major, grade, education;
     public String session;
+    private boolean isFrist = true;
 
     public static void start(Context context, String contactId, SessionCustomization customization, IMMessage anchor) {
         Intent intent = new Intent();
@@ -114,7 +116,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
     }
 
     private void initData() {
-        //初始化年级
+    /*    //初始化年级
         List<String> list = new ArrayList<>();
         list.add("1年");
         list.add("2年");
@@ -122,7 +124,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
         list.add("4年");
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        grade.setAdapter(adapter);
+        grade.setAdapter(adapter);*/
         if (CommonUtil.role == CommonUtil.SELLER) {
             if (!CommonUtil.classbroRobot.equals(sessionId) || !CommonUtil.systemNotify.equals(sessionId)) {
                 if (sessionId.toLowerCase().startsWith("visi")) {
@@ -155,8 +157,8 @@ public class P2PMessageActivity extends BaseMessageActivity {
                                 setUserInfo();
                             }
                         } catch (Exception e) {
-                            toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
-                            setUserInfo();
+                            /*toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
+                            setUserInfo();*/
                             e.printStackTrace();
                         }
                     }
@@ -188,7 +190,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
                     country.setPrompt(info.getCountry() == null ? "请选择国家" : info.getCountry());
                     school.setPrompt(info.getSchool() == null ? "请选择学校" : info.getSchool());
                     major.setPrompt(info.getMajor() == null ? "请选择专业" : info.getMajor());
-                    grade.setPrompt(info.getGrade() == null ? "请选择年级" : info.getMajor());
+                    grade.setPrompt(info.getGrade() == null ? "请选择年级" : info.getGrade());
                     education.setPrompt(info.getEducation()== null ? "请选择学历": info.getEducation());
                     account.setText(info.getSchoolAccount() == null ? "" : info.getSchoolAccount());
                     password.setText(info.getSchoolPws() == null ? "" : info.getSchoolPws());
@@ -366,19 +368,40 @@ public class P2PMessageActivity extends BaseMessageActivity {
                 drawerLayout.openDrawer(Gravity.RIGHT);
             }
         });
-        grade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+       /* grade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("po",position+"");
-                String s =parent.getItemAtPosition(position).toString(); //这里就是将条目所包含的字符串赋给s
-                grade.setPrompt(s);
+                List<ClassbroUserInfo> classbroUserInfos = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
+                if (isFrist) {
+                    isFrist = false;
+                    if (classbroUserInfos != null) {
+                        grade.setPrompt(classbroUserInfos.get(0).getGrade());
+                    } else {
+                        grade.setPrompt("请选择");
+                    }
+                } else {
+                    String s = parent.getItemAtPosition(position).toString(); //这里就是将条目所包含的字符串赋给s
+                    grade.setPrompt(s);
+                    if (classbroUserInfos == null) {
+                        ClassbroUserInfo userInfo = new ClassbroUserInfo();
+                        userInfo.setUserId(Long.valueOf(sessionId.substring(4, sessionId.length())));
+                        userInfo.setGrade(s);
+                        userInfo.setSchoolYear(position + 1);
+                        userInfo.save();
+                    } else {
+                        ClassbroUserInfo userInfo = classbroUserInfos.get(0);
+                        userInfo.setGrade(s);
+                        userInfo.setSchoolYear(position + 1);
+                        userInfo.save();
+                    }
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });
+        });*/
     }
 
     @Override
