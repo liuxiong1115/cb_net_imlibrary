@@ -45,9 +45,6 @@ public abstract class MsgViewHolderThumbBase extends MsgViewHolderBase {
     protected void bindContentView() {
         FileAttachment msgAttachment = (FileAttachment) message.getAttachment();
         String path = msgAttachment.getPath();
-       /* if (TextUtils.isEmpty(path)) {
-            path = msgAttachment.getUrl();
-        }*/
         String thumbPath = msgAttachment.getThumbPath();
         if (!TextUtils.isEmpty(path)) {
             loadThumbnailImage(thumbFromSourceFile(path), true, msgAttachment.getExtension());

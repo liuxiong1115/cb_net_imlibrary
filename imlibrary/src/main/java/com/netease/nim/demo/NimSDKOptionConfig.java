@@ -221,8 +221,6 @@ class NimSDKOptionConfig {
         config.mzCertificateName = CommonUtil.mzCertificateName;
         // fcm 推送，适用于海外用户，不使用fcm请不要配置
         config.fcmCertificateName = CommonUtil.gcmCertificateName;
-
-
         return config;
     }
 

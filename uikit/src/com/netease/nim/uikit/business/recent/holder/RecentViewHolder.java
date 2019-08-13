@@ -28,14 +28,26 @@ import com.netease.nim.uikit.common.ui.recyclerview.holder.BaseViewHolder;
 import com.netease.nim.uikit.common.ui.recyclerview.holder.RecyclerViewHolder;
 import com.netease.nim.uikit.common.util.sys.ScreenUtil;
 import com.netease.nim.uikit.common.util.sys.TimeUtil;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.RequestCallbackWrapper;
 import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
+import com.netease.nimlib.sdk.team.TeamService;
+import com.netease.nimlib.sdk.team.constant.TeamTypeEnum;
 import com.netease.nimlib.sdk.team.model.Team;
+import com.netease.nimlib.sdk.team.model.TeamMember;
+import com.netease.nimlib.sdk.uinfo.UserService;
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
+import com.netease.nimlib.sdk.uinfo.model.UserInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapter, BaseViewHolder, RecentContact> {
 
@@ -58,7 +70,7 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
     protected View tvDelete, deleteLayout;
 
     // 消息发送错误状态标记，目前没有逻辑处理
-    protected ImageView imgMsgStatus;
+    protected ImageView imgMsgStatus, groupActiva;
 
     protected View bottomLine;
 
@@ -70,6 +82,7 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
     private ImageView imgUnreadExplosion;
 
     protected TextView tvOnlineState;
+
 
     // 子类覆写
     protected abstract String getContent(RecentContact recent);
@@ -92,7 +105,7 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
         this.bottomLine = holder.getView(R.id.bottom_line);
         this.topLine = holder.getView(R.id.top_line);
         this.tvOnlineState = holder.getView(R.id.tv_online_state);
-        //   this.contacts_source = holder.getView(R.id.contacts_source);
+        this.groupActiva = holder.getView(R.id.group_activa);
         this.contacts_type = holder.getView(R.id.contacts_type);
         holder.addOnClickListener(R.id.unread_number_tip);
         this.tvUnread.setTouchListener(new DropFake.ITouchListener() {
@@ -251,24 +264,67 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
      *
      * @param recentContact
      */
-    protected void setWXTip(RecentContact recentContact, BaseViewHolder holder) {
+    protected void setWXTip(final RecentContact recentContact, BaseViewHolder holder) {
         contacts_type.setVisibility(View.INVISIBLE);
+        groupActiva.setVisibility(View.INVISIBLE);
         //学生和老师不用设置标签
         if (CommonUtil.role == CommonUtil.SELLER) {
             if (recentContact.getSessionType() == SessionTypeEnum.Team) {
                 contacts_type.setVisibility(View.GONE);
+                Team team = NimUIKit.getTeamProvider().getTeamById(recentContact.getContactId());
+                if (team == null) {
+                    return;
+                }
+                if (team.getType() == TeamTypeEnum.Normal) {
+                    return;
+                }
+                //获取群成员
+                NIMClient.getService(TeamService.class).queryMemberList(recentContact.getContactId()).setCallback(new RequestCallbackWrapper<List<TeamMember>>() {
+                    @Override
+                    public void onResult(int code, final List<TeamMember> members, Throwable exception) {
+                        List<String> studs = new ArrayList<>();
+                        for (int i = 0; i < members.size(); i++) {
+                            if (members.get(i).getAccount().startsWith("stud")) {
+                                studs.add(members.get(i).getAccount());
+                            }
+                        }
+                        if (studs.size() > 1) {
+                            return;
+                        }
+                        //获取成员资料
+                        NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(studs.get(0));
+                        if (userInfo != null) {
+                            String content = userInfo.getExtension();
+                            if (content != null) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(content);
+                                    Integer isActiva = jsonObject.getInt("activa");
+                                    //未激活：0  已激活：1
+                                    if (isActiva == 1) {
+                                        groupActiva.setVisibility(View.VISIBLE);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                });
             } else {
-                NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(recentContact.getContactId());
-                if (userInfo == null) {
-                    contacts_type.setVisibility(View.GONE);
+                groupActiva.setVisibility(View.INVISIBLE);
+                List<String> list = new ArrayList<>();
+                list.add(recentContact.getContactId());
+                NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(recentContact.getContactId());
+                if (nimUserInfo == null) {
+                    contacts_type.setVisibility(View.INVISIBLE);
                 } else {
-                    String content = userInfo.getExtension();
+                    String content = nimUserInfo.getExtension();
 
                     if (TextUtils.isEmpty(content)) {
-                        contacts_type.setVisibility(View.GONE);
+                        contacts_type.setVisibility(View.INVISIBLE);
                     } else {
                         try {
-                            Log.e("userInfo", content.toString());
+                            //    Log.e("userInfo", content.toString());
                             JSONObject jsonObject = new JSONObject(content);
                             Integer type = jsonObject.getInt("isInternal");
                             //isInternal 0是内部  1和0
@@ -298,4 +354,5 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
             }
         }
     }
+
 }

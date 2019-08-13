@@ -92,7 +92,7 @@ public static void exitedChatRoom(String roomId);
 示例：
 
 ```java
-UserInfo userInfo = NimUIKit.getUserInfoProvider().getUserInfo(account);
+UserInfo classbroUserInfo = NimUIKit.getUserInfoProvider().getUserInfo(account);
 ```
 
 - 实现数据接口并设置到 `UIkit`

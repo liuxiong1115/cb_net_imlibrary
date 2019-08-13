@@ -46,7 +46,6 @@ public class UserInfoHelper {
             }
             String content = userInfo.getExtension();
             if (userInfo != null && !TextUtils.isEmpty(userInfo.getName())) {
-                Log.e("content",content == null ?"" :content);
                 return userInfo.getName();
             } else {
                 return account;

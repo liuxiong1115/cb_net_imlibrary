@@ -47,12 +47,12 @@ public class ScheduleAction extends BaseAction {
                         int code = jsonObject.getInt("courseStatus");
                         long courseId = jsonObject.getLong("courseId");
                         CommonUtil.ScheduleClassOnClicklistener listener = CommonUtil.scheduleClassOnClicklistener;
-                        if (TeamNotificationHelper.CODE_1024  >= code ) {
+                        if (TeamNotificationHelper.CODE_262144 !=code || TeamNotificationHelper.CODE_1024  > code) {
                             if (listener != null) {
                                 listener.onClick(courseId);
                             }
                         } else {
-                            Toast.makeText(getActivity(), "当前课堂不能进行排课！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "当前课程不能进行排课！", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(getActivity(), "课程群组数据有误，请前往我的课程进行排课！", Toast.LENGTH_SHORT).show();

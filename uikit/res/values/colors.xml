@@ -59,7 +59,7 @@
     <color name="color_grey_ababab">#ababab</color>
     <color name="color_yellow_796413">#796413</color>
     <color name="color_yellow_b39729">#b39729</color>
-
+Line
     <!-- setting -->
     <color name="color_black_ff333333">#ff333333</color>
     <color name="color_black_ff666666">#ff666666</color>
@@ -67,4 +67,6 @@
     <color name="color_gray_bfc2c5">#bfc2c5</color>
 
     <color name="robot_link_element_text_blue">#248DFA</color>
+    <color name="text_green">#019b37</color>
+    <color name="viewline">#eeeff1</color>
 </resources>

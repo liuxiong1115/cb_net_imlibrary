@@ -24,6 +24,7 @@ import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.mixpush.NIMPushClient;
 import com.netease.nimlib.sdk.util.NIMUtil;
+import com.orm.SugarContext;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -37,9 +38,10 @@ public class NimApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        SugarContext.init(this);
         DemoCache.setContext(this);
 
-     //   CommonUtil.setRole(CommonUtil.SELLER);
+    //    CommonUtil.setRole(CommonUtil.SELLER);
         // 4.6.0 开始，第三方推送配置入口改为 SDKOption#mixPushConfig，旧版配置方式依旧支持。
         NIMClient.init(this, getLoginInfo(), NimSDKOptionConfig.getSDKOptions(this));
 
@@ -137,7 +139,7 @@ public class NimApplication extends Application {
 //        // 设置用户相关资料提供者
 //        AVChatKit.setUserInfoProvider(new IUserInfoProvider() {
 //            @Override
-//            public UserInfo getUserInfo(String account) {
+//            public ClassbroUserInfo getUserInfo(String account) {
 //                return NimUIKit.getUserInfoProvider().getUserInfo(account);
 //            }
 //
@@ -169,5 +171,11 @@ public class NimApplication extends Application {
 //        };
 //        RTSKit.init(rtsOptions);
 //        RTSHelper.init();
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        SugarContext.terminate();
     }
 }

@@ -93,11 +93,11 @@ public class HeadImageView extends CircleImageView {
          * 若使用网易云信云存储，这里可以设置下载图片的压缩尺寸，生成下载URL
          * 如果图片来源是非网易云信云存储，请不要使用NosThumbImageUtil
          */
-        String dealUrl = "";
+        /*String dealUrl = "";
         if (!TextUtils.isEmpty(url)) {
             dealUrl = url.substring(0,4).equals("http") ? url: CommonUtil.getAvatarUrl(url);
-        }
-        final String thumbUrl = makeAvatarThumbNosUrl(dealUrl, thumbSize);
+        }*/
+        final String thumbUrl = makeAvatarThumbNosUrl(CommonUtil.getAvatarUrl(url), thumbSize);
         RequestOptions requestOptions = new RequestOptions()
                 .centerCrop()
                 .placeholder(defaultResId)

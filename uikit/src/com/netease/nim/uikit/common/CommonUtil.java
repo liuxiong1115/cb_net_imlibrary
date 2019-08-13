@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
+import com.bumptech.glide.load.model.GlideUrl;
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.business.recent.adapter.RecentContactAdapter;
 import com.netease.nimlib.sdk.msg.model.RecentContact;

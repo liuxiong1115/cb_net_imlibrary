@@ -1,14 +1,12 @@
 package com.netease.nim.uikit.business.session.fragment;
 
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.UIKitOptions;
@@ -17,7 +15,6 @@ import com.netease.nim.uikit.api.model.session.SessionCustomization;
 import com.netease.nim.uikit.business.ait.AitManager;
 import com.netease.nim.uikit.business.session.actions.BaseAction;
 import com.netease.nim.uikit.business.session.actions.ImageAction;
-import com.netease.nim.uikit.business.session.actions.ScheduleAction;
 import com.netease.nim.uikit.business.session.actions.VideoAction;
 import com.netease.nim.uikit.business.session.constant.Extras;
 import com.netease.nim.uikit.business.session.module.Container;
@@ -44,9 +41,6 @@ import com.netease.nimlib.sdk.msg.model.MessageReceipt;
 import com.netease.nimlib.sdk.robot.model.NimRobotInfo;
 import com.netease.nimlib.sdk.robot.model.RobotAttachment;
 import com.netease.nimlib.sdk.robot.model.RobotMsgType;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -106,6 +106,7 @@ public class MediaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     path = imageAttachment.getPath();
                 }
                 Glide.with(context).load(path).into(((MediaViewHolder) holder).mediaImage);
+
                 ((MediaViewHolder) holder).mediaImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

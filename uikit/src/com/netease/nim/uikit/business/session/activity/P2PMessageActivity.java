@@ -3,8 +3,18 @@ package com.netease.nim.uikit.business.session.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
+import android.support.v7.widget.AppCompatTextView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -23,6 +33,7 @@ import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
 import com.netease.nim.uikit.common.ui.widget.MyToolbar;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
+import com.netease.nim.uikit.model.ClassbroUserInfo;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
@@ -34,6 +45,7 @@ import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 import org.json.JSONException;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -47,6 +59,14 @@ public class P2PMessageActivity extends BaseMessageActivity {
 
     private boolean isResume = false;
     public static WeakReference<P2PMessageActivity> instance;
+    private DrawerLayout drawerLayout;
+
+    public AppCompatAutoCompleteTextView nickName, tel, wxNo,  account, password;
+    public AppCompatTextView activaUseer;
+    public int isActiva = 0;  //是否激活  0--未激活  1--已激活
+    public MyToolbar toolbar;
+    public Spinner country, school, major, grade, education;
+    public String session;
 
     public static void start(Context context, String contactId, SessionCustomization customization, IMMessage anchor) {
         Intent intent = new Intent();
@@ -65,19 +85,300 @@ public class P2PMessageActivity extends BaseMessageActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         instance = new WeakReference<P2PMessageActivity>(this);
+        session = sessionId;
+        initView();
         // 单聊特例话数据，包括个人信息，
         requestBuddyInfo();
         displayOnlineState();
         registerObservers(true);
         registerOnlineStateChangeListener(true);
+        initData();
+        setListener();
+
+    }
+
+    private void initView() {
+        drawerLayout = findViewById(R.id.drawerlayout);
+        nickName = findViewById(R.id.userName);
+        tel = findViewById(R.id.userTel);
+        wxNo = findViewById(R.id.userWx);
+        country = findViewById(R.id.userCountry);
+        school = findViewById(R.id.userSchool);
+        major = findViewById(R.id.userMajor);
+        grade = findViewById(R.id.userGrade);
+        education = findViewById(R.id.userEducation);
+        account = findViewById(R.id.userAccount);
+        password = findViewById(R.id.userPassword);
+        activaUseer = findViewById(R.id.activaUser);
+        toolbar = findViewById(R.id.toolbar);
+    }
+
+    private void initData() {
+        //初始化年级
+        List<String> list = new ArrayList<>();
+        list.add("1年");
+        list.add("2年");
+        list.add("3年");
+        list.add("4年");
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,list);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        grade.setAdapter(adapter);
         if (CommonUtil.role == CommonUtil.SELLER) {
             if (!CommonUtil.classbroRobot.equals(sessionId) || !CommonUtil.systemNotify.equals(sessionId)) {
-                if (sessionId.toLowerCase().substring(0,2).equals("vi")) {
-                    MyToolbar toolbar = findViewById(R.id.toolbar);
+                if (sessionId.toLowerCase().startsWith("visi")) {
                     toolbar.setMenuText("结束咨询");
                 }
             }
         }
+
+        //如果是学生 禁止滑动侧边栏
+        if (CommonUtil.role == CommonUtil.TEAC || CommonUtil.role == CommonUtil.STUD) {
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        } else {
+            if (!TextUtils.isEmpty(sessionId)) {
+            if (sessionId.startsWith("stud")) {
+                NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(sessionId);
+                if (nimUserInfo != null) {
+                    String content = nimUserInfo.getExtension();
+                    if (!TextUtils.isEmpty(content)) {
+                        try {
+                            Log.e("userInfo", content.toString());
+                            org.json.JSONObject jsonObject = new org.json.JSONObject(content);
+                            Integer activa = jsonObject.getInt("activa");
+                            Integer type = jsonObject.getInt("isInternal");
+                            if (type == 0) {  //内部
+                                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                                isActiva = 1;
+                            } else {
+                                toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
+                                isActiva = activa;
+                                setUserInfo();
+                            }
+                        } catch (Exception e) {
+                            toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
+                            setUserInfo();
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+            if (isActiva != 0) {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            }
+        }
+        }
+    }
+
+    /**
+     * 创建数据库  保存数据
+     */
+    public void setUserInfo() {
+        if (!TextUtils.isEmpty(sessionId)) {
+                String substring = sessionId.substring(4, sessionId.length());
+                List<ClassbroUserInfo> classbroUserInfos = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", substring);
+                if (classbroUserInfos == null || classbroUserInfos.size() == 0) {
+                    ClassbroUserInfo classbroUserInfo = new ClassbroUserInfo();
+                    classbroUserInfo.setUserId(Long.valueOf(substring));
+                    classbroUserInfo.save();
+                } else {
+                    ClassbroUserInfo info = classbroUserInfos.get(0);
+                    nickName.setText(info.getStudentName() == null ? "" : info.getStudentName());
+                    tel.setText(info.getMobile() == null ? "" : info.getMobile());
+                    wxNo.setText(info.getWxAccount() == null ? "" : info.getWxAccount());
+                    country.setPrompt(info.getCountry() == null ? "请选择国家" : info.getCountry());
+                    school.setPrompt(info.getSchool() == null ? "请选择学校" : info.getSchool());
+                    major.setPrompt(info.getMajor() == null ? "请选择专业" : info.getMajor());
+                    grade.setPrompt(info.getGrade() == null ? "请选择年级" : info.getMajor());
+                    education.setPrompt(info.getEducation()== null ? "请选择学历": info.getEducation());
+                    account.setText(info.getSchoolAccount() == null ? "" : info.getSchoolAccount());
+                    password.setText(info.getSchoolPws() == null ? "" : info.getSchoolPws());
+                }
+            } else {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            }
+    }
+
+    private void setListener() {
+        //名称
+        TextWatcher nameText = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
+                if (classbroUserInfo == null) {
+                    ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
+                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4,sessionId.length())));
+                    classbroUserInfo1.setStudentName(nickName.getText().toString());
+                    classbroUserInfo1.save();
+                } else {
+                    classbroUserInfo.get(0).setStudentName(nickName.getText().toString());
+                    classbroUserInfo.get(0).save();
+                }
+            }
+        };
+        nickName.addTextChangedListener(nameText);
+        //手机号
+        final TextWatcher telText = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
+                if (classbroUserInfo == null) {
+                    ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
+                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4,sessionId.length())));
+                    classbroUserInfo1.setMobile(tel.getText().toString());
+                    classbroUserInfo1.save();
+                } else {
+                    classbroUserInfo.get(0).setMobile(tel.getText().toString());
+                    classbroUserInfo.get(0).save();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+        tel.addTextChangedListener(telText);
+        //微信号
+        TextWatcher wxText = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
+                if (classbroUserInfo == null) {
+                    ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
+                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4,sessionId.length())));
+                    classbroUserInfo1.setWxAccount(wxNo.getText().toString());
+                    classbroUserInfo1.save();
+                } else {
+                    classbroUserInfo.get(0).setWxAccount(wxNo.getText().toString());
+                    classbroUserInfo.get(0).save();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+        wxNo.addTextChangedListener(wxText);
+        //账号
+        TextWatcher accountText = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
+                if (classbroUserInfo == null) {
+                    ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
+                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4,sessionId.length())));
+                    classbroUserInfo1.setSchoolAccount(account.getText().toString());
+                    classbroUserInfo1.save();
+                } else {
+                    classbroUserInfo.get(0).setSchoolAccount(account.getText().toString());
+                    classbroUserInfo.get(0).save();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+        account.addTextChangedListener(accountText);
+        //密码
+        TextWatcher passwordText = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
+                if (classbroUserInfo == null) {
+                    ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
+                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4,sessionId.length())));
+                    classbroUserInfo1.setSchoolPws(password.getText().toString());
+                    classbroUserInfo1.save();
+                } else {
+                    classbroUserInfo.get(0).setSchoolPws(password.getText().toString());
+                    classbroUserInfo.get(0).save();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+        password.addTextChangedListener(passwordText);
+
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                Log.e("11", "1111");
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                if (isActiva == 1) {
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                }
+                Log.e("11", "2222");
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                Log.e("11", "3333");
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                Log.e("11", newState + "");
+            }
+        });
+
+        toolbar.setOnOptionItemClickListener(new MyToolbar.OnOptionItemClickListener() {
+            @Override
+            public void onOptionItemClick(View v) {
+                drawerLayout.openDrawer(Gravity.RIGHT);
+            }
+        });
+        grade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.e("po",position+"");
+                String s =parent.getItemAtPosition(position).toString(); //这里就是将条目所包含的字符串赋给s
+                grade.setPrompt(s);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override

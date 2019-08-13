@@ -57,17 +57,17 @@ public class ImageLoaderKit {
         final int imageSize = HeadImageView.DEFAULT_AVATAR_NOTIFICATION_ICON_SIZE;
 
         Bitmap cachedBitmap = null;
-        String dealUrl = "";
+        /*String dealUrl = "";
         if (!TextUtils.isEmpty(url)) {
             if (url.substring(0,1).equals("/")) {
                 url = url.substring(1);
             }
             dealUrl = url.substring(0,4).equals("http") ? url: CommonUtil.getAvatarUrl(url);
-        }
+        }*/
         try {
             cachedBitmap = Glide.with(context)
                     .asBitmap()
-                    .load(dealUrl)
+                    .load(CommonUtil.getAvatarUrl(url))
                     .apply(new RequestOptions()
                             .centerCrop()
                             .override(imageSize, imageSize))

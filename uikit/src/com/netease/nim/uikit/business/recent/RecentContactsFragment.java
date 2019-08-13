@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import com.netease.nim.uikit.common.util.sys.ScreenUtil;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.RequestCallbackWrapper;
 import com.netease.nimlib.sdk.ResponseCode;
 import com.netease.nimlib.sdk.msg.MsgService;
@@ -42,6 +44,8 @@ import com.netease.nimlib.sdk.msg.model.QueryDirectionEnum;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
+import com.netease.nimlib.sdk.uinfo.UserService;
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,6 +90,7 @@ public class RecentContactsFragment extends TFragment {
 
     private UserInfoObserver userInfoObserver;
     public static Integer width = 1080;
+    public String account = "";
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -137,6 +142,7 @@ public class RecentContactsFragment extends TFragment {
         recyclerView = findView(R.id.recycler_view);
         emptyBg = findView(R.id.emptyBg);
         emptyHint = findView(R.id.message_list_empty_hint);
+
     }
 
     /**
@@ -153,6 +159,7 @@ public class RecentContactsFragment extends TFragment {
 
 
         // recyclerView
+        adapter.setHasStableIds(true);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addOnItemTouchListener(touchListener);
@@ -248,6 +255,7 @@ public class RecentContactsFragment extends TFragment {
                         }
                     });
                 }
+
               /*  CommonUtil.setDelectedItemListener(new CommonUtil.DeletedItemListener() {
                     @Override
                     public void deleted(RecentContactAdapter adapter, int position, String contactId) {
@@ -380,6 +388,7 @@ public class RecentContactsFragment extends TFragment {
                         }
                       /*  List<String> list = new ArrayList<>();
                         for (int i = 0; i < loadedRecents.size(); i++) {
+
                             list.add(loadedRecents.get(i).getContactId());
                         }
 
@@ -691,7 +700,12 @@ public class RecentContactsFragment extends TFragment {
             userInfoObserver = new UserInfoObserver() {
                 @Override
                 public void onUserInfoChanged(List<String> accounts) {
-                    refreshMessages(false);
+                    //TODO 用户资料变动   注释防止列表一直刷新
+                    if (!account.equals(accounts.get(0))) {
+                        account = accounts.get(0);
+                        refreshMessages(false);
+                    }
+
                 }
             };
         }
