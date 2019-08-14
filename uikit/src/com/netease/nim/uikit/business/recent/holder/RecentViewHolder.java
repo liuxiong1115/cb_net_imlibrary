@@ -298,7 +298,7 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
                             if (content != null) {
                                 try {
                                     JSONObject jsonObject = new JSONObject(content);
-                                    Integer isActiva = jsonObject.getInt("activa");
+                                    Integer isActiva = jsonObject.optInt("activa");
                                     //未激活：0  已激活：1
                                     if (isActiva == 1) {
                                         groupActiva.setVisibility(View.VISIBLE);
@@ -316,12 +316,12 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
                 list.add(recentContact.getContactId());
                 NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(recentContact.getContactId());
                 if (nimUserInfo == null) {
-                    contacts_type.setVisibility(View.INVISIBLE);
+                    contacts_type.setVisibility(View.GONE);
                 } else {
                     String content = nimUserInfo.getExtension();
 
                     if (TextUtils.isEmpty(content)) {
-                        contacts_type.setVisibility(View.INVISIBLE);
+                        contacts_type.setVisibility(View.GONE);
                     } else {
                         try {
                             //    Log.e("userInfo", content.toString());
@@ -334,7 +334,7 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
                                 contacts_type.setText("内部");
                             } else {
                                 //外部联系人
-                                String source = jsonObject.getString("wxNo");
+                                String source = jsonObject.optString("wxNo");
                                 if (!TextUtils.isEmpty(source)) {
                                     if (source.length() > 10) {
                                         tvNickname.setMaxWidth(RecentContactsFragment.width / 4);

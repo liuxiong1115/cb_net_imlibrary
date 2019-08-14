@@ -1,5 +1,6 @@
 package com.netease.nim.uikit.common;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -125,5 +126,15 @@ public class CommonUtil {
     }
     public interface AddMemberListener {
         void addMember(Context context);
+    }
+
+    //添加用户信息回调
+    public static AddUserInfoListener addUserInfoListener;
+    public static void setAddUserInfoListener(AddUserInfoListener listener) {
+        addUserInfoListener = listener;
+
+    }
+    public interface AddUserInfoListener {
+        void addUserInfo(Activity context);
     }
 }

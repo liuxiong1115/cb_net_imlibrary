@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.netease.nim.demo.R;
@@ -24,6 +25,7 @@ import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.model.main.LoginSyncDataStatusObserver;
 import com.netease.nim.uikit.business.contact.core.item.ContactIdFilter;
 import com.netease.nim.uikit.business.contact.selector.activity.ContactSelectActivity;
+import com.netease.nim.uikit.business.session.activity.P2PMessageActivity;
 import com.netease.nim.uikit.business.team.activity.NormalTeamInfoActivity;
 import com.netease.nim.uikit.business.team.helper.TeamHelper;
 import com.netease.nim.uikit.common.CommonUtil;
@@ -121,7 +123,17 @@ public class MainActivity extends UI {
                 NimUIKit.startContactSelector(context, option, 102);
             }
         });*/
-
+       /* CommonUtil.setAddUserInfoListener(new CommonUtil.AddUserInfoListener() {
+            @Override
+            public void addUserInfo(Activity context) {
+                Spinner grade = context.findViewById(R.id.userGrade);
+                Spinner country = P2PMessageActivity.instance.get().findViewById(R.id.userCountry);
+                Spinner education = P2PMessageActivity.instance.get().findViewById(R.id.userEducation);
+                Spinner school = P2PMessageActivity.instance.get().findViewById(R.id.userSchool);
+                Spinner major = P2PMessageActivity.instance.get().findViewById(R.id.userMajor);
+                Toast.makeText(MainActivity.this,"回调",Toast.LENGTH_SHORT).show();
+            }
+        });*/
     }
 
 

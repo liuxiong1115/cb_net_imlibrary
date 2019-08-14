@@ -287,7 +287,7 @@ public class TeamHelper {
             try {
                 if (!TextUtils.isEmpty(result)) {
                     JSONObject jsonObject = new JSONObject(result);
-                    name = jsonObject.getString("orderNo");
+                    name = jsonObject.optString("orderNo");
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

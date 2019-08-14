@@ -97,6 +97,10 @@ public class P2PMessageActivity extends BaseMessageActivity {
         initData();
         setListener();
 
+        CommonUtil.AddUserInfoListener listener = CommonUtil.addUserInfoListener;
+        if (listener != null) {
+            listener.addUserInfo(this);
+        }
     }
 
     private void initView() {
@@ -146,15 +150,19 @@ public class P2PMessageActivity extends BaseMessageActivity {
                         try {
                             Log.e("userInfo", content.toString());
                             org.json.JSONObject jsonObject = new org.json.JSONObject(content);
-                            Integer activa = jsonObject.getInt("activa");
-                            Integer type = jsonObject.getInt("isInternal");
+                            Integer activa = jsonObject.optInt("activa");
+                            Integer type = jsonObject.optInt("isInternal");
                             if (type == 0) {  //内部
                                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                                 isActiva = 1;
                             } else {
-                                toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
-                                isActiva = activa;
-                                setUserInfo();
+                                if (activa == 0) { //未激活
+                                    toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
+                                    isActiva = activa;
+                                    setUserInfo();
+                                } else{
+                                    isActiva = 1;
+                                }
                             }
                         } catch (Exception e) {
                             /*toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
