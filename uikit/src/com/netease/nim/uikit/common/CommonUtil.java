@@ -135,6 +135,6 @@ public class CommonUtil {
 
     }
     public interface AddUserInfoListener {
-        void addUserInfo(Activity context);
+        void addUserInfo(Activity context,String sessionId);
     }
 }

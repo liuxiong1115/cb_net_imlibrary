@@ -3,6 +3,7 @@ package com.netease.nim.uikit.business.recent.adapter;
 import android.support.v7.widget.RecyclerView;
 
 import com.netease.nim.uikit.R;
+import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.business.recent.RecentContactsCallback;
 import com.netease.nim.uikit.business.recent.holder.CommonRecentViewHolder;
 import com.netease.nim.uikit.business.recent.holder.TeamRecentViewHolder;
@@ -45,7 +46,8 @@ public class RecentContactAdapter extends BaseMultiItemQuickAdapter<RecentContac
         baseHolder.addOnClickListener(R.id.delete);
         if (CommonUtil.role == CommonUtil.SELLER) {
             if (item.getSessionType() == SessionTypeEnum.P2P) {
-                if (CommonUtil.classbroRobot.equals(item.getContactId()) || CommonUtil.systemNotify.equals(item.getContactId()) || item.getContactId().startsWith("stud")) {
+                if (CommonUtil.classbroRobot.equals(item.getContactId()) || CommonUtil.systemNotify.equals(item.getContactId())
+                        || item.getContactId().startsWith("stud")|| NimUIKit.getAccount().toLowerCase().equals(item.getContactId().toLowerCase())) {
                     baseHolder.setText(R.id.delete,"删除");
                 } else {
                     baseHolder.setText(R.id.delete, "结束咨询");

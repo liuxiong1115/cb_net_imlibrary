@@ -68,7 +68,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
     public MyToolbar toolbar;
     public Spinner country, school, major, grade, education;
     public String session;
-    public boolean isFrist = true;
+    public boolean isGradeFrist = true,isCountryFrist = true,isSchoolFrist = true,isMojorFrist=true,isEduFrist = true;
 
     public static void start(Context context, String contactId, SessionCustomization customization, IMMessage anchor) {
         Intent intent = new Intent();
@@ -99,7 +99,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
 
         CommonUtil.AddUserInfoListener listener = CommonUtil.addUserInfoListener;
         if (listener != null) {
-            listener.addUserInfo(this);
+            listener.addUserInfo(this,sessionId);
         }
     }
 
@@ -165,14 +165,13 @@ public class P2PMessageActivity extends BaseMessageActivity {
                                 }
                             }
                         } catch (Exception e) {
-                            /*toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
-                            setUserInfo();*/
                             e.printStackTrace();
                         }
                     }
                 }
             }
             if (isActiva != 0) {
+                toolbar.setMenuVisible(false);
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
         }
@@ -348,12 +347,16 @@ public class P2PMessageActivity extends BaseMessageActivity {
         drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-                Log.e("11", "1111");
+                if (isActiva == 1) {
+                    toolbar.setMenuVisible(false);
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                }
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 if (isActiva == 1) {
+                    toolbar.setMenuVisible(false);
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 }
                 Log.e("11", "2222");
@@ -361,19 +364,30 @@ public class P2PMessageActivity extends BaseMessageActivity {
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                Log.e("11", "3333");
+                if (isActiva == 1) {
+                    toolbar.setMenuVisible(false);
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                }
             }
 
             @Override
             public void onDrawerStateChanged(int newState) {
-                Log.e("11", newState + "");
+                if (isActiva == 1) {
+                    toolbar.setMenuVisible(false);
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                }
             }
         });
 
         toolbar.setOnOptionItemClickListener(new MyToolbar.OnOptionItemClickListener() {
             @Override
             public void onOptionItemClick(View v) {
-                drawerLayout.openDrawer(Gravity.RIGHT);
+                if (isActiva == 0) {
+                    drawerLayout.openDrawer(Gravity.RIGHT);
+                } else {
+                    toolbar.setMenuVisible(false);
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                }
             }
         });
        /* grade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
