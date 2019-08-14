@@ -193,7 +193,6 @@
                         android:layout_height="wrap_content"
                         android:hint="请输入年级"
                         android:padding="@dimen/dp_10"
-                        android:dropDownVerticalOffset="40dp"
                         android:textSize="14sp" />
 
                     <View

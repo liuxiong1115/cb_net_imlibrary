@@ -107,33 +107,6 @@ public class MainActivity extends UI {
 
         onInit();
 
-      /*  CommonUtil.setAddMemberListener(new CommonUtil.AddMemberListener() {
-            @Override
-            public void addMember(Context context) {
-                ContactSelectActivity.Option option = new ContactSelectActivity.Option();
-                option.title = "邀请成员";
-                ArrayList<String> disableAccounts = new ArrayList<>();
-             //   disableAccounts.addAll(memberAccounts);
-                option.itemDisableFilter = new ContactIdFilter(disableAccounts);
-
-                // 限制群成员数量在群容量范围内
-                int capacity = 200;
-                option.maxSelectNum = capacity;
-            //    option.maxSelectedTip = getString(R.string.reach_team_member_capacity, teamCapacity);
-                NimUIKit.startContactSelector(context, option, 102);
-            }
-        });*/
-       /* CommonUtil.setAddUserInfoListener(new CommonUtil.AddUserInfoListener() {
-            @Override
-            public void addUserInfo(Activity context) {
-                Spinner grade = context.findViewById(R.id.userGrade);
-                Spinner country = P2PMessageActivity.instance.get().findViewById(R.id.userCountry);
-                Spinner education = P2PMessageActivity.instance.get().findViewById(R.id.userEducation);
-                Spinner school = P2PMessageActivity.instance.get().findViewById(R.id.userSchool);
-                Spinner major = P2PMessageActivity.instance.get().findViewById(R.id.userMajor);
-                Toast.makeText(MainActivity.this,"回调",Toast.LENGTH_SHORT).show();
-            }
-        });*/
     }
 
 

@@ -68,7 +68,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
     public MyToolbar toolbar;
     public Spinner country, school, major, grade, education;
     public String session;
-    private boolean isFrist = true;
+    public boolean isFrist = true;
 
     public static void start(Context context, String contactId, SessionCustomization customization, IMMessage anchor) {
         Intent intent = new Intent();
@@ -150,8 +150,8 @@ public class P2PMessageActivity extends BaseMessageActivity {
                         try {
                             Log.e("userInfo", content.toString());
                             org.json.JSONObject jsonObject = new org.json.JSONObject(content);
-                            Integer activa = jsonObject.optInt("activa");
-                            Integer type = jsonObject.optInt("isInternal");
+                            Integer activa = jsonObject.getInt("activa");
+                            Integer type = jsonObject.getInt("isInternal");
                             if (type == 0) {  //内部
                                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                                 isActiva = 1;

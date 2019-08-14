@@ -701,10 +701,10 @@ public class RecentContactsFragment extends TFragment {
                 @Override
                 public void onUserInfoChanged(List<String> accounts) {
                     //TODO 用户资料变动   注释防止列表一直刷新
-                    if (!account.equals(accounts.get(0))) {
+                   /* if (!account.equals(accounts.get(0))) {
                         account = accounts.get(0);
                         refreshMessages(false);
-                    }
+                    }*/
 
                 }
             };
