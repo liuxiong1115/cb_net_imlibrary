@@ -62,13 +62,13 @@ public class P2PMessageActivity extends BaseMessageActivity {
     public static WeakReference<P2PMessageActivity> instance;
     private DrawerLayout drawerLayout;
 
-    public AppCompatAutoCompleteTextView nickName, tel, wxNo,  account, password;
+    public AppCompatAutoCompleteTextView nickName, tel, wxNo, account, password;
     public AppCompatTextView activaUseer;
-    public int isActiva = 0;  //是否激活  0--未激活  1--已激活
+    public Integer isActiva = 0;  //是否激活  0--未激活  1--已激活
     public MyToolbar toolbar;
     public Spinner country, school, major, grade, education;
     public String session;
-    public boolean isGradeFrist = true,isCountryFrist = true,isSchoolFrist = true,isMojorFrist=true,isEduFrist = true;
+    public boolean isGradeFrist = true, isCountryFrist = true, isSchoolFrist = true, isMojorFrist = true, isEduFrist = true;
 
     public static void start(Context context, String contactId, SessionCustomization customization, IMMessage anchor) {
         Intent intent = new Intent();
@@ -99,7 +99,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
 
         CommonUtil.AddUserInfoListener listener = CommonUtil.addUserInfoListener;
         if (listener != null) {
-            listener.addUserInfo(this,sessionId);
+            listener.addUserInfo(this, sessionId);
         }
     }
 
@@ -120,15 +120,6 @@ public class P2PMessageActivity extends BaseMessageActivity {
     }
 
     private void initData() {
-    /*    //初始化年级
-        List<String> list = new ArrayList<>();
-        list.add("1年");
-        list.add("2年");
-        list.add("3年");
-        list.add("4年");
-        ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,list);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        grade.setAdapter(adapter);*/
         if (CommonUtil.role == CommonUtil.SELLER) {
             if (!CommonUtil.classbroRobot.equals(sessionId) || !CommonUtil.systemNotify.equals(sessionId)) {
                 if (sessionId.toLowerCase().startsWith("visi")) {
@@ -142,39 +133,41 @@ public class P2PMessageActivity extends BaseMessageActivity {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         } else {
             if (!TextUtils.isEmpty(sessionId)) {
-            if (sessionId.startsWith("stud")) {
-                NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(sessionId);
-                if (nimUserInfo != null) {
-                    String content = nimUserInfo.getExtension();
-                    if (!TextUtils.isEmpty(content)) {
-                        try {
-                            Log.e("userInfo", content.toString());
-                            org.json.JSONObject jsonObject = new org.json.JSONObject(content);
-                            Integer activa = jsonObject.getInt("activa");
-                            Integer type = jsonObject.getInt("isInternal");
-                            if (type == 0) {  //内部
-                                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                                isActiva = 1;
-                            } else {
-                                if (activa == 0) { //未激活
-                                    toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
-                                    isActiva = activa;
-                                    setUserInfo();
-                                } else{
+                if (sessionId.startsWith("stud")) {
+                    NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(sessionId);
+                    if (nimUserInfo != null) {
+                        String content = nimUserInfo.getExtension();
+                        if (!TextUtils.isEmpty(content)) {
+                            try {
+                                Log.e("userInfo", content.toString());
+                                org.json.JSONObject jsonObject = new org.json.JSONObject(content);
+                                Integer activa = jsonObject.getInt("activa");
+                                Integer type = jsonObject.getInt("isInternal");
+                                if (type == 0) {  //内部
+                                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                                     isActiva = 1;
+                                } else {
+                                    if (activa == 0) { //未激活
+                                        toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
+                                        isActiva = activa;
+                                        setUserInfo();
+                                    } else {
+                                        isActiva = 1;
+                                    }
                                 }
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
                     }
+                } else {
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                }
+                if (isActiva != 0) {
+                    toolbar.setMenuVisible(false);
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 }
             }
-            if (isActiva != 0) {
-                toolbar.setMenuVisible(false);
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-            }
-        }
         }
     }
 
@@ -183,28 +176,28 @@ public class P2PMessageActivity extends BaseMessageActivity {
      */
     public void setUserInfo() {
         if (!TextUtils.isEmpty(sessionId)) {
-                String substring = sessionId.substring(4, sessionId.length());
-                List<ClassbroUserInfo> classbroUserInfos = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", substring);
-                if (classbroUserInfos == null || classbroUserInfos.size() == 0) {
-                    ClassbroUserInfo classbroUserInfo = new ClassbroUserInfo();
-                    classbroUserInfo.setUserId(Long.valueOf(substring));
-                    classbroUserInfo.save();
-                } else {
-                    ClassbroUserInfo info = classbroUserInfos.get(0);
-                    nickName.setText(info.getStudentName() == null ? "" : info.getStudentName());
-                    tel.setText(info.getMobile() == null ? "" : info.getMobile());
-                    wxNo.setText(info.getWxAccount() == null ? "" : info.getWxAccount());
-                    country.setPrompt(info.getCountry() == null ? "请选择国家" : info.getCountry());
-                    school.setPrompt(info.getSchool() == null ? "请选择学校" : info.getSchool());
-                    major.setPrompt(info.getMajor() == null ? "请选择专业" : info.getMajor());
-                    grade.setPrompt(info.getGrade() == null ? "请选择年级" : info.getGrade());
-                    education.setPrompt(info.getEducation()== null ? "请选择学历": info.getEducation());
-                    account.setText(info.getSchoolAccount() == null ? "" : info.getSchoolAccount());
-                    password.setText(info.getSchoolPws() == null ? "" : info.getSchoolPws());
-                }
+            String substring = sessionId.substring(4, sessionId.length());
+            List<ClassbroUserInfo> classbroUserInfos = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", substring);
+            if (classbroUserInfos == null || classbroUserInfos.size() == 0) {
+                ClassbroUserInfo classbroUserInfo = new ClassbroUserInfo();
+                classbroUserInfo.setUserId(Long.valueOf(substring));
+                classbroUserInfo.save();
             } else {
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                ClassbroUserInfo info = classbroUserInfos.get(0);
+                nickName.setText(info.getStudentName() == null ? "" : info.getStudentName());
+                tel.setText(info.getMobile() == null ? "" : info.getMobile());
+                wxNo.setText(info.getWxAccount() == null ? "" : info.getWxAccount());
+                country.setPrompt(info.getCountry() == null ? "请选择国家" : info.getCountry());
+                school.setPrompt(info.getSchool() == null ? "请选择学校" : info.getSchool());
+                major.setPrompt(info.getMajor() == null ? "请选择专业" : info.getMajor());
+                grade.setPrompt(info.getGrade() == null ? "请选择年级" : info.getGrade());
+                education.setPrompt(info.getEducation() == null ? "请选择学历" : info.getEducation());
+                account.setText(info.getSchoolAccount() == null ? "" : info.getSchoolAccount());
+                password.setText(info.getSchoolPws() == null ? "" : info.getSchoolPws());
             }
+        } else {
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }
     }
 
     private void setListener() {
@@ -225,7 +218,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
                 List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
                 if (classbroUserInfo == null) {
                     ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
-                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4,sessionId.length())));
+                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4, sessionId.length())));
                     classbroUserInfo1.setStudentName(nickName.getText().toString());
                     classbroUserInfo1.save();
                 } else {
@@ -247,7 +240,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
                 List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
                 if (classbroUserInfo == null) {
                     ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
-                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4,sessionId.length())));
+                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4, sessionId.length())));
                     classbroUserInfo1.setMobile(tel.getText().toString());
                     classbroUserInfo1.save();
                 } else {
@@ -274,7 +267,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
                 List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
                 if (classbroUserInfo == null) {
                     ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
-                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4,sessionId.length())));
+                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4, sessionId.length())));
                     classbroUserInfo1.setWxAccount(wxNo.getText().toString());
                     classbroUserInfo1.save();
                 } else {
@@ -301,7 +294,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
                 List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
                 if (classbroUserInfo == null) {
                     ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
-                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4,sessionId.length())));
+                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4, sessionId.length())));
                     classbroUserInfo1.setSchoolAccount(account.getText().toString());
                     classbroUserInfo1.save();
                 } else {
@@ -328,7 +321,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
                 List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
                 if (classbroUserInfo == null) {
                     ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
-                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4,sessionId.length())));
+                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4, sessionId.length())));
                     classbroUserInfo1.setSchoolPws(password.getText().toString());
                     classbroUserInfo1.save();
                 } else {
@@ -379,51 +372,6 @@ public class P2PMessageActivity extends BaseMessageActivity {
             }
         });
 
-        toolbar.setOnOptionItemClickListener(new MyToolbar.OnOptionItemClickListener() {
-            @Override
-            public void onOptionItemClick(View v) {
-                if (isActiva == 0) {
-                    drawerLayout.openDrawer(Gravity.RIGHT);
-                } else {
-                    toolbar.setMenuVisible(false);
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                }
-            }
-        });
-       /* grade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                List<ClassbroUserInfo> classbroUserInfos = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
-                if (isFrist) {
-                    isFrist = false;
-                    if (classbroUserInfos != null) {
-                        grade.setPrompt(classbroUserInfos.get(0).getGrade());
-                    } else {
-                        grade.setPrompt("请选择");
-                    }
-                } else {
-                    String s = parent.getItemAtPosition(position).toString(); //这里就是将条目所包含的字符串赋给s
-                    grade.setPrompt(s);
-                    if (classbroUserInfos == null) {
-                        ClassbroUserInfo userInfo = new ClassbroUserInfo();
-                        userInfo.setUserId(Long.valueOf(sessionId.substring(4, sessionId.length())));
-                        userInfo.setGrade(s);
-                        userInfo.setSchoolYear(position + 1);
-                        userInfo.save();
-                    } else {
-                        ClassbroUserInfo userInfo = classbroUserInfos.get(0);
-                        userInfo.setGrade(s);
-                        userInfo.setSchoolYear(position + 1);
-                        userInfo.save();
-                    }
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
     }
 
     @Override
@@ -611,10 +559,20 @@ public class P2PMessageActivity extends BaseMessageActivity {
     @Override
     public void menuItemClick(View v) {
         super.menuItemClick(v);
-        CommonUtil.MenuDeleteListener listener = CommonUtil.menuDeleteListener;
-        if (listener != null) {
-            listener.deleted(sessionId);
+        if (sessionId.startsWith("visi")) {
+            CommonUtil.MenuDeleteListener listener = CommonUtil.menuDeleteListener;
+            if (listener != null) {
+                listener.deleted(sessionId);
+            }
+        } else {
+            if (isActiva == 0) {
+                drawerLayout.openDrawer(Gravity.RIGHT);
+            } else {
+                toolbar.setMenuVisible(false);
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            }
         }
+
     }
 
     @Override
