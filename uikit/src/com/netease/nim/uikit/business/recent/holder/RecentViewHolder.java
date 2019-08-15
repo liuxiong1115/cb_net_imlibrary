@@ -298,10 +298,16 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
                             if (content != null) {
                                 try {
                                     JSONObject jsonObject = new JSONObject(content);
-                                    Integer isActiva = jsonObject.optInt("activa");
-                                    //未激活：0  已激活：1
-                                    if (isActiva == 1) {
-                                        groupActiva.setVisibility(View.VISIBLE);
+                                    Integer isInternal = 1;  //外部--1  内部--0
+                                    if (content.contains("isInternal")) {
+                                        isInternal = jsonObject.optInt("isInternal");
+                                    }
+                                    if (isInternal == 1) {
+                                        Integer isActiva = jsonObject.optInt("activa");
+                                        //未激活：0  已激活：1
+                                        if (isActiva == 1) {
+                                            groupActiva.setVisibility(View.VISIBLE);
+                                        }
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -311,43 +317,45 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
                     }
                 });
             } else {
-                groupActiva.setVisibility(View.INVISIBLE);
-                List<String> list = new ArrayList<>();
-                list.add(recentContact.getContactId());
-                NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(recentContact.getContactId());
-                if (nimUserInfo == null) {
-                    contacts_type.setVisibility(View.GONE);
-                } else {
-                    String content = nimUserInfo.getExtension();
-
-                    if (TextUtils.isEmpty(content)) {
+                if (recentContact.getContactId().startsWith("stud")) {
+                    groupActiva.setVisibility(View.INVISIBLE);
+                    List<String> list = new ArrayList<>();
+                    list.add(recentContact.getContactId());
+                    NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(recentContact.getContactId());
+                    if (nimUserInfo == null) {
                         contacts_type.setVisibility(View.GONE);
                     } else {
-                        try {
-                            //    Log.e("userInfo", content.toString());
-                            JSONObject jsonObject = new JSONObject(content);
-                            Integer type = jsonObject.getInt("isInternal");
-                            //isInternal 0是内部  1和0
-                            if (type == 0) {
-                                contacts_type.setVisibility(View.VISIBLE);
-                                contacts_type.setBackgroundResource(R.drawable.inside_bg);
-                                contacts_type.setText("内部");
-                            } else {
-                                //外部联系人
-                                String source = jsonObject.optString("wxNo");
-                                if (!TextUtils.isEmpty(source)) {
-                                    if (source.length() > 10) {
-                                        tvNickname.setMaxWidth(RecentContactsFragment.width / 4);
-                                    } else {
-                                        tvNickname.setMaxWidth(RecentContactsFragment.width / 3);
-                                    }
+                        String content = nimUserInfo.getExtension();
+
+                        if (TextUtils.isEmpty(content)) {
+                            contacts_type.setVisibility(View.GONE);
+                        } else {
+                            try {
+                                //    Log.e("userInfo", content.toString());
+                                JSONObject jsonObject = new JSONObject(content);
+                                Integer type = jsonObject.getInt("isInternal");
+                                //isInternal 0是内部  1和0
+                                if (type == 0) {
                                     contacts_type.setVisibility(View.VISIBLE);
-                                    contacts_type.setBackgroundResource(R.drawable.outside_bg);
-                                    contacts_type.setText(source);
+                                    contacts_type.setBackgroundResource(R.drawable.inside_bg);
+                                    contacts_type.setText("内部");
+                                } else {
+                                    //外部联系人
+                                    String source = jsonObject.optString("wxNo");
+                                    if (!TextUtils.isEmpty(source)) {
+                                        if (source.length() > 10) {
+                                            tvNickname.setMaxWidth(RecentContactsFragment.width / 4);
+                                        } else {
+                                            tvNickname.setMaxWidth(RecentContactsFragment.width / 3);
+                                        }
+                                        contacts_type.setVisibility(View.VISIBLE);
+                                        contacts_type.setBackgroundResource(R.drawable.outside_bg);
+                                        contacts_type.setText(source);
+                                    }
                                 }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
                     }
                 }
