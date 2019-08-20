@@ -10,18 +10,50 @@
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:elevation="0dp">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <View
+            android:id="@+id/baseTopbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:titleTextAppearance="@style/Toolbar.TitleText">
+            android:layout_height="25dp"
+            android:visibility="gone"/>
 
-            <include layout="@layout/nim_action_bar_right_clickable_tv" />
-        </android.support.v7.widget.Toolbar>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/topbar"
+                android:layout_width="match_parent"
+                android:layout_height="25dp" />
+
+            <com.netease.nim.uikit.common.ui.widget.MyToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/appbarHeight"
+                android:background="@color/transparent"
+                android:minHeight="?attr/actionBarSize"
+                android:paddingLeft="0dp"
+                app:backIcon="@drawable/back_black"
+                app:backMarginLeft="15dp"
+                app:backText=""
+                app:backTextAppearance="?attr/actionMenuTextAppearance"
+                app:backTextColor="@android:color/black"
+                app:contentInsetStart="0dp"
+                app:menuMarginLeft="15dp"
+                app:menuMarginRight="15dp"
+                app:title=""
+                app:titleTextAppearance="@style/NET_Title_Appearance"
+                app:titleTextColor="@android:color/black"
+                app:title_gravity="center">
+                <include layout="@layout/nim_action_bar_right_clickable_tv" />
+
+            </com.netease.nim.uikit.common.ui.widget.MyToolbar>
+
+        </FrameLayout>
+
     </android.support.design.widget.AppBarLayout>
 
     <com.netease.nim.uikit.common.ui.widget.ClearableEditTextWithIcon

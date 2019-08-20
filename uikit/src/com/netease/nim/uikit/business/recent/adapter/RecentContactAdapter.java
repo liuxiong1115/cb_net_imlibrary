@@ -72,8 +72,4 @@ public class RecentContactAdapter extends BaseMultiItemQuickAdapter<RecentContac
     public void setCallback(RecentContactsCallback callback) {
         this.callback = callback;
     }
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
 }

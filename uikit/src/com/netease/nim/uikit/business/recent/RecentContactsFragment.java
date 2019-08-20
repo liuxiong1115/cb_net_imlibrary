@@ -89,8 +89,6 @@ public class RecentContactsFragment extends TFragment {
     private RecentContactsCallback callback;
 
     private UserInfoObserver userInfoObserver;
-    public static Integer width = 1080;
-    public String account = "";
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -102,7 +100,6 @@ public class RecentContactsFragment extends TFragment {
         registerObservers(true);
         registerDropCompletedListener(true);
         registerOnlineStateChangeListener(true);
-        width = ScreenUtil.getScreenWidth(getContext());
     }
 
     @Override
@@ -701,11 +698,7 @@ public class RecentContactsFragment extends TFragment {
                 @Override
                 public void onUserInfoChanged(List<String> accounts) {
                     //TODO 用户资料变动   注释防止列表一直刷新
-                   /* if (!account.equals(accounts.get(0))) {
-                        account = accounts.get(0);
-                        refreshMessages(false);
-                    }*/
-
+                 //   refreshMessages(false);
                 }
             };
         }

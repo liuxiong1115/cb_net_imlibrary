@@ -118,7 +118,8 @@ public class MsgThumbImageView extends ImageView {
                 builder = Glide.with(getContext().getApplicationContext())
                         .asBitmap()
                         .apply(options)
-                        .load(new File(path));
+                        .load(path);
+                     //   .load(new File(path));
         //    }
         }
         builder.into(this);

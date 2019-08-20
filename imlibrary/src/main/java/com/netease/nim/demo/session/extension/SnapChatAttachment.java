@@ -30,17 +30,14 @@ public class SnapChatAttachment extends FileAttachment {
             if (!send && !TextUtils.isEmpty(path)) {
                 data.put(KEY_PATH, path);
             }
-
             if (!TextUtils.isEmpty(md5)) {
                 data.put(KEY_MD5, md5);
             }
-
             data.put(KEY_URL, url);
             data.put(KEY_SIZE, size);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return CustomAttachParser.packData(CustomAttachmentType.SnapChat, data);
     }
 

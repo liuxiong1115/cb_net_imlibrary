@@ -127,7 +127,6 @@ public class P2PMessageActivity extends BaseMessageActivity {
                 }
             }
         }
-
         //如果是学生 禁止滑动侧边栏
         if (CommonUtil.role == CommonUtil.TEAC || CommonUtil.role == CommonUtil.STUD) {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -337,7 +336,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
         };
         password.addTextChangedListener(passwordText);
 
-        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+       /* drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 if (isActiva == 1) {
@@ -371,7 +370,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
                 }
             }
         });
-
+*/
     }
 
     @Override
@@ -395,28 +394,30 @@ public class P2PMessageActivity extends BaseMessageActivity {
 
     private void requestBuddyInfo() {
         setTitle(UserInfoHelper.getUserTitleName(sessionId, SessionTypeEnum.P2P));
+
         if (CommonUtil.role == CommonUtil.SELLER) {
             NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(sessionId);
             if (userInfo == null) {
                 return;
             }
-            try {
-                String content = userInfo.getExtension();
-                if (TextUtils.isEmpty(content)) {
-                    return;
+            if (sessionId.startsWith("stud")) {
+                try {
+                    String content = userInfo.getExtension();
+                    if (TextUtils.isEmpty(content)) {
+                        return;
+                    }
+                    org.json.JSONObject jsonObject = new org.json.JSONObject(content);
+                    String source = jsonObject.optString("wxNo");
+                    MyToolbar toolbar = findViewById(R.id.toolbar);
+                    toolbar.setSubtitleVisible(true);
+                    toolbar.setSubtitleTextSize(14);
+                    toolbar.setSubtitleTextColor(getResources().getColor(R.color.color_aaaaaa_content_text));
+                    toolbar.setSubtitle(source == null ? "" : source);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                org.json.JSONObject jsonObject = new org.json.JSONObject(content);
-                String source = jsonObject.getString("wxNo");
-                MyToolbar toolbar = findViewById(R.id.toolbar);
-                toolbar.setSubtitleVisible(true);
-                toolbar.setSubtitleTextSize(14);
-                toolbar.setSubtitleTextColor(getResources().getColor(R.color.color_aaaaaa_content_text));
-                toolbar.setSubtitle(source == null ? "" : source);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-
         }
     }
 

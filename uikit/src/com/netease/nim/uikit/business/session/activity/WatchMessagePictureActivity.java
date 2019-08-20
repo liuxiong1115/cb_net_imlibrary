@@ -21,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.request.RequestOptions;
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.wrapper.NimToolBarOptions;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
@@ -220,7 +222,7 @@ public class WatchMessagePictureActivity extends UI {
             @Override
             public void onSuccess(List<IMMessage> param) {
                 for (IMMessage imMessage : param) {
-                    if (!ImageUtil.isGif(((ImageAttachment) imMessage.getAttachment()).getExtension())){
+                    if (!ImageUtil.isGif(((ImageAttachment) imMessage.getAttachment()).getExtension())) {
                         imageMsgList.add(imMessage);
                     }
                 }
@@ -403,20 +405,33 @@ public class WatchMessagePictureActivity extends UI {
     }
 
     private void setImageView(final IMMessage msg) {
-        String path = ((ImageAttachment) msg.getAttachment()).getPath();
+        //    String path = ((ImageAttachment) msg.getAttachment()).getPath();
+        String path = ((ImageAttachment) msg.getAttachment()).getUrl();
         if (TextUtils.isEmpty(path)) {
             image.setImageBitmap(ImageUtil.getBitmapFromDrawableRes(getImageResOnLoading()));
             return;
         }
 
-        Bitmap bitmap = BitmapDecoder.decodeSampledForDisplay(path, false);
+      /*  Bitmap bitmap = BitmapDecoder.decodeSampledForDisplay(path, false);
         bitmap = ImageUtil.rotateBitmapInNeeded(path, bitmap);
         if (bitmap == null) {
             Toast.makeText(this, R.string.picker_image_error, Toast.LENGTH_LONG).show();
             image.setImageBitmap(ImageUtil.getBitmapFromDrawableRes(getImageResOnFailed()));
-        } else {
-            image.setImageBitmap(bitmap);
-        }
+        } else {*/
+            RequestOptions options = new RequestOptions()
+                    .fitCenter()
+                    .placeholder(R.drawable.nim_image_default)
+                    .error(R.drawable.nim_image_default);
+            Glide.with(this.getApplicationContext())
+                    .asBitmap()
+                    .apply(options)
+                    .load(path)
+                    .into(image);
+            //   .load(new File(path));
+            //    }
+    //    }
+        //  image.setImageBitmap(bitmap);
+
     }
 
     private int getImageResOnLoading() {

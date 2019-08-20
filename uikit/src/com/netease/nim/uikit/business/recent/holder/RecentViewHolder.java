@@ -145,7 +145,9 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
 
         updateNewIndicator(recent);
 
-        setWXTip(recent, holder);
+        if (CommonUtil.role == CommonUtil.SELLER) {
+            setWXTip(recent, holder);
+        }
 
         if (shouldBoom) {
             Object o = DropManager.getInstance().getCurrentId();
@@ -241,7 +243,7 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
 
     protected void updateNickLabel(String nick) {
         int labelWidth = ScreenUtil.screenWidth;
-        labelWidth -= ScreenUtil.dip2px(50 + 70); // 减去固定的头像和时间宽度
+        labelWidth -= ScreenUtil.dip2px(50 + 85); // 减去固定的头像和时间宽度
 
         if (labelWidth > 0) {
             tvNickname.setMaxWidth(labelWidth);
@@ -288,7 +290,7 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
                                 studs.add(members.get(i).getAccount());
                             }
                         }
-                        if (studs.size() > 1) {
+                        if (studs.size() == 0 || studs.size() > 1) {
                             return;
                         }
                         //获取成员资料
@@ -341,12 +343,13 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
                                     contacts_type.setText("内部");
                                 } else {
                                     //外部联系人
+                                    int labelWidth = ScreenUtil.screenWidth;
                                     String source = jsonObject.optString("wxNo");
                                     if (!TextUtils.isEmpty(source)) {
                                         if (source.length() > 10) {
-                                            tvNickname.setMaxWidth(RecentContactsFragment.width / 4);
+                                            tvNickname.setMaxWidth(labelWidth / 4);
                                         } else {
-                                            tvNickname.setMaxWidth(RecentContactsFragment.width / 3);
+                                            tvNickname.setMaxWidth(labelWidth / 3);
                                         }
                                         contacts_type.setVisibility(View.VISIBLE);
                                         contacts_type.setBackgroundResource(R.drawable.outside_bg);
