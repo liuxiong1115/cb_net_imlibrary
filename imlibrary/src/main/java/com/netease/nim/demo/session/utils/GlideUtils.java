@@ -12,11 +12,11 @@ import com.netease.nim.uikit.common.CommonUtil;
  */
 public class GlideUtils {
     public static void lxGlide(Context context, String url, ImageView imageView, RequestOptions requestOptions) {
-        String dealUrl = url.substring(0,4).equals("http") ?url: CommonUtil.BaseUrl +url;
+        String dealUrl = url.startsWith("http") ?url: CommonUtil.BaseUrl +url;
         Glide.with(context).load(dealUrl).apply(requestOptions).into(imageView);
     }
     public static void lxGlide(Context context, String url, ImageView imageView) {
-        String dealUrl = url.substring(0,4).equals("http") ?url: CommonUtil.BaseUrl +url;
+        String dealUrl = url.startsWith("http") ?url: CommonUtil.BaseUrl +url;
         Glide.with(context).load(dealUrl).into(imageView);
     }
 }

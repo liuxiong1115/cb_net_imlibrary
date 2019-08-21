@@ -288,11 +288,14 @@ public class TeamHelper {
                 if (!TextUtils.isEmpty(result)) {
                     JSONObject jsonObject = new JSONObject(result);
                     name = jsonObject.optString("orderNo");
+                } else {
+                    return team.getName();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                return team.getName();
             }
-            return name == null ? team.getName() : name;
+            return TextUtils.isEmpty(name) ? team.getName() : name;
         }
     }
 
