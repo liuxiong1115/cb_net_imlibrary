@@ -227,7 +227,6 @@ public abstract class MsgViewHolderBase extends RecyclerViewHolder<BaseMultiItem
             timeTextView.setVisibility(View.GONE);
             return;
         }
-
         String text = TimeUtil.getTimeShowString(message.getTime(), false);
         timeTextView.setText(text);
     }
@@ -267,7 +266,6 @@ public abstract class MsgViewHolderBase extends RecyclerViewHolder<BaseMultiItem
             show.setVisibility(View.VISIBLE);
             show.loadBuddyAvatar(message);
         }
-
     }
 
     private void setOnClickListener() {
@@ -367,7 +365,6 @@ public abstract class MsgViewHolderBase extends RecyclerViewHolder<BaseMultiItem
         if (!isShowBubble() && !isMiddleItem()) {
             return;
         }
-
         LinearLayout bodyContainer = (LinearLayout) view.findViewById(R.id.message_item_body);
 
         // 调整container的位置

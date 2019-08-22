@@ -48,20 +48,18 @@ public abstract class MsgViewHolderThumbBase extends MsgViewHolderBase {
         FileAttachment msgAttachment = (FileAttachment) message.getAttachment();
         //TODO  图片获取   获取本地路径path   url为远端路径
         String path = msgAttachment.getUrl();
-        //    String thumbPath = msgAttachment.getThumbPath();
+        String thumbPath = msgAttachment.getThumbPath();
         if (!TextUtils.isEmpty(path)) {
             loadThumbnailImage(thumbFromSourceFile(path), true, msgAttachment.getExtension());
-        } /*else if (!TextUtils.isEmpty(thumbPath)) {
+        } else if (!TextUtils.isEmpty(thumbPath)) {
             loadThumbnailImage(thumbPath, false, msgAttachment.getExtension());
-
-        }*/ else {
+        } else {
             loadThumbnailImage(null, false, msgAttachment.getExtension());
             if (message.getAttachStatus() == AttachStatusEnum.transferred
                     || message.getAttachStatus() == AttachStatusEnum.def) {
                 downloadAttachment();
             }
         }
-
         refreshStatus();
     }
 

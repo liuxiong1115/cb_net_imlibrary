@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ import com.netease.nim.uikit.business.session.constant.Extras;
 import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
 import com.netease.nim.uikit.common.CommonUtil;
+import com.netease.nim.uikit.common.ToastHelper;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
 import com.netease.nim.uikit.common.ui.widget.MyToolbar;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
@@ -120,6 +122,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
     }
 
     private void initData() {
+      //  toolbar.setMenuView(R.layout.p2p_toolbar_layout);
         if (CommonUtil.role == CommonUtil.SELLER) {
             if (!CommonUtil.classbroRobot.equals(sessionId) || !CommonUtil.systemNotify.equals(sessionId)) {
                 if (sessionId.toLowerCase().startsWith("visi")) {
@@ -147,10 +150,13 @@ public class P2PMessageActivity extends BaseMessageActivity {
                                     isActiva = 1;
                                 } else {
                                     if (activa == 0) { //未激活
+                                      /*  ImageView addUser = toolbar.findViewById(R.id.action_bar_black_more_icon);
+                                        addUser.setVisibility(View.VISIBLE);*/
                                         toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
                                         isActiva = activa;
                                         setUserInfo();
                                     } else {
+                                        toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.nim_ic_messge_history));
                                         isActiva = 1;
                                     }
                                 }
@@ -336,41 +342,6 @@ public class P2PMessageActivity extends BaseMessageActivity {
         };
         password.addTextChangedListener(passwordText);
 
-       /* drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                if (isActiva == 1) {
-                    toolbar.setMenuVisible(false);
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                }
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                if (isActiva == 1) {
-                    toolbar.setMenuVisible(false);
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                }
-                Log.e("11", "2222");
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                if (isActiva == 1) {
-                    toolbar.setMenuVisible(false);
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                }
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-                if (isActiva == 1) {
-                    toolbar.setMenuVisible(false);
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                }
-            }
-        });
-*/
     }
 
     @Override
@@ -569,11 +540,9 @@ public class P2PMessageActivity extends BaseMessageActivity {
             if (isActiva == 0) {
                 drawerLayout.openDrawer(Gravity.RIGHT);
             } else {
-                toolbar.setMenuVisible(false);
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                ToastHelper.showToast(this,"聊天记录");
             }
         }
-
     }
 
     @Override

@@ -119,7 +119,7 @@ public class MsgThumbImageView extends ImageView {
                         .asBitmap()
                         .apply(options)
                         .load(path);
-                     //  .load(new File(path));
+                    //   .load(new File(path));
         //    }
         }
         builder.into(this);

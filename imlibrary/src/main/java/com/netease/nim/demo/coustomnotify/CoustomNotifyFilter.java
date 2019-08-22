@@ -53,6 +53,7 @@ public class CoustomNotifyFilter {
                                     context.startActivity(intent);
                                 }
                             } else {
+
                                 //震动
                                 vibrator = (Vibrator) context.getSystemService(context.VIBRATOR_SERVICE);
                                 long[] patter = {1000, 1000, 1000, 1000};

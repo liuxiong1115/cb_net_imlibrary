@@ -143,7 +143,8 @@ public class WatchMessagePictureActivity extends UI {
             downloadFuture = null;
         }
         super.onDestroy();
-        Glide.get(this).clearMemory();
+        //清除glide缓存
+        Glide.get(this.getApplicationContext()).clearMemory();
     }
 
     private void setTitle(IMMessage message) {
@@ -369,7 +370,6 @@ public class WatchMessagePictureActivity extends UI {
             onDownloadSuccess(msg);
             return;
         }
-
         // async download original image
         onDownloadStart(msg);
         message = msg; // 下载成功之后，判断是否是同一条消息时需要使用
@@ -381,13 +381,10 @@ public class WatchMessagePictureActivity extends UI {
                 !TextUtils.isEmpty(((ImageAttachment) message.getAttachment()).getPath())) {
             return true;
         }
-
         return false;
     }
 
-/*
-     * ******************************** 设置图片 *********************************/
-
+/** ******************************** 设置图片 *********************************/
 
     private void setThumbnail(IMMessage msg) {
         String thumbPath = ((ImageAttachment) msg.getAttachment()).getThumbPath();
