@@ -137,4 +137,14 @@ public class CommonUtil {
     public interface AddUserInfoListener {
         void addUserInfo(Activity context,String sessionId);
     }
+
+    //查看聊天记录
+    public static CheckHistoryMessageListener checkHistoryMessageListener;
+    public static void setCheckHistoryMessageListener(CheckHistoryMessageListener listener) {
+        checkHistoryMessageListener = listener;
+
+    }
+    public interface CheckHistoryMessageListener {
+        void checkMessage();
+    }
 }

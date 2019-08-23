@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="15dp"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/message_history"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_gravity="center"
+        android:src="@drawable/nim_ic_messge_history"/>
+
+    <ImageView
+        android:id="@+id/action_bar_black_more_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/action_bar_black_more_icon"/>
+</LinearLayout>

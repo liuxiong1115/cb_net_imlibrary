@@ -41,7 +41,7 @@ public class NimApplication extends Application {
         SugarContext.init(this);
         DemoCache.setContext(this);
 
-        CommonUtil.setRole(CommonUtil.SELLER);
+     //   CommonUtil.setRole(CommonUtil.SELLER);
         // 4.6.0 开始，第三方推送配置入口改为 SDKOption#mixPushConfig，旧版配置方式依旧支持。
         NIMClient.init(this, getLoginInfo(), NimSDKOptionConfig.getSDKOptions(this));
 

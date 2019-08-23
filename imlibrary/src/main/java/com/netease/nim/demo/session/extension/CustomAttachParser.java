@@ -19,12 +19,12 @@ public class CustomAttachParser implements MsgAttachmentParser {
         try {
             JSONObject object = JSON.parseObject(json);
             int type = object.getInteger(KEY_TYPE);
+            JSONObject data = object.getJSONObject(KEY_DATA);
             switch (type) {
                 case CustomAttachmentType.Guess:
                     attachment = new GuessAttachment();
                     break;
                 case CustomAttachmentType.SnapChat:
-                    JSONObject data = object.getJSONObject(KEY_DATA);
                     return new SnapChatAttachment(data);
                 case CustomAttachmentType.Sticker:
                     attachment = new StickerAttachment();
@@ -46,7 +46,11 @@ public class CustomAttachParser implements MsgAttachmentParser {
                     break;
             }
             if (attachment != null) {
-                attachment.fromJson(object);
+                if (attachment instanceof StickerAttachment) {
+                    attachment.fromJson(data);
+                } else {
+                    attachment.fromJson(object);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

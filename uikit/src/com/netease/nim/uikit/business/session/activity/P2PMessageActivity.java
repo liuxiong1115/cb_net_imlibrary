@@ -98,11 +98,6 @@ public class P2PMessageActivity extends BaseMessageActivity {
         registerOnlineStateChangeListener(true);
         initData();
         setListener();
-
-        CommonUtil.AddUserInfoListener listener = CommonUtil.addUserInfoListener;
-        if (listener != null) {
-            listener.addUserInfo(this, sessionId);
-        }
     }
 
     private void initView() {
@@ -124,6 +119,10 @@ public class P2PMessageActivity extends BaseMessageActivity {
     private void initData() {
       //  toolbar.setMenuView(R.layout.p2p_toolbar_layout);
         if (CommonUtil.role == CommonUtil.SELLER) {
+            CommonUtil.AddUserInfoListener listener = CommonUtil.addUserInfoListener;
+            if (listener != null) {
+                listener.addUserInfo(this, sessionId);
+            }
             if (!CommonUtil.classbroRobot.equals(sessionId) || !CommonUtil.systemNotify.equals(sessionId)) {
                 if (sessionId.toLowerCase().startsWith("visi")) {
                     toolbar.setMenuText("结束咨询");
@@ -540,7 +539,10 @@ public class P2PMessageActivity extends BaseMessageActivity {
             if (isActiva == 0) {
                 drawerLayout.openDrawer(Gravity.RIGHT);
             } else {
-                ToastHelper.showToast(this,"聊天记录");
+                CommonUtil.CheckHistoryMessageListener listener = CommonUtil.checkHistoryMessageListener;
+                if (listener != null) {
+                    listener.checkMessage();
+                }
             }
         }
     }

@@ -124,7 +124,6 @@ public class MessageListPanelEx {
         this.rootView = rootView;
         this.recordOnly = recordOnly;
         this.remote = remote;
-
         init(anchor);
     }
 
