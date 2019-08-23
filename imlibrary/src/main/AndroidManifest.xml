@@ -37,8 +37,6 @@
 
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <!--系统震动-->
-    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <!--&lt;!&ndash; SDK权限申明, 第三方APP接入时，请将com.classbro.marketing替换为自己的包名 &ndash;&gt;-->
     <!--&lt;!&ndash; 和下面的uses-permission一起加入到你的AndroidManifest文件中。 &ndash;&gt;-->
