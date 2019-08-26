@@ -319,46 +319,47 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
                     }
                 });
             } else {
-                if (recentContact.getContactId().startsWith("stud")) {
-                    groupActiva.setVisibility(View.INVISIBLE);
-                    List<String> list = new ArrayList<>();
-                    list.add(recentContact.getContactId());
-                    NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(recentContact.getContactId());
-                    if (nimUserInfo == null) {
+                if (recentContact.getContactId().equals(NimUIKit.getAccount())) {
+                    return;
+                }
+                groupActiva.setVisibility(View.INVISIBLE);
+                List<String> list = new ArrayList<>();
+                list.add(recentContact.getContactId());
+                NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(recentContact.getContactId());
+                if (nimUserInfo == null) {
+                    contacts_type.setVisibility(View.GONE);
+                } else {
+                    String content = nimUserInfo.getExtension();
+
+                    if (TextUtils.isEmpty(content)) {
                         contacts_type.setVisibility(View.GONE);
                     } else {
-                        String content = nimUserInfo.getExtension();
-
-                        if (TextUtils.isEmpty(content)) {
-                            contacts_type.setVisibility(View.GONE);
-                        } else {
-                            try {
-                                //    Log.e("userInfo", content.toString());
-                                JSONObject jsonObject = new JSONObject(content);
-                                Integer type = jsonObject.getInt("isInternal");
-                                //isInternal 0是内部  1和0
-                                if (type == 0) {
-                                    contacts_type.setVisibility(View.VISIBLE);
-                                    contacts_type.setBackgroundResource(R.drawable.inside_bg);
-                                    contacts_type.setText("内部");
-                                } else {
-                                    //外部联系人
-                                    int labelWidth = ScreenUtil.screenWidth;
-                                    String source = jsonObject.optString("wxNo");
-                                    if (!TextUtils.isEmpty(source)) {
-                                        if (source.length() > 10) {
-                                            tvNickname.setMaxWidth(labelWidth / 4);
-                                        } else {
-                                            tvNickname.setMaxWidth(labelWidth / 3);
-                                        }
-                                        contacts_type.setVisibility(View.VISIBLE);
-                                        contacts_type.setBackgroundResource(R.drawable.outside_bg);
-                                        contacts_type.setText(source);
+                        try {
+                            //    Log.e("userInfo", content.toString());
+                            JSONObject jsonObject = new JSONObject(content);
+                            Integer type = jsonObject.getInt("isInternal");
+                            //isInternal 0是内部  1和0
+                            if (type == 0) {
+                                contacts_type.setVisibility(View.VISIBLE);
+                                contacts_type.setBackgroundResource(R.drawable.inside_bg);
+                                contacts_type.setText("内部");
+                            } else {
+                                //外部联系人
+                                int labelWidth = ScreenUtil.screenWidth;
+                                String source = jsonObject.optString("wxNo");
+                                if (!TextUtils.isEmpty(source)) {
+                                    if (source.length() > 10) {
+                                        tvNickname.setMaxWidth(labelWidth / 4);
+                                    } else {
+                                        tvNickname.setMaxWidth(labelWidth / 3);
                                     }
+                                    contacts_type.setVisibility(View.VISIBLE);
+                                    contacts_type.setBackgroundResource(R.drawable.outside_bg);
+                                    contacts_type.setText(source);
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
                     }
                 }
