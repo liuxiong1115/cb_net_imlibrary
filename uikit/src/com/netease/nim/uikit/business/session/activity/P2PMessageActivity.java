@@ -123,7 +123,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
             if (listener != null) {
                 listener.addUserInfo(this, sessionId);
             }
-            if (!CommonUtil.classbroRobot.equals(sessionId) || !CommonUtil.systemNotify.equals(sessionId)) {
+            if (!CommonUtil.classbroRobot.equals(sessionId) || !CommonUtil.systemNotify.equals(session)) {
                 if (sessionId.toLowerCase().startsWith("visi")) {
                     toolbar.setMenuText("结束咨询");
                 }
@@ -135,7 +135,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
         } else {
             if (!TextUtils.isEmpty(session)) {
                 if (session.startsWith("stud")) {
-                    NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(sessionId);
+                    NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(session);
                     if (nimUserInfo != null) {
                         String content = nimUserInfo.getExtension();
                         if (!TextUtils.isEmpty(content)) {
@@ -179,8 +179,8 @@ public class P2PMessageActivity extends BaseMessageActivity {
      * 创建数据库  保存数据
      */
     public void setUserInfo() {
-        if (!TextUtils.isEmpty(session)) {
-            String substring = session.substring(4, session.length());
+        if (!TextUtils.isEmpty(sessionId)) {
+            String substring = sessionId.substring(4, sessionId.length());
             List<ClassbroUserInfo> classbroUserInfos = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", substring);
             if (classbroUserInfos == null || classbroUserInfos.size() == 0) {
                 ClassbroUserInfo classbroUserInfo = new ClassbroUserInfo();
@@ -219,10 +219,10 @@ public class P2PMessageActivity extends BaseMessageActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", session.substring(4, sessionId.length()));
+                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
                 if (classbroUserInfo == null) {
                     ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
-                    classbroUserInfo1.setUserId(Long.valueOf(session.substring(4, session.length())));
+                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4, sessionId.length())));
                     classbroUserInfo1.setStudentName(nickName.getText().toString());
                     classbroUserInfo1.save();
                 } else {
@@ -241,10 +241,10 @@ public class P2PMessageActivity extends BaseMessageActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", session.substring(4, sessionId.length()));
+                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
                 if (classbroUserInfo == null) {
                     ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
-                    classbroUserInfo1.setUserId(Long.valueOf(session.substring(4, session.length())));
+                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4, sessionId.length())));
                     classbroUserInfo1.setMobile(tel.getText().toString());
                     classbroUserInfo1.save();
                 } else {
@@ -268,10 +268,10 @@ public class P2PMessageActivity extends BaseMessageActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", session.substring(4, sessionId.length()));
+                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
                 if (classbroUserInfo == null) {
                     ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
-                    classbroUserInfo1.setUserId(Long.valueOf(session.substring(4, session.length())));
+                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4, sessionId.length())));
                     classbroUserInfo1.setWxAccount(wxNo.getText().toString());
                     classbroUserInfo1.save();
                 } else {
@@ -295,10 +295,10 @@ public class P2PMessageActivity extends BaseMessageActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", session.substring(4, sessionId.length()));
+                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
                 if (classbroUserInfo == null) {
                     ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
-                    classbroUserInfo1.setUserId(Long.valueOf(session.substring(4, session.length())));
+                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4, sessionId.length())));
                     classbroUserInfo1.setSchoolAccount(account.getText().toString());
                     classbroUserInfo1.save();
                 } else {
@@ -322,10 +322,10 @@ public class P2PMessageActivity extends BaseMessageActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", session.substring(4, sessionId.length()));
+                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
                 if (classbroUserInfo == null) {
                     ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
-                    classbroUserInfo1.setUserId(Long.valueOf(session.substring(4, session.length())));
+                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4, sessionId.length())));
                     classbroUserInfo1.setSchoolPws(password.getText().toString());
                     classbroUserInfo1.save();
                 } else {
@@ -363,14 +363,14 @@ public class P2PMessageActivity extends BaseMessageActivity {
     }
 
     private void requestBuddyInfo() {
-        setTitle(UserInfoHelper.getUserTitleName(session, SessionTypeEnum.P2P));
+        setTitle(UserInfoHelper.getUserTitleName(sessionId, SessionTypeEnum.P2P));
 
         if (CommonUtil.role == CommonUtil.SELLER) {
-            NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(session);
+            NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(sessionId);
             if (userInfo == null) {
                 return;
             }
-            if (session.startsWith("stud")) {
+            if (sessionId.startsWith("stud")) {
                 try {
                     String content = userInfo.getExtension();
                     if (TextUtils.isEmpty(content)) {
