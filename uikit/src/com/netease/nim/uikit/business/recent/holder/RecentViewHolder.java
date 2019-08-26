@@ -322,6 +322,9 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
                 if (recentContact.getContactId().equals(NimUIKit.getAccount())) {
                     return;
                 }
+                if (recentContact.getContactId().startsWith("visi")) {
+                    return;
+                }
                 groupActiva.setVisibility(View.INVISIBLE);
                 List<String> list = new ArrayList<>();
                 list.add(recentContact.getContactId());
