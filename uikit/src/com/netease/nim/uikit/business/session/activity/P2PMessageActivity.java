@@ -38,11 +38,14 @@ import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nim.uikit.model.ClassbroUserInfo;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
+import com.netease.nimlib.sdk.uinfo.UserService;
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
+import com.netease.nimlib.sdk.uinfo.model.UserInfo;
 
 import org.apache.lucene.util.LongValues;
 import org.json.JSONException;
@@ -115,43 +118,60 @@ public class P2PMessageActivity extends BaseMessageActivity {
             }
             if (!TextUtils.isEmpty(session)) {
                 if (session.startsWith("stud")) {
-                    NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(session);
-                    if (nimUserInfo != null) {
-                        String content = nimUserInfo.getExtension();
-                        if (!TextUtils.isEmpty(content)) {
-                            try {
-                                Log.e("userInfo", content.toString());
-                                org.json.JSONObject jsonObject = new org.json.JSONObject(content);
-                                Integer activa = jsonObject.getInt("activa");
-                                Integer type = jsonObject.getInt("isInternal");
-                                if (type == 0) {  //内部
-                                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                                    isActiva = 1;
-                                } else {
-                                    if (activa == 0) { //未激活
-                                      /*  ImageView addUser = toolbar.findViewById(R.id.action_bar_black_more_icon);
-                                        addUser.setVisibility(View.VISIBLE);*/
-                                        toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
-                                        isActiva = activa;
-                                        CommonUtil.AddUserInfoListener listener = CommonUtil.addUserInfoListener;
-                                        if (listener != null) {
-                                            listener.addUserInfo(this, sessionId);
+                    List<String> list = new ArrayList<>();
+                    list.add(session);
+                    //从服务器获取用户个人资料
+                    NIMClient.getService(UserService.class).fetchUserInfo(list)
+                            .setCallback(new RequestCallback<List<NimUserInfo>>() {
+                                @Override
+                                public void onSuccess(List<NimUserInfo> userInfos) {
+                                    NimUserInfo nimUserInfo = userInfos.get(0);
+                                    if (nimUserInfo != null) {
+                                        String content = nimUserInfo.getExtension();
+                                        if (!TextUtils.isEmpty(content)) {
+                                            try {
+                                                Log.e("userInfo", content.toString());
+                                                org.json.JSONObject jsonObject = new org.json.JSONObject(content);
+                                                Integer activa = jsonObject.getInt("activa");
+                                                Integer type = jsonObject.getInt("isInternal");
+                                                if (type == 0) {  //内部
+                                                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                                                    isActiva = 1;
+                                                } else {
+                                                    CommonUtil.AddUserInfoListener listener = CommonUtil.addUserInfoListener;
+                                                    if (listener != null) {
+                                                        listener.addUserInfo(P2PMessageActivity.this, sessionId);
+                                                    }
+                                                    if (activa == 0) { //未激活
+                                                        toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
+                                                        isActiva = activa;
+                                                    } else {
+                                                        toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.nim_ic_messge_history));
+                                                        isActiva = 1;
+                                                    }
+                                                }
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                                            }
+                                        } else {
+                                            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                                         }
                                     } else {
-                                        toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.nim_ic_messge_history));
-                                        isActiva = 1;
+                                        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                                     }
                                 }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                            }
-                        } else {
-                            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                        }
-                    } else {
-                        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                    }
+
+                                @Override
+                                public void onFailed(int i) {
+
+                                }
+
+                                @Override
+                                public void onException(Throwable throwable) {
+
+                                }
+                            });
                 } else {
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 }
