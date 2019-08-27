@@ -319,13 +319,19 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
                     }
                 });
             } else {
-                if (recentContact.getContactId().equals(NimUIKit.getAccount())) {
+                groupActiva.setVisibility(View.INVISIBLE);
+                if (recentContact.getContactId().toLowerCase().equals(NimUIKit.getAccount().toLowerCase())) {
                     return;
                 }
                 if (recentContact.getContactId().startsWith("visi")) {
                     return;
                 }
-                groupActiva.setVisibility(View.INVISIBLE);
+                if (recentContact.getContactId().startsWith("teac") || recentContact.getContactId().startsWith("crm")) {
+                    contacts_type.setVisibility(View.VISIBLE);
+                    contacts_type.setBackgroundResource(R.drawable.inside_bg);
+                    contacts_type.setText("内部");
+                    return;
+                }
                 List<String> list = new ArrayList<>();
                 list.add(recentContact.getContactId());
                 NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(recentContact.getContactId());

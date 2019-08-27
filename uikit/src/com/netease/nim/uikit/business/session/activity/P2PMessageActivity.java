@@ -64,11 +64,8 @@ public class P2PMessageActivity extends BaseMessageActivity {
     public static WeakReference<P2PMessageActivity> instance;
     private DrawerLayout drawerLayout;
 
-    public AppCompatAutoCompleteTextView nickName, tel, wxNo, account, password;
-    public AppCompatTextView activaUseer;
     public Integer isActiva = 0;  //是否激活  0--未激活  1--已激活
     public MyToolbar toolbar;
-    public Spinner country, school, major, grade, education;
     public String session;
     public boolean isGradeFrist = true, isCountryFrist = true, isSchoolFrist = true, isMojorFrist = true, isEduFrist = true;
 
@@ -97,42 +94,25 @@ public class P2PMessageActivity extends BaseMessageActivity {
         registerObservers(true);
         registerOnlineStateChangeListener(true);
         initData();
-        setListener();
     }
 
     private void initView() {
         drawerLayout = findViewById(R.id.drawerlayout);
-        nickName = findViewById(R.id.userName);
-        tel = findViewById(R.id.userTel);
-        wxNo = findViewById(R.id.userWx);
-        country = findViewById(R.id.userCountry);
-        school = findViewById(R.id.userSchool);
-        major = findViewById(R.id.userMajor);
-        grade = findViewById(R.id.userGrade);
-        education = findViewById(R.id.userEducation);
-        account = findViewById(R.id.userAccount);
-        password = findViewById(R.id.userPassword);
-        activaUseer = findViewById(R.id.activaUser);
         toolbar = findViewById(R.id.toolbar);
     }
 
     private void initData() {
       //  toolbar.setMenuView(R.layout.p2p_toolbar_layout);
-        if (CommonUtil.role == CommonUtil.SELLER) {
-            CommonUtil.AddUserInfoListener listener = CommonUtil.addUserInfoListener;
-            if (listener != null) {
-                listener.addUserInfo(this, sessionId);
-            }
-            if (!CommonUtil.classbroRobot.equals(sessionId) || !CommonUtil.systemNotify.equals(session)) {
-                if (sessionId.toLowerCase().startsWith("visi")) {
-                    toolbar.setMenuText("结束咨询");
-                }
-            }
-        }
         //如果是学生 禁止滑动侧边栏
         if (CommonUtil.role == CommonUtil.TEAC || CommonUtil.role == CommonUtil.STUD) {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         } else {
+            if (!CommonUtil.classbroRobot.equals(session) || !CommonUtil.systemNotify.equals(session)) {
+                if (sessionId.toLowerCase().startsWith("visi")) {
+                    toolbar.setMenuText("结束咨询");
+                    return;
+                }
+            }
             if (!TextUtils.isEmpty(session)) {
                 if (session.startsWith("stud")) {
                     NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(session);
@@ -153,7 +133,10 @@ public class P2PMessageActivity extends BaseMessageActivity {
                                         addUser.setVisibility(View.VISIBLE);*/
                                         toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
                                         isActiva = activa;
-                                        setUserInfo();
+                                        CommonUtil.AddUserInfoListener listener = CommonUtil.addUserInfoListener;
+                                        if (listener != null) {
+                                            listener.addUserInfo(this, sessionId);
+                                        }
                                     } else {
                                         toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.nim_ic_messge_history));
                                         isActiva = 1;
@@ -161,8 +144,13 @@ public class P2PMessageActivity extends BaseMessageActivity {
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
+                                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                             }
+                        } else {
+                            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                         }
+                    } else {
+                        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                     }
                 } else {
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -175,173 +163,6 @@ public class P2PMessageActivity extends BaseMessageActivity {
         }
     }
 
-    /**
-     * 创建数据库  保存数据
-     */
-    public void setUserInfo() {
-        if (!TextUtils.isEmpty(sessionId)) {
-            String substring = sessionId.substring(4, sessionId.length());
-            List<ClassbroUserInfo> classbroUserInfos = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", substring);
-            if (classbroUserInfos == null || classbroUserInfos.size() == 0) {
-                ClassbroUserInfo classbroUserInfo = new ClassbroUserInfo();
-                classbroUserInfo.setUserId(Long.valueOf(substring));
-                classbroUserInfo.save();
-            } else {
-                ClassbroUserInfo info = classbroUserInfos.get(0);
-                nickName.setText(info.getStudentName() == null ? "" : info.getStudentName());
-                tel.setText(info.getMobile() == null ? "" : info.getMobile());
-                wxNo.setText(info.getWxAccount() == null ? "" : info.getWxAccount());
-                country.setPrompt(info.getCountry() == null ? "请选择国家" : info.getCountry());
-                school.setPrompt(info.getSchool() == null ? "请选择学校" : info.getSchool());
-                major.setPrompt(info.getMajor() == null ? "请选择专业" : info.getMajor());
-                grade.setPrompt(info.getGrade() == null ? "请选择年级" : info.getGrade());
-                education.setPrompt(info.getEducation() == null ? "请选择学历" : info.getEducation());
-                account.setText(info.getSchoolAccount() == null ? "" : info.getSchoolAccount());
-                password.setText(info.getSchoolPws() == null ? "" : info.getSchoolPws());
-            }
-        } else {
-            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        }
-    }
-
-    private void setListener() {
-        //名称
-        TextWatcher nameText = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
-                if (classbroUserInfo == null) {
-                    ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
-                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4, sessionId.length())));
-                    classbroUserInfo1.setStudentName(nickName.getText().toString());
-                    classbroUserInfo1.save();
-                } else {
-                    classbroUserInfo.get(0).setStudentName(nickName.getText().toString());
-                    classbroUserInfo.get(0).save();
-                }
-            }
-        };
-        nickName.addTextChangedListener(nameText);
-        //手机号
-        final TextWatcher telText = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
-                if (classbroUserInfo == null) {
-                    ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
-                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4, sessionId.length())));
-                    classbroUserInfo1.setMobile(tel.getText().toString());
-                    classbroUserInfo1.save();
-                } else {
-                    classbroUserInfo.get(0).setMobile(tel.getText().toString());
-                    classbroUserInfo.get(0).save();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        };
-        tel.addTextChangedListener(telText);
-        //微信号
-        TextWatcher wxText = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
-                if (classbroUserInfo == null) {
-                    ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
-                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4, sessionId.length())));
-                    classbroUserInfo1.setWxAccount(wxNo.getText().toString());
-                    classbroUserInfo1.save();
-                } else {
-                    classbroUserInfo.get(0).setWxAccount(wxNo.getText().toString());
-                    classbroUserInfo.get(0).save();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        };
-        wxNo.addTextChangedListener(wxText);
-        //账号
-        TextWatcher accountText = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
-                if (classbroUserInfo == null) {
-                    ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
-                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4, sessionId.length())));
-                    classbroUserInfo1.setSchoolAccount(account.getText().toString());
-                    classbroUserInfo1.save();
-                } else {
-                    classbroUserInfo.get(0).setSchoolAccount(account.getText().toString());
-                    classbroUserInfo.get(0).save();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        };
-        account.addTextChangedListener(accountText);
-        //密码
-        TextWatcher passwordText = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                List<ClassbroUserInfo> classbroUserInfo = ClassbroUserInfo.find(ClassbroUserInfo.class, "user_id=?", sessionId.substring(4, sessionId.length()));
-                if (classbroUserInfo == null) {
-                    ClassbroUserInfo classbroUserInfo1 = new ClassbroUserInfo();
-                    classbroUserInfo1.setUserId(Long.valueOf(sessionId.substring(4, sessionId.length())));
-                    classbroUserInfo1.setSchoolPws(password.getText().toString());
-                    classbroUserInfo1.save();
-                } else {
-                    classbroUserInfo.get(0).setSchoolPws(password.getText().toString());
-                    classbroUserInfo.get(0).save();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        };
-        password.addTextChangedListener(passwordText);
-
-    }
 
     @Override
     protected void onDestroy() {
