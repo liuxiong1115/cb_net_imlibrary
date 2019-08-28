@@ -71,6 +71,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
     public MyToolbar toolbar;
     public String session;
     public boolean isGradeFrist = true, isCountryFrist = true, isSchoolFrist = true, isMojorFrist = true, isEduFrist = true;
+    public String wxNo;
 
     public static void start(Context context, String contactId, SessionCustomization customization, IMMessage anchor) {
         Intent intent = new Intent();
@@ -134,6 +135,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
                                                 org.json.JSONObject jsonObject = new org.json.JSONObject(content);
                                                 Integer activa = jsonObject.getInt("activa");
                                                 Integer type = jsonObject.getInt("isInternal");
+                                                wxNo = jsonObject.optString("wxNo");
                                                 if (type == 0) {  //内部
                                                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                                                     isActiva = 1;
@@ -382,7 +384,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
             } else {
                 CommonUtil.CheckHistoryMessageListener listener = CommonUtil.checkHistoryMessageListener;
                 if (listener != null) {
-                    listener.checkMessage();
+                    listener.checkMessage(wxNo,session);
                 }
             }
         }

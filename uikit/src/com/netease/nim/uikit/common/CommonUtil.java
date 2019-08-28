@@ -145,6 +145,6 @@ public class CommonUtil {
 
     }
     public interface CheckHistoryMessageListener {
-        void checkMessage();
+        void checkMessage(String wxNo,String sessionId);
     }
 }

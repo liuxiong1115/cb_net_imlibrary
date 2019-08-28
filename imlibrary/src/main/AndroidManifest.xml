@@ -209,6 +209,14 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
 
+        <!-- 文件管理器 -->
+        <activity
+            android:name=".fileManager.activity.FolderActivity"
+            android:configChanges="orientation"
+            android:label="@string/file_browser"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
             android:name=".main.activity.SystemMessageActivity"
             android:configChanges="keyboardHidden|orientation"

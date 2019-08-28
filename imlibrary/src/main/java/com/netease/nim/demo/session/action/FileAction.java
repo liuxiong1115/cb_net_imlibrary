@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import com.netease.nim.demo.R;
 import com.netease.nim.demo.file.browser.FileBrowserActivity;
+import com.netease.nim.demo.fileManager.activity.FolderActivity;
 import com.netease.nim.uikit.business.session.actions.BaseAction;
 import com.netease.nim.uikit.business.session.constant.RequestCode;
 import com.netease.nimlib.sdk.msg.MessageBuilder;
@@ -24,7 +25,7 @@ public class FileAction extends BaseAction {
      * **********************文件************************
      */
     private void chooseFile() {
-        FileBrowserActivity.startActivityForResult(getActivity(), makeRequestCode(RequestCode.GET_LOCAL_FILE));
+        FolderActivity.startActivityForResult(getActivity(), makeRequestCode(RequestCode.GET_LOCAL_FILE));
     }
 
     @Override
@@ -35,7 +36,7 @@ public class FileAction extends BaseAction {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RequestCode.GET_LOCAL_FILE) {
-            String path = data.getStringExtra(FileBrowserActivity.EXTRA_DATA_PATH);
+            String path = data.getStringExtra("EXTRA_DATA_PATH");
             File file = new File(path);
             IMMessage message = MessageBuilder.createFileMessage(getAccount(), getSessionType(), file, file.getName());
             sendMessage(message);
