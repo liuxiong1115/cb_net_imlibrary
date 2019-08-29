@@ -1,10 +1,12 @@
 package com.netease.nim.demo.fileManager.fragment;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -65,12 +67,28 @@ public class FolderDataFragment extends Fragment {
         }
         rvDoc.addOnItemTouchListener(new OnItemClickListener() {
             @Override
-            public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                FileInfo fileInfo = (FileInfo) adapter.getItem(position);
-                Intent intent = new Intent();
-                intent.putExtra("EXTRA_DATA_PATH", fileInfo.getFilePath());
-                getActivity().setResult(Activity.RESULT_OK, intent);
-                getActivity().finish();
+            public void onSimpleItemClick(final BaseQuickAdapter adapter, View view, final int position) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("提示");
+                builder.setMessage("您确认要发送吗？");
+                builder.setNegativeButton("我再看看", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setPositiveButton("确定发送", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FileInfo fileInfo = (FileInfo) adapter.getItem(position);
+                        Intent intent = new Intent();
+                        intent.putExtra("EXTRA_DATA_PATH", fileInfo.getFilePath());
+                        getActivity().setResult(Activity.RESULT_OK, intent);
+                        getActivity().finish();
+                    }
+                });
+                builder.show();
+
             }
         });
     }
