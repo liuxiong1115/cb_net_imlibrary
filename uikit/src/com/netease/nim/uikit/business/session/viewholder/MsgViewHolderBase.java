@@ -173,7 +173,7 @@ public abstract class MsgViewHolderBase extends RecyclerViewHolder<BaseMultiItem
         message = data;
 
         inflate();
-        refresh();
+        refresh(position);
         bindHolder(holder);
     }
 
@@ -197,13 +197,13 @@ public abstract class MsgViewHolderBase extends RecyclerViewHolder<BaseMultiItem
         inflateContentView();
     }
 
-    protected final void refresh() {
+    protected final void refresh(int position) {
         setHeadImageView();
         setNameTextView();
         setTimeTextView();
         setStatus();
         setOnClickListener();
-        setLongClickListener();
+        setLongClickListener(position);
         setContent();
         setReadReceipt();
         setAckMsg();
@@ -213,7 +213,7 @@ public abstract class MsgViewHolderBase extends RecyclerViewHolder<BaseMultiItem
 
     public void refreshCurrentItem() {
         if (message != null) {
-            refresh();
+         //   refresh();
         }
     }
 
@@ -313,14 +313,14 @@ public abstract class MsgViewHolderBase extends RecyclerViewHolder<BaseMultiItem
     /**
      * item长按事件监听
      */
-    private void setLongClickListener() {
+    private void setLongClickListener(final int position) {
         longClickListener = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 // 优先派发给自己处理，
                 if (!onItemLongClick()) {
                     if (getMsgAdapter().getEventListener() != null) {
-                        getMsgAdapter().getEventListener().onViewHolderLongClick(contentContainer, view, message);
+                        getMsgAdapter().getEventListener().onViewHolderLongClick(contentContainer, view, message,position);
                         return true;
                     }
                 }

@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -67,7 +68,7 @@ public class MessageFragment extends TFragment implements ModuleProxy {
 
     // modules
     protected InputPanel inputPanel;
-    protected MessageListPanelEx messageListPanel;
+    public MessageListPanelEx messageListPanel;
 
     protected AitManager aitManager;
 
@@ -149,7 +150,7 @@ public class MessageFragment extends TFragment implements ModuleProxy {
         }
 
         if (inputPanel == null) {
-            inputPanel = new InputPanel(container, rootView, getActionList());
+            inputPanel = new InputPanel(container, rootView, getActionList(),this);
             inputPanel.setCustomization(customization);
         } else {
             inputPanel.reload(container, customization);

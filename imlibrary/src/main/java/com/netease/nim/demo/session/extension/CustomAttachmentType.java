@@ -33,4 +33,6 @@ public interface CustomAttachmentType {
     int TeacPayroll = 350;  //讲师工资单
     int WithdrawFail = 351; //提现失败
     int WithdrawSucceed = 352;//提现成功
+
+    int ReplyMsg = 360;//回复信息
 }

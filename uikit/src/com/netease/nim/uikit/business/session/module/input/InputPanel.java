@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.UIKitOptions;
@@ -34,8 +35,15 @@ import com.netease.nim.uikit.business.session.actions.BaseAction;
 import com.netease.nim.uikit.business.session.emoji.EmoticonPickerView;
 import com.netease.nim.uikit.business.session.emoji.IEmoticonSelectedListener;
 import com.netease.nim.uikit.business.session.emoji.MoonUtil;
+import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nim.uikit.business.session.module.Container;
+import com.netease.nim.uikit.business.session.module.list.MessageListPanelEx;
+import com.netease.nim.uikit.business.session.module.model.ReplyMsg;
+import com.netease.nim.uikit.business.session.module.model.ReplyMsgData;
+import com.netease.nim.uikit.common.CommonUtil;
+import com.netease.nim.uikit.common.activity.UI;
 import com.netease.nim.uikit.common.ui.dialog.EasyAlertDialogHelper;
+import com.netease.nim.uikit.common.util.C;
 import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nim.uikit.common.util.string.StringUtil;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
@@ -45,14 +53,19 @@ import com.netease.nimlib.sdk.media.record.IAudioRecordCallback;
 import com.netease.nimlib.sdk.media.record.RecordType;
 import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.MsgService;
+import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
+import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.netease.nimlib.sdk.msg.model.CustomNotificationConfig;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 
 import java.io.File;
 import java.util.List;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 /**
  * 底部文本编辑，语音等模块
@@ -96,10 +109,12 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
     private boolean touched = false; // 是否按着
     private boolean isKeyboardShowed = true; // 是否显示键盘
 
+    public ReplyMsgData data;
     // state
     private boolean actionPanelBottomLayoutHasSetup = false;
     private boolean isTextAudioSwitchShow = true;
 
+    private MessageFragment messageFragment;
     // adapter
     private List<BaseAction> actions;
 
@@ -110,6 +125,8 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
 
     private TextWatcher aitTextWatcher;
 
+    public static boolean isReply = false;
+
     public InputPanel(Container container, View view, List<BaseAction> actions, boolean isTextAudioSwitchShow) {
         this.container = container;
         this.view = view;
@@ -118,9 +135,12 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
         this.isTextAudioSwitchShow = isTextAudioSwitchShow;
         init();
     }
-
     public InputPanel(Container container, View view, List<BaseAction> actions) {
         this(container, view, actions, true);
+    }
+    public InputPanel(Container container, View view, List<BaseAction> actions, MessageFragment messageFragment) {
+        this(container, view, actions, true);
+        this.messageFragment = messageFragment;
     }
 
     public void onPause() {
@@ -218,12 +238,36 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
     }
 
     private void initTextEdit() {
+        CommonUtil.setReplyMessageListener(new CommonUtil.ReplyMessageListener() {
+            @Override
+            public void replyMsg(IMMessage message, MsgTypeEnum msgType) {
+                if (message == null || message.getFromNick() == null) {
+                    return;
+                }
+                isReply = true;
+                messageFragment.messageListPanel.initReply(message);
+                messageEditText.setText("@" + message.getFromNick());
+                sendMessageButtonInInputBar.setVisibility(View.VISIBLE);
+                moreFuntionButtonInInputBar.setVisibility(View.GONE);
+                data = new ReplyMsgData();
+                data.setReplyAccount(message.getFromNick() == null ? "" : message.getFromNick());
+                data.setReplyContent(message.getContent() == null ? message.getPushContent() == null ?"":message.getPushContent() : message.getContent());
+                if (message.getAttachment() instanceof FileAttachment) {
+                    FileAttachment fileAttachment = (FileAttachment) message.getAttachment();
+                    data.setUrl(fileAttachment.getUrl());
+                }
+                data.setMessage(message);
+                data.setMsgType(message.getMsgType().toString());
+            }
+        });
         messageEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         messageEditText.setOnTouchListener(new View.OnTouchListener() {
 
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    switchToTextLayout(true);
+                if (!isReply) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        switchToTextLayout(true);
+                    }
                 }
                 return false;
             }
@@ -323,7 +367,14 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
             if (v == switchToTextButtonInInputBar) {
                 switchToTextLayout(true);// 显示文本发送的布局
             } else if (v == sendMessageButtonInInputBar) {
-                onTextMessageSendButtonPressed();
+                if (isReply) {
+                    isReply = false;
+                    moreFuntionButtonInInputBar.setVisibility(View.VISIBLE);
+                    onTextMessageSendReplyMsg();
+                    messageFragment.messageListPanel.initclose();
+                } else {
+                    onTextMessageSendButtonPressed();
+                }
             } else if (v == switchToAudioButtonInInputBar) {
                 switchToAudioLayout();
             } else if (v == moreFuntionButtonInInputBar) {
@@ -363,9 +414,40 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
         }
     }
 
+    // 发送回复文本消息
+    private void onTextMessageSendReplyMsg() {
+        String text = messageEditText.getText().toString();
+        data.setContent(text);
+        ReplyMsg replyMsg = new ReplyMsg();
+        replyMsg.setData(data);
+        replyMsg.setType(360);
+        CommonUtil.ReplyListener listener = CommonUtil.replyListener;
+        if (listener != null) {
+            listener.getReply(data);
+        }
+        MsgAttachment msgAttachment = CommonUtil.replyAttachment;
+        IMMessage textMessage = createTexReplytMessage("回复信息", msgAttachment);
+
+        if (container.proxy.sendMessage(textMessage)) {
+            restoreText(true);
+        }
+    }
+
     protected IMMessage createTextMessage(String text) {
         return MessageBuilder.createTextMessage(container.account, container.sessionType, text);
     }
+
+    /**
+     * 回复信息
+     * @param json
+     * @param msgAttachment
+     * @return
+     */
+    protected IMMessage createTexReplytMessage(String json,MsgAttachment msgAttachment) {
+        return MessageBuilder.createCustomMessage(container.account, container.sessionType, json, msgAttachment);
+    }
+
+
 
     // 切换成音频，收起键盘，按钮切换成键盘
     private void switchToAudioLayout() {
@@ -417,7 +499,7 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
     private void hideInputMethod() {
         isKeyboardShowed = false;
         uiHandler.removeCallbacks(showTextRunnable);
-        InputMethodManager imm = (InputMethodManager) container.activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) container.activity.getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(messageEditText.getWindowToken(), 0);
         messageEditText.clearFocus();
     }
@@ -462,7 +544,7 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
             isKeyboardShowed = true;
         }
 
-        InputMethodManager imm = (InputMethodManager) container.activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) container.activity.getSystemService(INPUT_METHOD_SERVICE);
         imm.showSoftInput(editTextMessage, 0);
 
         container.proxy.onInputPanelExpand();

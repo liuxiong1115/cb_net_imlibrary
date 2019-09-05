@@ -23,6 +23,7 @@ import com.netease.nim.demo.session.utils.download.DownLoadThread;
 import com.netease.nim.demo.session.utils.download.DownloadListener;
 import com.netease.nim.uikit.api.wrapper.NimToolBarOptions;
 import com.netease.nim.uikit.common.CommonUtil;
+import com.netease.nim.uikit.common.ToastHelper;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
 import com.netease.nim.uikit.common.activity.UI;
 import com.netease.nim.uikit.common.ui.dialog.DialogMaker;
@@ -160,7 +161,11 @@ public class FileDownloadActivity extends UI {
      * @param fileName
      */
     private void showDownloadDialog(String url, String fileName) {
-        String dealUrl = url.substring(0, 4).equals("http") ? url : CommonUtil.BaseUrl + "/" + url;
+        if (TextUtils.isEmpty(url)) {
+            ToastHelper.showToast(this,"文件错误");
+            return;
+        }
+        String dealUrl = url.startsWith("http") ? url : CommonUtil.BaseUrl + "/" + url;
         final DownLoadManager downLoadManager = new DownLoadManager();
         LayoutInflater inflater = getLayoutInflater();
         View contentView = inflater.inflate(R.layout.dialog_downloading_progress, null);

@@ -153,6 +153,7 @@
     <orderEntry type="library" name="com.android.support:support-vector-drawable-26.1.0" level="project" />
     <orderEntry type="library" name="com.github.CymChad:BaseRecyclerViewAdapterHelper-2.7.8" level="project" />
     <orderEntry type="library" name="__local_aars__:C.\Users\mike\Desktop\sherry\cb_net_imlibrary\uikit\libs\nim-basesdk-5.7.0.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" name="com.google.code.gson:gson:2.6.2@jar" level="project" />
     <orderEntry type="library" name="android.arch.lifecycle:common-java8:1.1.0@jar" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-basement-11.6.0" level="project" />
     <orderEntry type="library" name="__local_aars__:C.\Users\mike\Desktop\sherry\cb_net_imlibrary\imlibrary\libs\AMap2DMap_3.0.0_AMapSearch_3.6.1_AMapLocation_3.2.1_20161228.jar:unspecified@jar" level="project" />

@@ -41,6 +41,9 @@ public class CustomAttachParser implements MsgAttachmentParser {
                 case CustomAttachmentType.Notify: //新访客消息
                     attachment = new NotifyAttchment();
                     break;
+                case CustomAttachmentType.ReplyMsg: //回复消息
+                    attachment = new ReplyAttachment();
+                    break;
                 default:   //自定义
                     attachment = new DefaultCustomAttachment();
                     break;
@@ -48,7 +51,9 @@ public class CustomAttachParser implements MsgAttachmentParser {
             if (attachment != null) {
                 if (attachment instanceof StickerAttachment) {
                     attachment.fromJson(data);
-                } else {
+                } else if (attachment instanceof ReplyAttachment){
+                    attachment.fromJson(data);
+                }else {
                     attachment.fromJson(object);
                 }
             }

@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -72,7 +73,6 @@ public class P2PMessageActivity extends BaseMessageActivity {
     public String session;
     public boolean isGradeFrist = true, isCountryFrist = true, isSchoolFrist = true, isMojorFrist = true, isEduFrist = true;
     public String wxNo;
-
     public static void start(Context context, String contactId, SessionCustomization customization, IMMessage anchor) {
         Intent intent = new Intent();
         intent.putExtra(Extras.EXTRA_ACCOUNT, contactId);
@@ -205,7 +205,8 @@ public class P2PMessageActivity extends BaseMessageActivity {
         isResume = false;
     }
 
-    private void requestBuddyInfo() {
+    private void requestBuddyInfo()
+    {
         setTitle(UserInfoHelper.getUserTitleName(sessionId, SessionTypeEnum.P2P));
 
         if (CommonUtil.role == CommonUtil.SELLER) {
@@ -357,7 +358,6 @@ public class P2PMessageActivity extends BaseMessageActivity {
         fragment.setContainerId(R.id.message_fragment_container);
         return fragment;
     }
-
     @Override
     protected int getContentViewId() {
         return R.layout.nim_message_activity;

@@ -229,7 +229,7 @@ public class MsgAdapter extends BaseMultiItemFetchLoadAdapter<IMMessage, BaseVie
 
     public interface ViewHolderEventListener {
         // 长按事件响应处理
-        boolean onViewHolderLongClick(View clickView, View viewHolderView, IMMessage item);
+        boolean onViewHolderLongClick(View clickView, View viewHolderView, IMMessage item,int position);
 
         // 发送失败或者多媒体文件下载失败指示按钮点击响应处理
         void onFailedBtnClick(IMMessage resendMessage);

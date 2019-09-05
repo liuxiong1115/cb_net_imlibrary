@@ -346,12 +346,12 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
                         try {
                             //    Log.e("userInfo", content.toString());
                             JSONObject jsonObject = new JSONObject(content);
-                            Integer type = jsonObject.getInt("isInternal");
+                            Integer type = jsonObject.optInt("isInternal");
                             //isInternal 0是内部  1和0
                             if (type == 0) {
-                                contacts_type.setVisibility(View.VISIBLE);
+                                /*contacts_type.setVisibility(View.VISIBLE);
                                 contacts_type.setBackgroundResource(R.drawable.inside_bg);
-                                contacts_type.setText("内部");
+                                contacts_type.setText("内部");*/
                             } else {
                                 //外部联系人
                                 int labelWidth = ScreenUtil.screenWidth;

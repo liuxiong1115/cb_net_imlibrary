@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,7 +58,6 @@ public class TeamMessageActivity extends BaseMessageActivity {
     private TeamMessageFragment fragment;
 
     private Class<? extends Activity> backToClass;
-
     public static void start(Context context, String tid, SessionCustomization customization,
                              Class<? extends Activity> backToClass, IMMessage anchor) {
         Intent intent = new Intent();
@@ -77,7 +77,6 @@ public class TeamMessageActivity extends BaseMessageActivity {
         invalidTeamTipView = findView(R.id.invalid_team_tip);
         invalidTeamTipText = findView(R.id.invalid_team_text);
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

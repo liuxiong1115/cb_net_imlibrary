@@ -30,6 +30,7 @@
     <string name="repeat_send_has_blank">重 发</string>
     <string name="repeat_send_message">重发消息?</string>
     <string name="copy_has_blank">复 制</string>
+    <string name="reply_has_blank">回复</string>
     <string name="delete_has_blank">删 除</string>
     <string name="voice_to_text">转文字</string>
     <string name="forward_to_person">转发到个人</string>

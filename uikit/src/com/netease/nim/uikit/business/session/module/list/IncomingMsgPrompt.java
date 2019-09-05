@@ -54,8 +54,7 @@ public class IncomingMsgPrompt {
         }
 
         //TODO 新消息提醒
-        MoonUtil.identifyFaceExpression(context, newMessageTipTextView, TeamNotificationHelper.getMsgShowText(newMessage),
-                ImageSpan.ALIGN_BOTTOM);
+        MoonUtil.identifyFaceExpression(context, newMessageTipTextView, TeamNotificationHelper.getMsgShowText(newMessage), ImageSpan.ALIGN_BOTTOM);
         newMessageTipLayout.setVisibility(View.VISIBLE);
         uiHandler.removeCallbacks(showNewMessageTipLayoutRunnable);
         uiHandler.postDelayed(showNewMessageTipLayoutRunnable, 5 * 1000);

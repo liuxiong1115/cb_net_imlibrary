@@ -21,6 +21,7 @@ import com.netease.nim.demo.session.extension.GuessAttachment;
 import com.netease.nim.demo.session.extension.NotifyAttchment;
 import com.netease.nim.demo.session.extension.RedPacketAttachment;
 import com.netease.nim.demo.session.extension.RedPacketOpenedAttachment;
+import com.netease.nim.demo.session.extension.ReplyAttachment;
 import com.netease.nim.demo.session.extension.SnapChatAttachment;
 import com.netease.nim.demo.session.extension.StickerAttachment;
 import com.netease.nim.uikit.business.recent.RecentContactsCallback;
@@ -270,6 +271,8 @@ public class SessionListFragment extends MainTabFragment {
                     return "[" + customAttachment.getTitle() + "]";
                 } else if (attachment instanceof NotifyAttchment) {
                     return "新访客到达!";
+                } else if (attachment instanceof ReplyAttachment) {
+                    return ((ReplyAttachment) attachment).getContent();
                 }
                 return null;
             }

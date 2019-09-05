@@ -13,6 +13,8 @@ import com.netease.nim.demo.contact.activity.UserProfileActivity;
 import com.netease.nim.demo.redpacket.NIMRedPacketClient;
 import com.netease.nim.demo.session.action.FileAction;
 import com.netease.nim.demo.session.extension.NotifyAttchment;
+import com.netease.nim.demo.session.extension.ReplyAttachment;
+import com.netease.nim.demo.session.viewholder.MsgViewHolderReplyCustom;
 import com.netease.nim.demo.session.viewholder.NotifyViewHolder;
 import com.netease.nim.uikit.business.session.actions.ScheduleAction;
 import com.netease.nim.demo.session.action.TeamAVChatAction;
@@ -43,6 +45,7 @@ import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nim.uikit.business.session.helper.MessageListPanelHelper;
 import com.netease.nim.uikit.business.session.module.MsgForwardFilter;
 import com.netease.nim.uikit.business.session.module.MsgRevokeFilter;
+import com.netease.nim.uikit.business.session.module.model.ReplyMsgData;
 import com.netease.nim.uikit.business.session.viewholder.MsgViewHolderUnknown;
 import com.netease.nim.uikit.business.team.model.TeamExtras;
 import com.netease.nim.uikit.business.team.model.TeamRequestCode;
@@ -510,12 +513,27 @@ public class SessionHelper {
 //        NimUIKit.registerMsgItemViewHolder(AVChatAttachment.class, MsgViewHolderAVChat.class);
         NimUIKit.registerMsgItemViewHolder(GuessAttachment.class, MsgViewHolderGuess.class);
         NimUIKit.registerMsgItemViewHolder(DefaultCustomAttachment.class, MsgViewHolderDefCustom.class);
+        NimUIKit.registerMsgItemViewHolder(ReplyAttachment.class, MsgViewHolderReplyCustom.class);  //回复消息
         NimUIKit.registerMsgItemViewHolder(StickerAttachment.class, MsgViewHolderSticker.class);
         NimUIKit.registerMsgItemViewHolder(SnapChatAttachment.class, MsgViewHolderSnapChat.class);
         NimUIKit.registerMsgItemViewHolder(NotifyAttchment.class, NotifyViewHolder.class);  //新访客
 //        NimUIKit.registerMsgItemViewHolder(RTSAttachment.class, MsgViewHolderRTS.class);
         NimUIKit.registerTipMsgViewHolder(MsgViewHolderTip.class);
         registerRedPacketViewHolder();
+        CommonUtil.getReplyeListener(new CommonUtil.ReplyListener() {
+            @Override
+            public void getReply(ReplyMsgData replyMsgData) {
+                ReplyAttachment replyAttachment = new ReplyAttachment();
+                replyAttachment.setContent(replyMsgData.getContent());
+                replyAttachment.setUrl(replyMsgData.getUrl());
+                replyAttachment.setMsgType(replyMsgData.getMsgType());
+                replyAttachment.setReplyAccount(replyMsgData.getReplyAccount());
+                replyAttachment.setReplyContent(replyMsgData.getReplyContent());
+                replyAttachment.setType(360);
+                CommonUtil.replyAttachment =replyAttachment;
+            }
+        });
+
     }
 
     private static void registerRedPacketViewHolder() {

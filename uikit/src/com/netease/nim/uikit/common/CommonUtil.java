@@ -8,6 +8,10 @@ import android.view.View;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.business.recent.adapter.RecentContactAdapter;
+import com.netease.nim.uikit.business.session.module.model.ReplyMsgData;
+import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
+import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
+import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 
 public class CommonUtil {
@@ -36,6 +40,7 @@ public class CommonUtil {
     public static int sendMessageCount = 0;
     public static int role = 0;  //角色  1--教师   2--学生  3--销售
 
+    public static MsgAttachment replyAttachment;
     //是否开启留言  0-未开启   1-开启
     public static int isOPeenMessage = 0;
     public static void setRole (int lable) {
@@ -147,4 +152,26 @@ public class CommonUtil {
     public interface CheckHistoryMessageListener {
         void checkMessage(String wxNo,String sessionId);
     }
+
+    //回复
+    public static ReplyMessageListener replyMessageListener;
+    public static void setReplyMessageListener(ReplyMessageListener listener) {
+        replyMessageListener = listener;
+
+    }
+    public interface ReplyMessageListener {
+        void replyMsg(IMMessage message,MsgTypeEnum msgType);
+    }
+
+    //回复
+    public static ReplyListener replyListener;
+    public static void getReplyeListener(ReplyListener listener) {
+        replyListener = listener;
+
+    }
+    public interface ReplyListener {
+        void getReply(ReplyMsgData replyMsgData);
+    }
+
+
 }

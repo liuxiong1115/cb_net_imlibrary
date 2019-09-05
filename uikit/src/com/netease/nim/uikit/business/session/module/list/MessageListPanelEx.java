@@ -9,8 +9,8 @@ import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Pair;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -21,12 +21,16 @@ import com.netease.nim.uikit.api.model.user.UserInfoObserver;
 import com.netease.nim.uikit.business.contact.selector.activity.ContactSelectActivity;
 import com.netease.nim.uikit.business.preference.UserPreferences;
 import com.netease.nim.uikit.business.robot.parser.elements.group.LinkElement;
+import com.netease.nim.uikit.business.session.activity.P2PMessageActivity;
+import com.netease.nim.uikit.business.session.activity.TeamMessageActivity;
 import com.netease.nim.uikit.business.session.activity.VoiceTrans;
 import com.netease.nim.uikit.business.session.audio.MessageAudioControl;
 import com.netease.nim.uikit.business.session.helper.MessageHelper;
 import com.netease.nim.uikit.business.session.helper.MessageListPanelHelper;
 import com.netease.nim.uikit.business.session.module.Container;
+import com.netease.nim.uikit.business.session.module.BubblePopupView;
 import com.netease.nim.uikit.business.session.viewholder.robot.RobotLinkView;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.ui.dialog.CustomAlertDialog;
 import com.netease.nim.uikit.common.ui.dialog.EasyAlertDialog;
 import com.netease.nim.uikit.common.ui.dialog.EasyAlertDialogHelper;
@@ -49,7 +53,6 @@ import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
-import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum;
 import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum;
 import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum;
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
@@ -63,8 +66,6 @@ import com.netease.nimlib.sdk.robot.model.RobotAttachment;
 import com.netease.nimlib.sdk.robot.model.RobotMsgType;
 import com.netease.nimlib.sdk.team.constant.TeamMemberType;
 import com.netease.nimlib.sdk.team.model.TeamMember;
-
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -96,6 +97,8 @@ public class MessageListPanelEx {
     private IncomingMsgPrompt incomingMsgPrompt;
     private Handler uiHandler;
 
+    //回复消息
+    private ReplyMsgPrompt replyMsgPrompt;
     // 仅显示消息记录，不接收和发送消息
     private boolean recordOnly;
     // 从服务器拉取消息记录
@@ -114,6 +117,8 @@ public class MessageListPanelEx {
     //而在发送消息后，list 需要滚动到底部，又会通过RequestFetchMoreListener 调用一次 loadFromLocal
     //所以消息会重复
     private boolean mIsInitFetchingLocal;
+    float mRawX = 0;
+    float mRawY = 0;
 
     public MessageListPanelEx(Container container, View rootView, boolean recordOnly, boolean remote) {
         this(container, rootView, null, recordOnly, remote);
@@ -165,8 +170,26 @@ public class MessageListPanelEx {
         if (!recordOnly) {
             incomingMsgPrompt = new IncomingMsgPrompt(container.activity, rootView, messageListView, adapter, uiHandler);
         }
-
+        replyMsgPrompt = new ReplyMsgPrompt(container.activity, rootView);
         registerObservers(true);
+    }
+
+    /**
+     * 回复消息面板
+     */
+    public void initReply(IMMessage message) {
+        //TODO
+        replyMsgPrompt.show(message);
+    }
+
+    /**
+     * 关闭回复消息面板
+     */
+    public void initclose() {
+        if (replyMsgPrompt != null) {
+            replyMsgPrompt.close();
+        }
+
     }
 
     private void initListView(IMMessage anchor) {
@@ -766,9 +789,9 @@ public class MessageListPanelEx {
         }
 
         @Override
-        public boolean onViewHolderLongClick(View clickView, View viewHolderView, IMMessage item) {
+        public boolean onViewHolderLongClick(View clickView, View viewHolderView, IMMessage item, int position) {
             if (container.proxy.isLongClickEnabled()) {
-                showLongClickAction(item);
+                showLongClickAction(item, position, clickView);
             }
             return true;
         }
@@ -819,8 +842,8 @@ public class MessageListPanelEx {
          */
 
         // 长按消息Item后弹出菜单控制
-        private void showLongClickAction(IMMessage selectedItem) {
-            onNormalLongClick(selectedItem);
+        private void showLongClickAction(IMMessage selectedItem, int position, View view) {
+            onNormalLongClick(selectedItem, position, view);
         }
 
         /**
@@ -828,46 +851,152 @@ public class MessageListPanelEx {
          *
          * @param item
          */
-        private void onNormalLongClick(IMMessage item) {
-            CustomAlertDialog alertDialog = new CustomAlertDialog(container.activity);
-            alertDialog.setCancelable(true);
-            alertDialog.setCanceledOnTouchOutside(true);
+        private void onNormalLongClick(IMMessage item, int position, View v) {
+//            CustomAlertDialog alertDialog = new CustomAlertDialog(container.activity);
+//            alertDialog.setCancelable(true);
+//            alertDialog.setCanceledOnTouchOutside(true);
 
-            prepareDialogItems(item, alertDialog);
-            alertDialog.show();
+            prepareDialogItems(item, position, v);
+            //     alertDialog.show();
         }
 
         // 长按消息item的菜单项准备。如果消息item的MsgViewHolder处理长按事件(MsgViewHolderBase#onItemLongClick),且返回为true，
         // 则对应项的长按事件不会调用到此处
-        private void prepareDialogItems(final IMMessage selectedItem, CustomAlertDialog alertDialog) {
-            MsgTypeEnum msgType = selectedItem.getMsgType();
+        private void prepareDialogItems(final IMMessage selectedItem, int position, View view) {
+            final MsgTypeEnum msgType = selectedItem.getMsgType();
 
             MessageAudioControl.getInstance(container.activity).stopAudio();
 
+            final List<String> list = new ArrayList<>();
+
+
             // 0 EarPhoneMode
-            longClickItemEarPhoneMode(alertDialog, msgType);
+            longClickItemEarPhoneMode(msgType, list);
             // 1 resend
-            longClickItemResend(selectedItem, alertDialog);
+            longClickItemResend(selectedItem, list);
             // 2 copy
-            longClickItemCopy(selectedItem, alertDialog, msgType);
+            longClickItemCopy(selectedItem, msgType, list);
             // 3 revoke
             if (enableRevokeButton(selectedItem)) {
-                longClickRevokeMsg(selectedItem, alertDialog);
-           }
+                list.add("撤回");
+                //    longClickRevokeMsg(selectedItem, alertDialog);
+            }
+            //回复  in接收到的消息，out发出去的消息
+            if (selectedItem.getDirect() == MsgDirectionEnum.In) {
+                list.add("回复");
+                //   longClickItemReply(selectedItem, alertDialog, msgType);
+            }
             // 4 delete
-            longClickItemDelete(selectedItem, alertDialog);
+            longClickItemDelete(selectedItem, list);
             // 5 trans
-            longClickItemVoidToText(selectedItem, alertDialog, msgType);
+            longClickItemVoidToText(selectedItem, msgType, list);
 
             //TODO 长按Message Item弹出框选项
-//            if (!NimUIKitImpl.getMsgForwardFilter().shouldIgnore(selectedItem) && !recordOnly) {
+            if (!NimUIKitImpl.getMsgForwardFilter().shouldIgnore(selectedItem) && !recordOnly) {
+                list.add("转发个人");
+                list.add("转发群");
 //                // 6 forward to person
 //                longClickItemForwardToPerson(selectedItem, alertDialog);
 //                // 7 forward to team
 //                longClickItemForwardToTeam(selectedItem, alertDialog);
-//            }
+            }
+
+            rootView.findViewById(R.id.messageListView).setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    mRawX = event.getRawX();
+                    mRawY = event.getRawY();
+                    return false;
+                }
+            });
+            //实例化BubblePopupView
+            BubblePopupView bubblePopup = new BubblePopupView(container.activity);
+            //是否跟随手指显示，默认false，设置true后翻转高度无效，永远在上方显示
+            bubblePopup.setShowTouchLocation(false);
+            //要实现顶部气泡向下，需要添加翻转高度，默认为0不翻转（举例：导航栏高度40dp，列表item高度40dp,需设置40+40=80）
+            bubblePopup.setmReversalHeight(5f);
+            bubblePopup.setTextPaddingTop(20);
+            bubblePopup.setTextPaddingBottom(20);
+            //参数分别是：View（我这里就是List的item），position（用于回调返回），手指落下X坐标，手指落下Y坐标，气泡按钮集合，回调监听
+            bubblePopup.showPopupListWindow(view, position, mRawX, mRawY, list, new BubblePopupView.PopupListListener() {
+                @Override
+                public boolean showPopupList(View adapterView, View contextView, int contextPosition) {
+                    return true;
+                }
+
+
+                @Override
+                public void onPopupListClick(View contextView, int contextPosition, int position) {
+                    switch (list.get(position)) {
+                        case "复制":
+                            onCopyMessageItem(selectedItem);
+                            break;
+                        case "回复":
+                            CommonUtil.ReplyMessageListener listener = CommonUtil.replyMessageListener;
+                            if (listener != null) {
+                                listener.replyMsg(selectedItem, msgType);
+                            }
+                            break;
+                        case "删除":
+                            deleteItem(selectedItem, true);
+                            break;
+                        case "撤回":
+                            if (!NetworkUtil.isNetAvailable(container.activity)) {
+                                Toast.makeText(container.activity, R.string.network_is_not_available, Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            NIMClient.getService(MsgService.class).revokeMessage(selectedItem).setCallback(new RequestCallback<Void>() {
+                                @Override
+                                public void onSuccess(Void param) {
+                                    deleteItem(selectedItem, false);
+                                    MessageHelper.getInstance().onRevokeMessage(selectedItem, NimUIKit.getAccount());
+                                }
+
+                                @Override
+                                public void onFailed(int code) {
+                                    if (code == ResponseCode.RES_OVERDUE) {
+                                        Toast.makeText(container.activity, R.string.revoke_failed, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(container.activity, "revoke msg failed, code:" + code, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onException(Throwable exception) {
+
+                                }
+                            });
+                            break;
+                        case "转发个人":
+                            forwardMessage = selectedItem;
+                            ContactSelectActivity.Option option = new ContactSelectActivity.Option();
+                            option.title = "选择转发的人";
+                            option.type = ContactSelectActivity.ContactSelectType.BUDDY;
+                            option.multi = false;
+                            option.maxSelectNum = 1;
+                            NimUIKit.startContactSelector(container.activity, option, REQUEST_CODE_FORWARD_PERSON);
+                            break;
+                        case "转发群":
+                            forwardMessage = selectedItem;
+                            ContactSelectActivity.Option option1 = new ContactSelectActivity.Option();
+                            option1.title = "选择转发的群";
+                            option1.type = ContactSelectActivity.ContactSelectType.TEAM;
+                            option1.multi = false;
+                            option1.maxSelectNum = 1;
+                            NimUIKit.startContactSelector(container.activity, option1, REQUEST_CODE_FORWARD_TEAM);
+                            break;
+
+                    }
+                }
+            });
         }
 
+        /**
+         * 是否显示撤回
+         *
+         * @param selectedItem
+         * @return
+         */
         private boolean enableRevokeButton(IMMessage selectedItem) {
             if (selectedItem.getStatus() == MsgStatusEnum.success
                     && !NimUIKitImpl.getMsgRevokeFilter().shouldIgnore(selectedItem)
@@ -876,6 +1005,9 @@ public class MessageListPanelEx {
                     return true;
                 } else if (NimUIKit.getOptions().enableTeamManagerRevokeMsg && selectedItem.getSessionType() == SessionTypeEnum.Team) {
                     TeamMember member = NimUIKit.getTeamProvider().getTeamMember(selectedItem.getSessionId(), NimUIKit.getAccount());
+                    if (member == null) {
+                        return false;
+                    }
                     return member != null && member.getType() == TeamMemberType.Owner || member.getType() == TeamMemberType.Manager;
                 }
             }
@@ -883,17 +1015,18 @@ public class MessageListPanelEx {
         }
 
         // 长按菜单项--重发
-        private void longClickItemResend(final IMMessage item, CustomAlertDialog alertDialog) {
+        private void longClickItemResend(final IMMessage item, List<String> list) {
             if (item.getStatus() != MsgStatusEnum.fail) {
                 return;
             }
-            alertDialog.addItem(container.activity.getString(R.string.repeat_send_has_blank), new CustomAlertDialog.onSeparateItemClickListener() {
+            list.add("重发");
+            /*alertDialog.addItem(container.activity.getString(R.string.repeat_send_has_blank), new CustomAlertDialog.onSeparateItemClickListener() {
 
                 @Override
                 public void onClick() {
                     onResendMessageItem(item);
                 }
-            });
+            });*/
         }
 
         private void onResendMessageItem(IMMessage message) {
@@ -921,16 +1054,17 @@ public class MessageListPanelEx {
         }
 
         // 长按菜单项--复制
-        private void longClickItemCopy(final IMMessage item, CustomAlertDialog alertDialog, MsgTypeEnum msgType) {
+        private void longClickItemCopy(final IMMessage item, MsgTypeEnum msgType, List<String> list) {
             if (msgType == MsgTypeEnum.text ||
                     (msgType == MsgTypeEnum.robot && item.getAttachment() != null && !((RobotAttachment) item.getAttachment()).isRobotSend())) {
-                alertDialog.addItem(container.activity.getString(R.string.copy_has_blank), new CustomAlertDialog.onSeparateItemClickListener() {
+                list.add("复制");
+               /* alertDialog.addItem(container.activity.getString(R.string.copy_has_blank), new CustomAlertDialog.onSeparateItemClickListener() {
 
                     @Override
                     public void onClick() {
                         onCopyMessageItem(item);
                     }
-                });
+                });*/
             }
         }
 
@@ -939,22 +1073,23 @@ public class MessageListPanelEx {
         }
 
         // 长按菜单项--删除
-        private void longClickItemDelete(final IMMessage selectedItem, CustomAlertDialog alertDialog) {
+        private void longClickItemDelete(final IMMessage selectedItem, List<String> list) {
             if (recordOnly) {
                 return;
             }
-            alertDialog.addItem(container.activity.getString(R.string.delete_has_blank), new CustomAlertDialog.onSeparateItemClickListener() {
+            list.add("删除");
+           /* alertDialog.addItem(container.activity.getString(R.string.delete_has_blank), new CustomAlertDialog.onSeparateItemClickListener() {
 
                 @Override
                 public void onClick() {
                     deleteItem(selectedItem, true);
                 }
-            });
+            });*/
         }
 
         // 长按菜单项 -- 音频转文字
-        private void longClickItemVoidToText(final IMMessage item, CustomAlertDialog alertDialog, MsgTypeEnum msgType) {
-            if (msgType != MsgTypeEnum.audio) return;
+        private void longClickItemVoidToText(final IMMessage item, MsgTypeEnum msgType, List<String> list) {
+            /*if (msgType != MsgTypeEnum.audio) return;
 
             if (item.getDirect() == MsgDirectionEnum.In
                     && item.getAttachStatus() != AttachStatusEnum.transferred)
@@ -969,7 +1104,7 @@ public class MessageListPanelEx {
                 public void onClick() {
                     onVoiceToText(item);
                 }
-            });
+            });*/
         }
 
         // 语音转文字
@@ -985,19 +1120,19 @@ public class MessageListPanelEx {
         }
 
         // 长按菜单项 -- 听筒扬声器切换
-        private void longClickItemEarPhoneMode(CustomAlertDialog alertDialog, MsgTypeEnum msgType) {
-            if (msgType != MsgTypeEnum.audio) return;
-
-            String content = UserPreferences.isEarPhoneModeEnable() ? "切换成扬声器播放" : "切换成听筒播放";
-            final String finalContent = content;
-            alertDialog.addItem(content, new CustomAlertDialog.onSeparateItemClickListener() {
-
-                @Override
-                public void onClick() {
-                    Toast.makeText(container.activity, finalContent, Toast.LENGTH_SHORT).show();
-                    setEarPhoneMode(!UserPreferences.isEarPhoneModeEnable(), true);
-                }
-            });
+        private void longClickItemEarPhoneMode(MsgTypeEnum msgType, List<String> list) {
+//            if (msgType != MsgTypeEnum.audio) return;
+//
+//            String content = UserPreferences.isEarPhoneModeEnable() ? "切换成扬声器播放" : "切换成听筒播放";
+//            final String finalContent = content;
+//            alertDialog.addItem(content, new CustomAlertDialog.onSeparateItemClickListener() {
+//
+//                @Override
+//                public void onClick() {
+//                    Toast.makeText(container.activity, finalContent, Toast.LENGTH_SHORT).show();
+//                    setEarPhoneMode(!UserPreferences.isEarPhoneModeEnable(), true);
+//                }
+//            });
         }
 
         // 长按菜单项 -- 转发到个人
@@ -1065,6 +1200,20 @@ public class MessageListPanelEx {
 
                         }
                     });
+                }
+            });
+        }
+
+        // 长按菜单项--回复
+        private void longClickItemReply(final IMMessage item, CustomAlertDialog alertDialog, final MsgTypeEnum msgType) {
+
+            alertDialog.addItem(container.activity.getString(R.string.reply_has_blank), new CustomAlertDialog.onSeparateItemClickListener() {
+                @Override
+                public void onClick() {
+                    CommonUtil.ReplyMessageListener listener = CommonUtil.replyMessageListener;
+                    if (listener != null) {
+                        listener.replyMsg(item, msgType);
+                    }
                 }
             });
         }
