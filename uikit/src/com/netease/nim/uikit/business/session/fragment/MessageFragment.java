@@ -20,6 +20,7 @@ import com.netease.nim.uikit.business.session.actions.VideoAction;
 import com.netease.nim.uikit.business.session.constant.Extras;
 import com.netease.nim.uikit.business.session.module.Container;
 import com.netease.nim.uikit.business.session.module.ModuleProxy;
+import com.netease.nim.uikit.business.session.module.forward.ForwardPanel;
 import com.netease.nim.uikit.business.session.module.input.InputPanel;
 import com.netease.nim.uikit.business.session.module.list.MessageListPanelEx;
 import com.netease.nim.uikit.common.CommonUtil;
@@ -67,9 +68,9 @@ public class MessageFragment extends TFragment implements ModuleProxy {
     protected SessionTypeEnum sessionType;
 
     // modules
-    protected InputPanel inputPanel;
+    public InputPanel inputPanel;
     public MessageListPanelEx messageListPanel;
-
+    public ForwardPanel forwardPanel;
     protected AitManager aitManager;
 
     @Override
@@ -128,6 +129,13 @@ public class MessageFragment extends TFragment implements ModuleProxy {
         if (messageListPanel.onBackPressed()) {
             return true;
         }
+        if (forwardPanel.onBackPressed()) {
+            MessageListPanelEx.lable = 1;
+            messageListPanel.adapter.notifyDataSetChanged();
+            inputPanel.showLayout();
+            return true;
+        }
+
         return false;
     }
 
@@ -144,7 +152,7 @@ public class MessageFragment extends TFragment implements ModuleProxy {
         Container container = new Container(getActivity(), sessionId, sessionType, this);
 
         if (messageListPanel == null) {
-            messageListPanel = new MessageListPanelEx(container, rootView, anchor, false, false);
+            messageListPanel = new MessageListPanelEx(container, rootView, anchor, false, false,this);
         } else {
             messageListPanel.reload(container, anchor);
         }
@@ -154,6 +162,9 @@ public class MessageFragment extends TFragment implements ModuleProxy {
             inputPanel.setCustomization(customization);
         } else {
             inputPanel.reload(container, customization);
+        }
+        if (forwardPanel == null) {
+            forwardPanel = new ForwardPanel(container,rootView);
         }
 
         initAitManager();

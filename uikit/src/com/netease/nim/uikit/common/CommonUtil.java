@@ -173,5 +173,14 @@ public class CommonUtil {
         void getReply(ReplyMsgData replyMsgData);
     }
 
+    //转发
+    public static onForwardListener forwardListener;
+    public static void setForwardListener(onForwardListener listener) {
+        forwardListener = listener;
+
+    }
+    public interface onForwardListener {
+        void onForward(IMMessage message,boolean isChecked);
+    }
 
 }

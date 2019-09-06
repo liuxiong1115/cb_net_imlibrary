@@ -35,4 +35,5 @@ public interface CustomAttachmentType {
     int WithdrawSucceed = 352;//提现成功
 
     int ReplyMsg = 360;//回复信息
+    int ForWardMsg = 361;//合并转发消息
 }

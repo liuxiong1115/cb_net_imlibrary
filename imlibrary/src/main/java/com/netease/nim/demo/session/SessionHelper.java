@@ -45,6 +45,7 @@ import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nim.uikit.business.session.helper.MessageListPanelHelper;
 import com.netease.nim.uikit.business.session.module.MsgForwardFilter;
 import com.netease.nim.uikit.business.session.module.MsgRevokeFilter;
+import com.netease.nim.uikit.business.session.module.input.InputPanel;
 import com.netease.nim.uikit.business.session.module.model.ReplyMsgData;
 import com.netease.nim.uikit.business.session.viewholder.MsgViewHolderUnknown;
 import com.netease.nim.uikit.business.team.model.TeamExtras;
@@ -527,6 +528,7 @@ public class SessionHelper {
                 replyAttachment.setContent(replyMsgData.getContent());
                 replyAttachment.setUrl(replyMsgData.getUrl());
                 replyAttachment.setMsgType(replyMsgData.getMsgType());
+                replyAttachment.setMessage(replyMsgData.getMessage());
                 replyAttachment.setReplyAccount(replyMsgData.getReplyAccount());
                 replyAttachment.setReplyContent(replyMsgData.getReplyContent());
                 replyAttachment.setType(360);

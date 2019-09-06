@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/forward"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:visibility="gone"
+    android:background="@color/white"
+    android:padding="10dp">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/forward_step"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="逐步转发"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/color_black_333333"/>
+    <View
+        android:layout_width="0.5dp"
+        android:layout_height="wrap_content"
+        android:background="@color/viewline"></View>
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/forward_merge"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="合并转发"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/color_black_333333"/>
+</LinearLayout>

@@ -12,7 +12,10 @@ import android.text.TextUtils;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.netease.nim.uikit.R;
@@ -25,15 +28,19 @@ import com.netease.nim.uikit.business.session.activity.P2PMessageActivity;
 import com.netease.nim.uikit.business.session.activity.TeamMessageActivity;
 import com.netease.nim.uikit.business.session.activity.VoiceTrans;
 import com.netease.nim.uikit.business.session.audio.MessageAudioControl;
+import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nim.uikit.business.session.helper.MessageHelper;
 import com.netease.nim.uikit.business.session.helper.MessageListPanelHelper;
 import com.netease.nim.uikit.business.session.module.Container;
 import com.netease.nim.uikit.business.session.module.BubblePopupView;
+import com.netease.nim.uikit.business.session.module.forward.ForWardInterface;
 import com.netease.nim.uikit.business.session.viewholder.robot.RobotLinkView;
 import com.netease.nim.uikit.common.CommonUtil;
+import com.netease.nim.uikit.common.ToastHelper;
 import com.netease.nim.uikit.common.ui.dialog.CustomAlertDialog;
 import com.netease.nim.uikit.common.ui.dialog.EasyAlertDialog;
 import com.netease.nim.uikit.common.ui.dialog.EasyAlertDialogHelper;
+import com.netease.nim.uikit.common.ui.imageview.HeadImageView;
 import com.netease.nim.uikit.common.ui.recyclerview.adapter.BaseFetchLoadAdapter;
 import com.netease.nim.uikit.common.ui.recyclerview.adapter.IRecyclerView;
 import com.netease.nim.uikit.common.ui.recyclerview.listener.OnItemClickListener;
@@ -72,7 +79,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 基于RecyclerView的消息收发模块
@@ -90,7 +99,7 @@ public class MessageListPanelEx {
     // message list view
     private RecyclerView messageListView;
     private List<IMMessage> items;
-    private MsgAdapter adapter;
+    public MsgAdapter adapter;
     private ImageView listviewBk;
 
     // 新消息到达提醒
@@ -112,6 +121,7 @@ public class MessageListPanelEx {
 
     // 背景图片缓存
     private static Pair<String, Bitmap> background;
+    private MessageFragment messageFragment;
 
     //如果在发需要拍照 的消息时，拍照回来时页面可能会销毁重建，重建时会在MessageLoader 的构造方法中调一次 loadFromLocal
     //而在发送消息后，list 需要滚动到底部，又会通过RequestFetchMoreListener 调用一次 loadFromLocal
@@ -119,6 +129,17 @@ public class MessageListPanelEx {
     private boolean mIsInitFetchingLocal;
     float mRawX = 0;
     float mRawY = 0;
+
+    //判断是否是转发的标签 2为转发
+    public static int lable = 1;
+    //转发选中的消息
+    public List<IMMessage> selectMsg;
+
+    //长按选中的数据
+    public static IMMessage longClickMsg;
+
+    public boolean isStep = false;
+    public boolean isMerge = false;
 
     public MessageListPanelEx(Container container, View rootView, boolean recordOnly, boolean remote) {
         this(container, rootView, null, recordOnly, remote);
@@ -132,6 +153,15 @@ public class MessageListPanelEx {
         init(anchor);
     }
 
+    public MessageListPanelEx(Container container, View rootView, IMMessage anchor, boolean recordOnly, boolean remote, MessageFragment messageFragment) {
+        this.container = container;
+        this.rootView = rootView;
+        this.recordOnly = recordOnly;
+        this.remote = remote;
+        this.messageFragment = messageFragment;
+        init(anchor);
+    }
+
     public void onResume() {
         setEarPhoneMode(UserPreferences.isEarPhoneModeEnable(), false);
     }
@@ -142,6 +172,7 @@ public class MessageListPanelEx {
 
     public void onDestroy() {
         registerObservers(false);
+        lable = 1;
     }
 
     public boolean onBackPressed() {
@@ -189,7 +220,6 @@ public class MessageListPanelEx {
         if (replyMsgPrompt != null) {
             replyMsgPrompt.close();
         }
-
     }
 
     private void initListView(IMMessage anchor) {
@@ -856,7 +886,10 @@ public class MessageListPanelEx {
 //            alertDialog.setCancelable(true);
 //            alertDialog.setCanceledOnTouchOutside(true);
 
-            prepareDialogItems(item, position, v);
+            if (lable == 1) {
+                longClickMsg = item;
+                prepareDialogItems(item, position, v);
+            }
             //     alertDialog.show();
         }
 
@@ -891,6 +924,7 @@ public class MessageListPanelEx {
             // 5 trans
             longClickItemVoidToText(selectedItem, msgType, list);
 
+            list.add("多选");
             //TODO 长按Message Item弹出框选项
             if (!NimUIKitImpl.getMsgForwardFilter().shouldIgnore(selectedItem) && !recordOnly) {
                 list.add("转发个人");
@@ -985,10 +1019,99 @@ public class MessageListPanelEx {
                             option1.maxSelectNum = 1;
                             NimUIKit.startContactSelector(container.activity, option1, REQUEST_CODE_FORWARD_TEAM);
                             break;
+                        case "多选":
+                            lable = 2;
+                            selectMsg = new ArrayList<>();
+                            adapter.notifyDataSetChanged();
+                            messageFragment.inputPanel.hideLayout();
+                            messageFragment.forwardPanel.showLayout(new ForWardInterface() {
+                                @Override
+                                public void onStepClick() {
+                                    if (selectMsg == null || selectMsg.size() == 0) {
+                                        ToastHelper.showToast(container.activity, "请选择聊天记录");
+                                        return;
+                                    }
+                                    isStep = true;
+                                    initForwardType();
+                                }
+
+                                @Override
+                                public void onMergeClick() {
+                                    if (selectMsg == null || selectMsg.size() == 0) {
+                                        ToastHelper.showToast(container.activity, "请选择聊天记录");
+                                        return;
+                                    }
+                                    isMerge = true;
+                                    initForwardType();
+                                }
+                            });
+                            break;
 
                     }
                 }
             });
+
+            //转发选中消息回调
+            CommonUtil.setForwardListener(new CommonUtil.onForwardListener() {
+                @Override
+                public void onForward(IMMessage message, boolean isChecked) {
+                    if (isChecked) {
+                        message.getMsgType();
+                        if (message.getAttachment() == null) {
+                            selectMsg.add(message);
+                        } else {
+                            String string = message.getAttachment().getClass().toString();
+                            if (string.equals("class com.netease.nim.demo.session.extension.DefaultCustomAttachment")) {
+                                return;
+                            }
+                            selectMsg.add(message);
+                        }
+
+                    } else {
+                        for (int i = 0; i < selectMsg.size(); i++) {
+                            if (selectMsg.get(i).getUuid().equals(message.getUuid())) {
+                                selectMsg.remove(i);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        public void initForwardType() {
+            CustomAlertDialog customAlertDialog = new CustomAlertDialog(container.activity);
+            customAlertDialog.addItem("转发到个人", new CustomAlertDialog.onSeparateItemClickListener() {
+                @Override
+                public void onClick() {
+                    lable = 1;
+                    adapter.notifyDataSetChanged();
+                    messageFragment.inputPanel.showLayout();
+                    messageFragment.forwardPanel.hideLayout();
+                    ContactSelectActivity.Option option = new ContactSelectActivity.Option();
+                    option.title = "选择转发的人";
+                    option.type = ContactSelectActivity.ContactSelectType.BUDDY;
+                    option.multi = false;
+                    option.maxSelectNum = 1;
+                    NimUIKit.startContactSelector(container.activity, option, REQUEST_CODE_FORWARD_PERSON);
+                }
+            });
+            customAlertDialog.addItem("转发到群组", new CustomAlertDialog.onSeparateItemClickListener() {
+                @Override
+                public void onClick() {
+                    lable = 1;
+                    adapter.notifyDataSetChanged();
+                    messageFragment.inputPanel.showLayout();
+                    messageFragment.forwardPanel.hideLayout();
+                    ContactSelectActivity.Option option1 = new ContactSelectActivity.Option();
+                    option1.title = "选择转发的群";
+                    option1.type = ContactSelectActivity.ContactSelectType.TEAM;
+                    option1.multi = false;
+                    option1.maxSelectNum = 1;
+                    NimUIKit.startContactSelector(container.activity, option1, REQUEST_CODE_FORWARD_TEAM);
+                }
+            });
+            customAlertDialog.show();
+
         }
 
         /**
@@ -1375,15 +1498,52 @@ public class MessageListPanelEx {
         if (selected != null && !selected.isEmpty()) {
             switch (requestCode) {
                 case REQUEST_CODE_FORWARD_TEAM:
-                    doForwardMessage(selected.get(0), SessionTypeEnum.Team);
+                    if (isStep) {
+                        for (int i = 0; i < selectMsg.size(); i++) {
+                            onForwardMessage(selected.get(0), SessionTypeEnum.Team,selectMsg.get(i));
+                        }
+                        isStep = false;
+                    } else if (isMerge) {
+                        isMerge = false;
+                    }else {
+                        doForwardMessage(selected.get(0), SessionTypeEnum.Team);
+                    }
                     break;
                 case REQUEST_CODE_FORWARD_PERSON:
-                    doForwardMessage(selected.get(0), SessionTypeEnum.P2P);
+                    if (isStep) {
+                        for (int i = 0; i < selectMsg.size(); i++) {
+                            onForwardMessage(selected.get(0), SessionTypeEnum.P2P,selectMsg.get(i));
+                        }
+                        isStep = false;
+                    } else if (isMerge) {
+                        isMerge = false;
+                    }else {
+                        doForwardMessage(selected.get(0), SessionTypeEnum.P2P);
+                    }
                     break;
             }
         }
     }
 
+    // 转发消息  --多选
+    private void onForwardMessage(final String sessionId, SessionTypeEnum sessionTypeEnum,IMMessage item) {
+        IMMessage message;
+        if (item.getMsgType() == MsgTypeEnum.robot) {
+            message = buildForwardRobotMessage(sessionId, sessionTypeEnum);
+        } else {
+            message = MessageBuilder.createForwardMessage(item, sessionId, sessionTypeEnum);
+        }
+
+        if (message == null) {
+            Toast.makeText(container.activity, "该类型不支持转发", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        NIMClient.getService(MsgService.class).sendMessage(message, false);
+        if (container.account.equals(sessionId)) {
+            onMsgSend(message);
+        }
+    }
     // 转发消息
     private void doForwardMessage(final String sessionId, SessionTypeEnum sessionTypeEnum) {
         IMMessage message;

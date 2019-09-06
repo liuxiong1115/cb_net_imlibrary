@@ -1,26 +1,16 @@
 package com.netease.nim.uikit.business.session.module.list;
 
 import android.content.Context;
-import android.os.Handler;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.text.style.ImageSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.GlideUrl;
 import com.netease.nim.uikit.R;
-import com.netease.nim.uikit.business.session.emoji.MoonUtil;
-import com.netease.nim.uikit.business.session.helper.TeamNotificationHelper;
 import com.netease.nim.uikit.business.session.module.input.InputPanel;
 import com.netease.nim.uikit.common.CommonUtil;
-import com.netease.nim.uikit.common.ui.imageview.HeadImageView;
-import com.netease.nim.uikit.common.ui.recyclerview.adapter.BaseFetchLoadAdapter;
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
-import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 

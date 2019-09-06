@@ -1,7 +1,6 @@
 package com.netease.nim.uikit.business.session.module.input;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -25,7 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.Gson;
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.UIKitOptions;
@@ -37,13 +35,10 @@ import com.netease.nim.uikit.business.session.emoji.IEmoticonSelectedListener;
 import com.netease.nim.uikit.business.session.emoji.MoonUtil;
 import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nim.uikit.business.session.module.Container;
-import com.netease.nim.uikit.business.session.module.list.MessageListPanelEx;
 import com.netease.nim.uikit.business.session.module.model.ReplyMsg;
 import com.netease.nim.uikit.business.session.module.model.ReplyMsgData;
 import com.netease.nim.uikit.common.CommonUtil;
-import com.netease.nim.uikit.common.activity.UI;
 import com.netease.nim.uikit.common.ui.dialog.EasyAlertDialogHelper;
-import com.netease.nim.uikit.common.util.C;
 import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nim.uikit.common.util.string.StringUtil;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
@@ -60,7 +55,6 @@ import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.netease.nimlib.sdk.msg.model.CustomNotificationConfig;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
-import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 
 import java.io.File;
 import java.util.List;
@@ -249,6 +243,7 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
                 messageEditText.setText("@" + message.getFromNick());
                 sendMessageButtonInInputBar.setVisibility(View.VISIBLE);
                 moreFuntionButtonInInputBar.setVisibility(View.GONE);
+
                 data = new ReplyMsgData();
                 data.setReplyAccount(message.getFromNick() == null ? "" : message.getFromNick());
                 data.setReplyContent(message.getContent() == null ? message.getPushContent() == null ?"":message.getPushContent() : message.getContent());
@@ -678,7 +673,7 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
     /**
      * 隐藏所有输入布局
      */
-    private void hideAllInputLayout(boolean immediately) {
+    public void hideAllInputLayout(boolean immediately) {
         if (hideAllInputLayoutRunnable == null) {
             hideAllInputLayoutRunnable = new Runnable() {
 
@@ -909,5 +904,19 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
             moreFuntionButtonInInputBar.setVisibility(View.VISIBLE);
         }
 
+    }
+
+    /**
+     * 隐藏布局
+     */
+    public void hideLayout () {
+        messageActivityBottomLayout.setVisibility(View.GONE);
+    }
+
+    /**
+     * 显示布局
+     */
+    public void showLayout() {
+        messageActivityBottomLayout.setVisibility(View.VISIBLE);
     }
 }

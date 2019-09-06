@@ -1,6 +1,8 @@
 package com.netease.nim.demo.session.extension;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 
@@ -15,11 +17,22 @@ public class ReplyAttachment extends CustomAttachment {
     private String msgType;
     private int type;
 
+    public IMMessage getMessage() {
+        return message;
+    }
+
+    public void setMessage(IMMessage message) {
+        this.message = message;
+    }
+
+    private IMMessage message;
+
     private static final String KEY_REPLY_ACCOUNT = "replyAccount";
     private static final String KEY_REPLY_CONTENT = "replyContent";
     private static final String KEY_CONTENT = "content";
     private static final String KEY_URL = "attachment";
     private static final String KEY_MSGTYPE = "msgType";
+    private static final String KEY_MESSAGE = "message";
 
     @Override
     protected void parseData(JSONObject data) {
@@ -28,7 +41,8 @@ public class ReplyAttachment extends CustomAttachment {
         replyContent = data.getString(KEY_REPLY_CONTENT);
         url = (String) data.get(KEY_URL);
         msgType = (String) data.get(KEY_MSGTYPE);
-
+        String s = data.getString(KEY_MESSAGE);
+     //    message=new Gson().fromJson(s,new TypeToken<IMMessage>() {}.getType());
     }
 
     @Override
@@ -38,8 +52,9 @@ public class ReplyAttachment extends CustomAttachment {
             data.put(KEY_CONTENT, content);
             data.put(KEY_REPLY_CONTENT, replyContent);
             data.put(KEY_REPLY_ACCOUNT, replyAccount);
-            data.put(KEY_URL,url);
-            data.put(KEY_MSGTYPE,msgType);
+            data.put(KEY_URL, url);
+            data.put(KEY_MSGTYPE, msgType);
+            data.put(KEY_MESSAGE,message);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -49,6 +64,7 @@ public class ReplyAttachment extends CustomAttachment {
     public String getReplyAccount() {
         return replyAccount;
     }
+
     public String getReplyContent() {
         return replyContent;
     }
@@ -57,15 +73,18 @@ public class ReplyAttachment extends CustomAttachment {
         return content;
     }
 
-    public String getUrl(){
+    public String getUrl() {
         return url;
     }
-    public String getMsgType () {
+
+    public String getMsgType() {
         return msgType;
     }
+
     public ReplyAttachment() {
         super(CustomAttachmentType.ReplyMsg);
     }
+
     public void setReplyAccount(String replyAccount) {
         this.replyAccount = replyAccount;
     }
@@ -86,6 +105,7 @@ public class ReplyAttachment extends CustomAttachment {
     public void setMsgType(String msgType) {
         this.msgType = msgType;
     }
+
     @Override
     public int getType() {
         return type;
