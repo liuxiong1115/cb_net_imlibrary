@@ -20,8 +20,8 @@ import com.netease.nimlib.sdk.msg.model.IMMessage;
 public class ReplyMsgPrompt {
     // 底部新消息提示条
     private View newMessageTipLayout;
-    private TextView account,content;
-    private ImageView image,delete;
+    private TextView account, content;
+    private ImageView image, delete;
 
     private Context context;
     private View view;
@@ -38,14 +38,24 @@ public class ReplyMsgPrompt {
         }
         if (newMessage != null) {
             account.setText(newMessage.getFromNick() == null ? "" : newMessage.getFromNick());
-            if (newMessage.getMsgType() == MsgTypeEnum.custom || newMessage.getMsgType() == MsgTypeEnum.text) {
+            if (newMessage.getMsgType() == null) {
+                if (newMessage.getMsgType() == MsgTypeEnum.custom || newMessage.getMsgType() == MsgTypeEnum.text) {
+                    content.setVisibility(View.VISIBLE);
+                    image.setVisibility(View.GONE);
+                    content.setText(newMessage.getContent() == null ? newMessage.getPushContent() == null ? "" : newMessage.getPushContent() : newMessage.getContent());
+                } else if (newMessage.getMsgType() == MsgTypeEnum.file) {
+                    content.setVisibility(View.VISIBLE);
+                    image.setVisibility(View.GONE);
+                    content.setText("文件消息");
+                } else {
+                    content.setVisibility(View.GONE);
+                    image.setVisibility(View.VISIBLE);
+                    lxGlide(context, ((FileAttachment) newMessage.getAttachment()).getUrl() == null ? "" : ((FileAttachment) newMessage.getAttachment()).getUrl(), image);
+                }
+            } else {
                 content.setVisibility(View.VISIBLE);
                 image.setVisibility(View.GONE);
-                content.setText(newMessage.getContent() == null ? newMessage.getPushContent() == null?"":newMessage.getPushContent() : newMessage.getContent());
-            } else {
-                content.setVisibility(View.GONE);
-                image.setVisibility(View.VISIBLE);
-                lxGlide(context,((FileAttachment) newMessage.getAttachment()).getUrl() == null ? "" :((FileAttachment) newMessage.getAttachment()).getUrl(),image);
+                content.setText("回复消息");
             }
         }
         delete.setOnClickListener(new View.OnClickListener() {
@@ -59,13 +69,14 @@ public class ReplyMsgPrompt {
         newMessageTipLayout.setVisibility(View.VISIBLE);
     }
 
-    public void close () {
+    public void close() {
         if (newMessageTipLayout != null) {
             newMessageTipLayout.setVisibility(View.GONE);
         }
     }
+
     public static void lxGlide(Context context, String url, ImageView imageView) {
-        String dealUrl = url.startsWith("http") ?url: CommonUtil.BaseUrl +url;
+        String dealUrl = url.startsWith("http") ? url : CommonUtil.BaseUrl + url;
         Glide.with(context).load(dealUrl).into(imageView);
     }
 

@@ -14,6 +14,8 @@ import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 
+import java.util.List;
+
 public class CommonUtil {
 
     //TODO Base URL 加载头像时使用
@@ -40,7 +42,7 @@ public class CommonUtil {
     public static int sendMessageCount = 0;
     public static int role = 0;  //角色  1--教师   2--学生  3--销售
 
-    public static MsgAttachment replyAttachment;
+    public static MsgAttachment replyAttachment,forwardAttachment;
     //是否开启留言  0-未开启   1-开启
     public static int isOPeenMessage = 0;
     public static void setRole (int lable) {
@@ -181,6 +183,15 @@ public class CommonUtil {
     }
     public interface onForwardListener {
         void onForward(IMMessage message,boolean isChecked);
+    }
+
+    //合并转发
+    public static onMergeForwardListener mergeForwardListener;
+    public static void setMergeForwardListener(onMergeForwardListener listener) {
+        mergeForwardListener = listener;
+    }
+    public interface onMergeForwardListener {
+        void mergeForward(List<IMMessage> messages,String content);
     }
 
 }

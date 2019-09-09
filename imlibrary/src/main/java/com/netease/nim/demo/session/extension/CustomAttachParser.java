@@ -1,9 +1,13 @@
 package com.netease.nim.demo.session.extension;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachmentParser;
+
+import java.util.Date;
 
 /**
  * Created by zhoujianghua on 2015/4/9.
@@ -44,6 +48,9 @@ public class CustomAttachParser implements MsgAttachmentParser {
                 case CustomAttachmentType.ReplyMsg: //回复消息
                     attachment = new ReplyAttachment();
                     break;
+                case CustomAttachmentType.ForWardMsg: //合并转发消息
+                    attachment = new ForwardAttachment();
+                    break;
                 default:   //自定义
                     attachment = new DefaultCustomAttachment();
                     break;
@@ -52,6 +59,8 @@ public class CustomAttachParser implements MsgAttachmentParser {
                 if (attachment instanceof StickerAttachment) {
                     attachment.fromJson(data);
                 } else if (attachment instanceof ReplyAttachment){
+                    attachment.fromJson(data);
+                }else if (attachment instanceof ForwardAttachment) {
                     attachment.fromJson(data);
                 }else {
                     attachment.fromJson(object);

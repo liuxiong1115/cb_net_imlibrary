@@ -4,19 +4,31 @@
     android:layout_width="278dp"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
     <TextView
         android:id="@+id/reply_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:textColor="@color/color_black_333333"
-        android:textSize="16sp"/>
+        android:textSize="16sp" />
+
+    <include
+        layout="@layout/nim_message_item_file"
+        android:visibility="gone"></include>
+
+    <include
+        layout="@layout/nim_message_item_video"
+        android:visibility="gone"></include>
+
     <LinearLayout
+        android:id="@+id/reply_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/reply_desc"
             android:layout_width="match_parent"
@@ -24,22 +36,23 @@
             android:gravity="left"
             android:maxLines="2"
             android:textColor="@color/color_grey_555555"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
+
         <ImageView
             android:id="@+id/reply_image"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:visibility="gone"
-             />
+            android:visibility="gone" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/color_grey_999999"/>
+        android:background="@color/color_grey_999999" />
+
     <TextView
         android:id="@+id/account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"/>
-
+        android:padding="5dp" />
 </LinearLayout>

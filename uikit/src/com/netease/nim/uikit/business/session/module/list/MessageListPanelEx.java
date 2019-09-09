@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
@@ -60,6 +61,7 @@ import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
+import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum;
 import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum;
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
@@ -72,7 +74,9 @@ import com.netease.nimlib.sdk.msg.model.TeamMessageReceipt;
 import com.netease.nimlib.sdk.robot.model.RobotAttachment;
 import com.netease.nimlib.sdk.robot.model.RobotMsgType;
 import com.netease.nimlib.sdk.team.constant.TeamMemberType;
+import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -1036,7 +1040,7 @@ public class MessageListPanelEx {
                                 }
 
                                 @Override
-                                public void onMergeClick() {
+                                public void onMergeClick() {  //合并转发
                                     if (selectMsg == null || selectMsg.size() == 0) {
                                         ToastHelper.showToast(container.activity, "请选择聊天记录");
                                         return;
@@ -1503,8 +1507,10 @@ public class MessageListPanelEx {
                             onForwardMessage(selected.get(0), SessionTypeEnum.Team,selectMsg.get(i));
                         }
                         isStep = false;
-                    } else if (isMerge) {
+                    } else if (isMerge) {  //合并转发群
                         isMerge = false;
+                       // onForwardMessage(selected.get(0),SessionTypeEnum.Team,selectMsg.get(0));
+                        createForward(selected.get(0),SessionTypeEnum.Team);
                     }else {
                         doForwardMessage(selected.get(0), SessionTypeEnum.Team);
                     }
@@ -1517,6 +1523,7 @@ public class MessageListPanelEx {
                         isStep = false;
                     } else if (isMerge) {
                         isMerge = false;
+                        createForward(selected.get(0),SessionTypeEnum.P2P);
                     }else {
                         doForwardMessage(selected.get(0), SessionTypeEnum.P2P);
                     }
@@ -1573,5 +1580,41 @@ public class MessageListPanelEx {
             return MessageBuilder.createTextMessage(sessionId, sessionTypeEnum, forwardMessage.getContent());
         }
         return null;
+    }
+
+    /**
+     * 创建多选合并消息
+     */
+    public void createForward (String sessionId,SessionTypeEnum sessionTypeEnum) {
+        String account;
+        if (container.sessionType == SessionTypeEnum.Team) {  //群聊  直接显示群聊天记录
+            Team team = NimUIKit.getTeamProvider().getTeamById(container.account);
+            if (team != null) {
+                account = team.getName();
+            } else {
+                account = container.account;
+            }
+            CommonUtil.onMergeForwardListener listener = CommonUtil.mergeForwardListener;
+            if (listener != null) {
+                listener.mergeForward(selectMsg,account+"群的聊天记录");
+            }
+        } else {  //单聊 显示谁和谁的聊天记录
+            NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(container.account);
+            if (userInfo != null) {
+                account = userInfo.getName() == null?"":userInfo.getName();
+            } else {
+                account = container.account == null ? "" : container.account;
+            }
+            CommonUtil.onMergeForwardListener listener = CommonUtil.mergeForwardListener;
+            if (listener != null) {
+                listener.mergeForward(selectMsg,selectMsg.get(0).getFromNick()+"和"+account+"的聊天记录");
+            }
+        }
+        MsgAttachment msgAttachment = CommonUtil.forwardAttachment;
+        IMMessage message = MessageBuilder.createCustomMessage(sessionId, sessionTypeEnum, "聊天记录", msgAttachment);
+        NIMClient.getService(MsgService.class).sendMessage(message, false);
+        if (container.account.equals(sessionId)) {
+            onMsgSend(message);
+        }
     }
 }

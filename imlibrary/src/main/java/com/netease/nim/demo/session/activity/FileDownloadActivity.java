@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.netease.nim.demo.R;
 import com.netease.nim.demo.file.FileIcons;
+import com.netease.nim.demo.session.extension.ReplyAttachment;
 import com.netease.nim.demo.session.utils.AppKit;
 import com.netease.nim.demo.session.utils.download.DownLoadManager;
 import com.netease.nim.demo.session.utils.download.DownLoadThread;
@@ -51,12 +52,14 @@ public class FileDownloadActivity extends UI {
     private ImageView imageView;
 
     private IMMessage message;
+    private String lable;
     private MyToolbar toolbar;
     private boolean isSucceed;
 
-    public static void start(Context context, IMMessage message) {
+    public static void start(Context context, IMMessage message, String lable) {
         Intent intent = new Intent();
         intent.putExtra(INTENT_EXTRA_DATA, message);
+        intent.putExtra("lable", lable);
         intent.setClass(context, FileDownloadActivity.class);
         context.startActivity(intent);
     }
@@ -81,58 +84,112 @@ public class FileDownloadActivity extends UI {
 
     private void onParseIntent() {
         this.message = (IMMessage) getIntent().getSerializableExtra(INTENT_EXTRA_DATA);
+        this.lable = (String) getIntent().getSerializableExtra("lable");
     }
 
     private void findViews() {
-        final FileAttachment attachment = (FileAttachment) message.getAttachment();
-        fileNameText = findView(R.id.file_name);
-        fileDownloadBtn = findView(R.id.download_btn);
-        imageView = findView(R.id.file_icon);
-        ToolBarOptions options = new NimToolBarOptions();
-        options.titleString = "文件";
-        setToolBar(R.id.toolbar, options);
-        boolean isExit = FileUtils.isFileExist(attachment.getDisplayName());
-        if (isExit) {
-            isSucceed = true;
-            fileDownloadBtn.setText("打开");
-            ToolBarOptions options1 = new NimToolBarOptions();
-            setToolBar(R.id.toolbar, options1);
-            //  fileDownloadBtn.setBackgroundResource(R.drawable.g_white_btn_pressed);
-            fileDownloadBtn.setBackgroundResource(R.drawable.nim_team_create_btn_selector);
-        } else {
-            isSucceed = false;
-            fileDownloadBtn.setText("下载");
-            fileDownloadBtn.setBackgroundResource(R.drawable.nim_team_create_btn_selector);
-        }
+        if (lable.equals("reply")) {
+            final ReplyAttachment attachment = (ReplyAttachment) message.getAttachment();
+            fileNameText = findView(R.id.file_name);
+            fileDownloadBtn = findView(R.id.download_btn);
+            imageView = findView(R.id.file_icon);
+            ToolBarOptions options = new NimToolBarOptions();
+            options.titleString = "文件";
+            setToolBar(R.id.toolbar, options);
+            boolean isExit = FileUtils.isFileExist(attachment.getMsg().getAttachment().getDisplayName() == null ? "" : attachment.getMsg().getAttachment().getDisplayName());
+            if (isExit) {
+                isSucceed = true;
+                fileDownloadBtn.setText("打开");
+                ToolBarOptions options1 = new NimToolBarOptions();
+                setToolBar(R.id.toolbar, options1);
+                //  fileDownloadBtn.setBackgroundResource(R.drawable.g_white_btn_pressed);
+                fileDownloadBtn.setBackgroundResource(R.drawable.nim_team_create_btn_selector);
+            } else {
+                isSucceed = false;
+                fileDownloadBtn.setText("下载");
+                fileDownloadBtn.setBackgroundResource(R.drawable.nim_team_create_btn_selector);
+            }
 
-        fileDownloadBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (attachment != null) {
-                    boolean isExit = FileUtils.isFileExist(attachment.getDisplayName());
-                    if (isExit) {
-                        AppKit.openFile(getApplicationContext(), FileUtil.createFile(attachment.getDisplayName()));
-                    } else {
+            fileDownloadBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (attachment != null) {
+                        boolean isExit = FileUtils.isFileExist(attachment.getMsg().getAttachment().getDisplayName() == null ? "" : attachment.getMsg().getAttachment().getDisplayName());
+                        if (isExit) {
+                            AppKit.openFile(getApplicationContext(), FileUtil.createFile(attachment.getMsg().getAttachment().getDisplayName() == null ? "" : attachment.getMsg().getAttachment().getDisplayName()));
+                        } else {
 //                        if (isOriginDataHasDownloaded(message)) {
 //                            return;
 //                        }
 //                        downloadFile();
-                        showDownloadDialog(attachment.getUrl(), attachment.getDisplayName());
+                            showDownloadDialog(attachment.getUrl(), attachment.getMsg().getAttachment().getDisplayName() == null ? "" : attachment.getMsg().getAttachment().getDisplayName());
+                        }
+                    } else {
+                        Toast.makeText(FileDownloadActivity.this, "发生未知错误，暂不能使用", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(FileDownloadActivity.this, "发生未知错误，暂不能使用", Toast.LENGTH_SHORT).show();
                 }
+            });
+        } else {
+            final FileAttachment attachment = (FileAttachment) message.getAttachment();
+            fileNameText = findView(R.id.file_name);
+            fileDownloadBtn = findView(R.id.download_btn);
+            imageView = findView(R.id.file_icon);
+            ToolBarOptions options = new NimToolBarOptions();
+            options.titleString = "文件";
+            setToolBar(R.id.toolbar, options);
+            boolean isExit = FileUtils.isFileExist(attachment.getDisplayName());
+            if (isExit) {
+                isSucceed = true;
+                fileDownloadBtn.setText("打开");
+                ToolBarOptions options1 = new NimToolBarOptions();
+                setToolBar(R.id.toolbar, options1);
+                //  fileDownloadBtn.setBackgroundResource(R.drawable.g_white_btn_pressed);
+                fileDownloadBtn.setBackgroundResource(R.drawable.nim_team_create_btn_selector);
+            } else {
+                isSucceed = false;
+                fileDownloadBtn.setText("下载");
+                fileDownloadBtn.setBackgroundResource(R.drawable.nim_team_create_btn_selector);
             }
-        });
+
+            fileDownloadBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (attachment != null) {
+                        boolean isExit = FileUtils.isFileExist(attachment.getDisplayName());
+                        if (isExit) {
+                            AppKit.openFile(getApplicationContext(), FileUtil.createFile(attachment.getDisplayName()));
+                        } else {
+//                        if (isOriginDataHasDownloaded(message)) {
+//                            return;
+//                        }
+//                        downloadFile();
+                            showDownloadDialog(attachment.getUrl(), attachment.getDisplayName());
+                        }
+                    } else {
+                        Toast.makeText(FileDownloadActivity.this, "发生未知错误，暂不能使用", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
     }
 
     private void updateUI() {
-        FileAttachment attachment = (FileAttachment) message.getAttachment();
-        if (attachment != null) {
-            fileNameText.setText(attachment.getDisplayName());
-            int iconResId = FileIcons.smallIcon(attachment.getDisplayName());
-            imageView.setImageResource(iconResId);
+        if (lable.equals("reply")) {
+            FileAttachment attachment = (FileAttachment) message.getAttachment();
+            if (attachment != null) {
+                fileNameText.setText(attachment.getDisplayName());
+                int iconResId = FileIcons.smallIcon(attachment.getDisplayName());
+                imageView.setImageResource(iconResId);
+            }
+        } else {
+            FileAttachment attachment = (FileAttachment) message.getAttachment();
+            if (attachment != null) {
+                fileNameText.setText(attachment.getDisplayName());
+                int iconResId = FileIcons.smallIcon(attachment.getDisplayName());
+                imageView.setImageResource(iconResId);
+            }
         }
+
 /*
         if (isOriginDataHasDownloaded(message)) {
             onDownloadSuccess();
@@ -162,7 +219,7 @@ public class FileDownloadActivity extends UI {
      */
     private void showDownloadDialog(String url, String fileName) {
         if (TextUtils.isEmpty(url)) {
-            ToastHelper.showToast(this,"文件错误");
+            ToastHelper.showToast(this, "文件错误");
             return;
         }
         String dealUrl = url.startsWith("http") ? url : CommonUtil.BaseUrl + "/" + url;

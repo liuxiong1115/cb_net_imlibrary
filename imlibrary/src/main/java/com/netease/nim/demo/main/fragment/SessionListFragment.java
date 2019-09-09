@@ -17,6 +17,7 @@ import com.netease.nim.demo.main.model.MainTab;
 import com.netease.nim.demo.main.reminder.ReminderManager;
 import com.netease.nim.demo.session.SessionHelper;
 import com.netease.nim.demo.session.extension.DefaultCustomAttachment;
+import com.netease.nim.demo.session.extension.ForwardAttachment;
 import com.netease.nim.demo.session.extension.GuessAttachment;
 import com.netease.nim.demo.session.extension.NotifyAttchment;
 import com.netease.nim.demo.session.extension.RedPacketAttachment;
@@ -273,6 +274,8 @@ public class SessionListFragment extends MainTabFragment {
                     return "新访客到达!";
                 } else if (attachment instanceof ReplyAttachment) {
                     return ((ReplyAttachment) attachment).getContent();
+                } else if (attachment instanceof ForwardAttachment) {
+                    return "[聊天记录]";
                 }
                 return null;
             }

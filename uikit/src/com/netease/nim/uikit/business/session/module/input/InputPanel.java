@@ -35,7 +35,6 @@ import com.netease.nim.uikit.business.session.emoji.IEmoticonSelectedListener;
 import com.netease.nim.uikit.business.session.emoji.MoonUtil;
 import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nim.uikit.business.session.module.Container;
-import com.netease.nim.uikit.business.session.module.model.ReplyMsg;
 import com.netease.nim.uikit.business.session.module.model.ReplyMsgData;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.ui.dialog.EasyAlertDialogHelper;
@@ -413,9 +412,6 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
     private void onTextMessageSendReplyMsg() {
         String text = messageEditText.getText().toString();
         data.setContent(text);
-        ReplyMsg replyMsg = new ReplyMsg();
-        replyMsg.setData(data);
-        replyMsg.setType(360);
         CommonUtil.ReplyListener listener = CommonUtil.replyListener;
         if (listener != null) {
             listener.getReply(data);

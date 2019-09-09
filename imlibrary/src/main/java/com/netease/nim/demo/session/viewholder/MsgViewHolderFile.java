@@ -124,7 +124,7 @@ public class MsgViewHolderFile extends MsgViewHolderBase {
 
     @Override
     protected void onItemClick() {
-        FileDownloadActivity.start(context, message);
+        FileDownloadActivity.start(context, message,"");
 
     }
 

@@ -12,8 +12,10 @@ import com.netease.nim.demo.contact.activity.RobotProfileActivity;
 import com.netease.nim.demo.contact.activity.UserProfileActivity;
 import com.netease.nim.demo.redpacket.NIMRedPacketClient;
 import com.netease.nim.demo.session.action.FileAction;
+import com.netease.nim.demo.session.extension.ForwardAttachment;
 import com.netease.nim.demo.session.extension.NotifyAttchment;
 import com.netease.nim.demo.session.extension.ReplyAttachment;
+import com.netease.nim.demo.session.viewholder.MsgViewHolderForwardCustom;
 import com.netease.nim.demo.session.viewholder.MsgViewHolderReplyCustom;
 import com.netease.nim.demo.session.viewholder.NotifyViewHolder;
 import com.netease.nim.uikit.business.session.actions.ScheduleAction;
@@ -515,9 +517,11 @@ public class SessionHelper {
         NimUIKit.registerMsgItemViewHolder(GuessAttachment.class, MsgViewHolderGuess.class);
         NimUIKit.registerMsgItemViewHolder(DefaultCustomAttachment.class, MsgViewHolderDefCustom.class);
         NimUIKit.registerMsgItemViewHolder(ReplyAttachment.class, MsgViewHolderReplyCustom.class);  //回复消息
+        NimUIKit.registerMsgItemViewHolder(ForwardAttachment.class, MsgViewHolderForwardCustom.class); //合并转发消息
         NimUIKit.registerMsgItemViewHolder(StickerAttachment.class, MsgViewHolderSticker.class);
         NimUIKit.registerMsgItemViewHolder(SnapChatAttachment.class, MsgViewHolderSnapChat.class);
         NimUIKit.registerMsgItemViewHolder(NotifyAttchment.class, NotifyViewHolder.class);  //新访客
+
 //        NimUIKit.registerMsgItemViewHolder(RTSAttachment.class, MsgViewHolderRTS.class);
         NimUIKit.registerTipMsgViewHolder(MsgViewHolderTip.class);
         registerRedPacketViewHolder();
@@ -533,6 +537,15 @@ public class SessionHelper {
                 replyAttachment.setReplyContent(replyMsgData.getReplyContent());
                 replyAttachment.setType(360);
                 CommonUtil.replyAttachment =replyAttachment;
+            }
+        });
+        CommonUtil.setMergeForwardListener(new CommonUtil.onMergeForwardListener() {
+            @Override
+            public void mergeForward(List<IMMessage> messages, String content) {
+                ForwardAttachment forwardAttachment = new ForwardAttachment();
+                forwardAttachment.setMessages(messages);
+                forwardAttachment.setContent(content);
+                CommonUtil.forwardAttachment = forwardAttachment;
             }
         });
 

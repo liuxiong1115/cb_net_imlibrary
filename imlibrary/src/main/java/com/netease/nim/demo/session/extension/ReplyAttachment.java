@@ -3,7 +3,7 @@ package com.netease.nim.demo.session.extension;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
+import com.netease.nim.uikit.business.session.module.model.Message;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 
 /**
@@ -15,7 +15,8 @@ public class ReplyAttachment extends CustomAttachment {
     private String content; //回复内容
     private String url;
     private String msgType;
-    private int type;
+    private Integer type;
+    private Message msg;
 
     public IMMessage getMessage() {
         return message;
@@ -30,7 +31,7 @@ public class ReplyAttachment extends CustomAttachment {
     private static final String KEY_REPLY_ACCOUNT = "replyAccount";
     private static final String KEY_REPLY_CONTENT = "replyContent";
     private static final String KEY_CONTENT = "content";
-    private static final String KEY_URL = "attachment";
+    private static final String KEY_URL = "url";
     private static final String KEY_MSGTYPE = "msgType";
     private static final String KEY_MESSAGE = "message";
 
@@ -42,7 +43,8 @@ public class ReplyAttachment extends CustomAttachment {
         url = (String) data.get(KEY_URL);
         msgType = (String) data.get(KEY_MSGTYPE);
         String s = data.getString(KEY_MESSAGE);
-     //    message=new Gson().fromJson(s,new TypeToken<IMMessage>() {}.getType());
+        msg = new Gson().fromJson(s,new TypeToken<Message>() {}.getType());
+        //    message=new Gson().fromJson(s,new TypeToken<IMMessage>() {}.getType());
     }
 
     @Override
@@ -54,7 +56,7 @@ public class ReplyAttachment extends CustomAttachment {
             data.put(KEY_REPLY_ACCOUNT, replyAccount);
             data.put(KEY_URL, url);
             data.put(KEY_MSGTYPE, msgType);
-            data.put(KEY_MESSAGE,message);
+            data.put(KEY_MESSAGE, message);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -113,5 +115,9 @@ public class ReplyAttachment extends CustomAttachment {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public Message getMsg () {
+        return msg;
     }
 }
