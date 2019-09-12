@@ -1,40 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout android:id="@+id/messages_list_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/messages_list_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:cacheColorHint="@android:color/transparent"
-        />
+        android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/emptyBg"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:layout_marginBottom="50dp"
-        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/visitor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+                <com.netease.nim.uikit.common.ui.imageview.HeadImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/appicon"/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="访客通知"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_black_333333"
+                    android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="您有一个新访客"
+                        android:layout_marginLeft="10dp"
+                        android:textSize="14sp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="#999999"/>
+                </LinearLayout>
+                <com.netease.nim.uikit.common.ui.drop.DropFake
+                    android:id="@+id/unread_number"
+                    android:layout_width="28dip"
+                    android:layout_height="28dip"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@+id/unread_number_explosion"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:visibility="visible" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/viewline"></View>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:cacheColorHint="@android:color/transparent" />
 
-        <ImageView
-            android:id="@+id/emptyBg1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:contentDescription="@string/empty"
-            android:src="@drawable/empty_bg"/>
+            <RelativeLayout
+                android:id="@+id/emptyBg"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="50dp"
+                android:visibility="gone">
 
-        <TextView
-            android:id="@+id/message_list_empty_hint"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/emptyBg1"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dip"
-            android:gravity="center"/>
-    </RelativeLayout>
+                <ImageView
+                    android:id="@+id/emptyBg1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/empty_bg" />
+
+                <TextView
+                    android:id="@+id/message_list_empty_hint"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/emptyBg1"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dip"
+                    android:gravity="center" />
+            </RelativeLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 </FrameLayout>

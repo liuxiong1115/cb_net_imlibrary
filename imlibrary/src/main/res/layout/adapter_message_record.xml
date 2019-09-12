@@ -31,12 +31,13 @@
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_margin="10dp">
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_16"
+                android:textSize="@dimen/sp_14"
                 android:textColor="@color/color_black_333333"/>
             <ImageView
                 android:id="@+id/image"

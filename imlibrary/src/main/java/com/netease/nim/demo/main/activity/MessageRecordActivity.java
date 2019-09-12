@@ -14,6 +14,7 @@ import com.netease.nim.demo.R;
 import com.netease.nim.demo.main.adapter.MessageRecordAdapter;
 import com.netease.nim.demo.session.activity.FileDownloadActivity;
 import com.netease.nim.uikit.api.model.session.SessionCustomization;
+import com.netease.nim.uikit.api.wrapper.NimToolBarOptions;
 import com.netease.nim.uikit.business.session.activity.P2PMessageActivity;
 import com.netease.nim.uikit.business.session.constant.Extras;
 import com.netease.nim.uikit.business.session.module.model.Message;
@@ -54,7 +55,7 @@ public class MessageRecordActivity extends UI {
     }
     private void initView () {
         recyclerView = findViewById(R.id.recyclerView);
-        ToolBarOptions toolBarOptions = new ToolBarOptions();
+        NimToolBarOptions toolBarOptions = new NimToolBarOptions();
         toolBarOptions.titleString = title;
         setToolBar(R.id.toolbar,toolBarOptions);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);

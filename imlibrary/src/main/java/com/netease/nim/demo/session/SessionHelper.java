@@ -3,6 +3,7 @@ package com.netease.nim.demo.session;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -11,6 +12,7 @@ import com.netease.nim.demo.R;
 import com.netease.nim.demo.contact.activity.RobotProfileActivity;
 import com.netease.nim.demo.contact.activity.UserProfileActivity;
 import com.netease.nim.demo.redpacket.NIMRedPacketClient;
+import com.netease.nim.demo.session.action.AVChatAction;
 import com.netease.nim.demo.session.action.FileAction;
 import com.netease.nim.demo.session.extension.ForwardAttachment;
 import com.netease.nim.demo.session.extension.NotifyAttchment;
@@ -187,10 +189,10 @@ public class SessionHelper {
 
             // 定制加号点开后可以包含的操作， 默认已经有图片，视频等消息了
             ArrayList<BaseAction> actions = new ArrayList<>();
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-//                actions.add(new AVChatAction(AVChatType.AUDIO));
-//                actions.add(new AVChatAction(AVChatType.VIDEO));
-//            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                actions.add(new AVChatAction(AVChatType.AUDIO));
+             //   actions.add(new AVChatAction(AVChatType.VIDEO));
+            }
 //            actions.add(new RTSAction());
 //            actions.add(new SnapChatAction());
 //            actions.add(new GuessAction());
@@ -415,7 +417,7 @@ public class SessionHelper {
 //            TeamAVChatProfile.sharedInstance().registerObserver(true);
 
             ArrayList<BaseAction> actions = new ArrayList<>();
-//            actions.add(avChatAction);
+            actions.add(avChatAction);
 //            actions.add(new GuessAction());
             actions.add(new FileAction());
             //教师权限添加排课按钮

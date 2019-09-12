@@ -1,7 +1,6 @@
 package com.netease.nim.demo.session.action;
 
 import android.widget.Toast;
-
 import com.netease.nim.demo.R;
 import com.netease.nim.uikit.business.session.actions.BaseAction;
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
@@ -32,6 +31,6 @@ public class AVChatAction extends BaseAction {
     /************************ 音视频通话 ***********************/
 
     public void startAudioVideoCall(AVChatType avChatType) {
-//        AVChatKit.outgoingCall(getActivity(), getAccount(), UserInfoHelper.getUserDisplayName(getAccount()), avChatType.getValue(), AVChatActivity.FROM_INTERNAL);
+     //  AVChatKit.outgoingCall(getActivity(), getAccount(), UserInfoHelper.getUserDisplayName(getAccount()), avChatType.getValue(), AVChatActivity.FROM_INTERNAL);
     }
 }

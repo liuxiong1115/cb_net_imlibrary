@@ -1,10 +1,12 @@
 
 package com.netease.nim.uikit.business.recent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +20,10 @@ import com.netease.nim.uikit.api.model.main.OnlineStateChangeObserver;
 import com.netease.nim.uikit.api.model.team.TeamDataChangedObserver;
 import com.netease.nim.uikit.api.model.team.TeamMemberDataChangedObserver;
 import com.netease.nim.uikit.api.model.user.UserInfoObserver;
+import com.netease.nim.uikit.business.VisitorActivity;
 import com.netease.nim.uikit.business.recent.adapter.RecentContactAdapter;
 import com.netease.nim.uikit.business.recent.adapter.SwipeItemLayout;
+import com.netease.nim.uikit.business.robot.parser.elements.group.LinearLayout;
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.ToastHelper;
@@ -27,6 +31,7 @@ import com.netease.nim.uikit.common.badger.Badger;
 import com.netease.nim.uikit.common.fragment.TFragment;
 import com.netease.nim.uikit.common.ui.dialog.CustomAlertDialog;
 import com.netease.nim.uikit.common.ui.drop.DropCover;
+import com.netease.nim.uikit.common.ui.drop.DropFake;
 import com.netease.nim.uikit.common.ui.drop.DropManager;
 import com.netease.nim.uikit.common.ui.recyclerview.listener.SimpleClickListener;
 import com.netease.nim.uikit.common.util.string.StringUtil;
@@ -89,6 +94,8 @@ public class RecentContactsFragment extends TFragment {
     private RecentContactsCallback callback;
 
     private UserInfoObserver userInfoObserver;
+    private View visitorLayout;
+    private DropFake dropFake;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -127,10 +134,9 @@ public class RecentContactsFragment extends TFragment {
     }
 
 
-    public void addHeaderView(View view){
+    public void addHeaderView(View view) {
         adapter.addHeaderView(view);
     }
-
 
 
     /**
@@ -140,12 +146,26 @@ public class RecentContactsFragment extends TFragment {
         recyclerView = findView(R.id.recycler_view);
         emptyBg = findView(R.id.emptyBg);
         emptyHint = findView(R.id.message_list_empty_hint);
+        visitorLayout = findView(R.id.visitor);
+        dropFake = findView(R.id.unread_number);
+        recyclerView.setNestedScrollingEnabled(false);
+
+        visitorLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(),VisitorActivity.class);
+                getContext().startActivity(intent);
+            }
+        });
     }
 
     /**
      * 初始化消息列表
      */
     private void initMessageList() {
+        if (CommonUtil.role != CommonUtil.SELLER) {
+            visitorLayout.setVisibility(View.GONE);
+        }
         items = new ArrayList<>();
         cached = new HashMap<>(3);
 
@@ -153,13 +173,12 @@ public class RecentContactsFragment extends TFragment {
         adapter = new RecentContactAdapter(recyclerView, items);
         initCallBack();
         adapter.setCallback(callback);
-
         // recyclerView
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addOnItemTouchListener(touchListener);
         //侧滑监听
-       recyclerView.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(getContext()));
+        recyclerView.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(getContext()));
         // ios style
         OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
@@ -364,14 +383,25 @@ public class RecentContactsFragment extends TFragment {
                         if (code != ResponseCode.RES_SUCCESS || recents == null) {
                             return;
                         }
-                        loadedRecents = recents;
+                        if (CommonUtil.role == CommonUtil.SELLER) {
+                            List<RecentContact> list = new ArrayList<>();
+                            for (int i = 0; i < recents.size(); i++) {
+                                if (!recents.get(i).getContactId().startsWith("visi")) {
+                                    list.add(recents.get(i));
+                                }else {
+                                    Log.e("recent",recents.get(i).getContactId());
+                                }
+                            }
+                            loadedRecents = list;
+                        } else {
+                            loadedRecents = recents;
+                        }
                         // 初次加载，更新离线的消息中是否有@我的消息
                         for (RecentContact loadedRecent : loadedRecents) {
                             if (loadedRecent.getSessionType() == SessionTypeEnum.Team) {
                                 updateOfflineContactAited(loadedRecent);
                             }
                         }
-
 
                         // 此处如果是界面刚初始化，为了防止界面卡顿，可先在后台把需要显示的用户资料和群组资料在后台加载好，然后再刷新界面
                         //
@@ -665,7 +695,7 @@ public class RecentContactsFragment extends TFragment {
                 @Override
                 public void onUserInfoChanged(List<String> accounts) {
                     //TODO 个人信息更改  防止recyclerivew一直刷新
-                //    refreshMessages(false);
+                    //    refreshMessages(false);
                 }
             };
         }

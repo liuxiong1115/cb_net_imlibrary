@@ -78,7 +78,7 @@ public class MsgViewHolderForwardCustom extends MsgViewHolderBase {
             //标题
             title.setText(forwardAttachment.getContent() == null ? "" : forwardAttachment.getContent());
             //内容
-            if (forwardAttachment.getMessageList() != null || forwardAttachment.getMessageList().size() != 0) {
+            if (forwardAttachment.getMessageList() != null && forwardAttachment.getMessageList().size() != 0) {
                 for (int i=0;i<forwardAttachment.getMessageList().size();i++) {
                     if (i==0) {
                         line_one_account.setText(forwardAttachment.getMessageList().get(0).getFromNick() == null?"":forwardAttachment.getMessageList().get(0).getFromNick()+"：");

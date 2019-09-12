@@ -535,7 +535,8 @@
         <!-- <meta-data -->
         <!-- android:name="io.fabric.ApiKey" -->
         <!-- android:value="c3b7877640734c92138bf0a8becce1df29155681" /> -->
-        <activity android:name=".main.activity.MessageRecordActivity"></activity>
+        <activity android:name=".main.activity.MessageRecordActivity" />
+        <activity android:name="com.netease.nim.uikit.business.VisitorActivity"></activity>
     </application>
 
 </manifest>
