@@ -16,11 +16,12 @@ import java.util.List;
 public class ForwardAttachment extends CustomAttachment {
     private String content;
 
+    private List<Message> messageList;
+    private List<IMMessage> messages;
+
     public List<Message> getMessageList() {
         return messageList;
     }
-
-    private List<Message> messageList;
 
     public String getContent() {
         return content;
@@ -38,7 +39,6 @@ public class ForwardAttachment extends CustomAttachment {
         this.messages = messages;
     }
 
-    private List<IMMessage> messages;
 
     private final static String KEY_CONTENT = "content";
     private final static String KEY_MESSAGE = "message";

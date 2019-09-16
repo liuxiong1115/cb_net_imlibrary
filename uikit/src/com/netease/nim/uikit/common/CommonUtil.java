@@ -194,4 +194,12 @@ public class CommonUtil {
         void mergeForward(List<IMMessage> messages,String content);
     }
 
+    //未读数
+    public static onUnReadNumListener unReadNumListener;
+    public static void setUnReadNumListener(onUnReadNumListener listener) {
+        unReadNumListener = listener;
+    }
+    public interface onUnReadNumListener {
+        void underNum(int num);
+    }
 }

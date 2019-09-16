@@ -88,6 +88,10 @@ public class VistorFragment extends TFragment {
     private View visitorLayout;
     private DropFake dropFake;
 
+    public static VistorFragment instance() {
+        VistorFragment vistorFragment = new VistorFragment();
+        return vistorFragment;
+    }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -110,7 +114,7 @@ public class VistorFragment extends TFragment {
         boolean empty = items.isEmpty() && msgLoaded;
         emptyBg.setVisibility(empty ? View.VISIBLE : View.GONE);
         if (CommonUtil.role == CommonUtil.STUD) {
-            emptyHint.setHint("还没有消息哦，快去找我们课程顾问聊聊吧");
+            emptyHint.setHint("还没有访客哦");
         } else {
             emptyHint.setHint("暂无消息");
         }
@@ -325,29 +329,6 @@ public class VistorFragment extends TFragment {
                 });
             }
         }
-       /* alertDialog.addItem("删除该聊天（仅服务器）", new onSeparateItemClickListener() {
-            @Override
-            public void onClick() {
-                NIMClient.getService(MsgService.class)
-                        .deleteRoamingRecentContact(recent.getContactId(), recent.getSessionType())
-                        .setCallback(new RequestCallback<Void>() {
-                            @Override
-                            public void onSuccess(Void param) {
-                                Toast.makeText(getActivity(), "delete success", Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onFailed(int code) {
-                                Toast.makeText(getActivity(), "delete failed, code:" + code, Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onException(Throwable exception) {
-
-                            }
-                        });
-            }
-        });*/
         alertDialog.show();
     }
 
@@ -391,7 +372,6 @@ public class VistorFragment extends TFragment {
                                 updateOfflineContactAited(loadedRecent);
                             }
                         }
-
                         // 此处如果是界面刚初始化，为了防止界面卡顿，可先在后台把需要显示的用户资料和群组资料在后台加载好，然后再刷新界面
                         //
                         msgLoaded = true;
@@ -536,13 +516,18 @@ public class VistorFragment extends TFragment {
                 for (RecentContact r : recentContacts) {
                     cached.put(r.getContactId(), r);
                 }
-
                 return;
             }
-
-            onRecentContactChanged(recentContacts);
+            List<RecentContact> list = new ArrayList<>();
+            for (int i=0;i<recentContacts.size();i++) {
+                if (recentContacts.get(i).getContactId().startsWith("visi")) {
+                    list.add(recentContacts.get(i));
+                }
+            }
+            onRecentContactChanged(list);
         }
     };
+
 
     private void onRecentContactChanged(List<RecentContact> recentContacts) {
         int index;

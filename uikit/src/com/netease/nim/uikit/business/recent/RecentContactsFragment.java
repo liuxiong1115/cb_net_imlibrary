@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.NimUIKit;
@@ -23,10 +22,8 @@ import com.netease.nim.uikit.api.model.user.UserInfoObserver;
 import com.netease.nim.uikit.business.VisitorActivity;
 import com.netease.nim.uikit.business.recent.adapter.RecentContactAdapter;
 import com.netease.nim.uikit.business.recent.adapter.SwipeItemLayout;
-import com.netease.nim.uikit.business.robot.parser.elements.group.LinearLayout;
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
 import com.netease.nim.uikit.common.CommonUtil;
-import com.netease.nim.uikit.common.ToastHelper;
 import com.netease.nim.uikit.common.badger.Badger;
 import com.netease.nim.uikit.common.fragment.TFragment;
 import com.netease.nim.uikit.common.ui.dialog.CustomAlertDialog;
@@ -38,7 +35,6 @@ import com.netease.nim.uikit.common.util.string.StringUtil;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
-import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.RequestCallbackWrapper;
 import com.netease.nimlib.sdk.ResponseCode;
 import com.netease.nimlib.sdk.msg.MsgService;
@@ -56,7 +52,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -87,15 +82,21 @@ public class RecentContactsFragment extends TFragment {
 
     private Map<String, RecentContact> cached; // 暂缓刷上列表的数据（未读数红点拖拽动画运行时用）
 
-    private RecentContactAdapter adapter;
+    public RecentContactAdapter adapter;
 
     private boolean msgLoaded = false;
 
     private RecentContactsCallback callback;
 
     private UserInfoObserver userInfoObserver;
-    private View visitorLayout;
-    private DropFake dropFake;
+    public  View visitorLayout;
+    public  DropFake dropFake;
+
+    public int visiUnreadNum =0;
+    public static RecentContactsFragment instance () {
+        RecentContactsFragment recentContactsFragment = new RecentContactsFragment();
+        return recentContactsFragment;
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -148,6 +149,7 @@ public class RecentContactsFragment extends TFragment {
         emptyHint = findView(R.id.message_list_empty_hint);
         visitorLayout = findView(R.id.visitor);
         dropFake = findView(R.id.unread_number);
+        dropFake.setVisibility(View.GONE);
         recyclerView.setNestedScrollingEnabled(false);
 
         visitorLayout.setOnClickListener(new View.OnClickListener() {
@@ -158,7 +160,15 @@ public class RecentContactsFragment extends TFragment {
             }
         });
     }
-
+    /**
+     * 未读数
+     * @param unread
+     * @return
+     */
+    protected String unreadCountShowRule(int unread) {
+        unread = Math.min(unread, 99);
+        return String.valueOf(unread);
+    }
     /**
      * 初始化消息列表
      */
@@ -385,14 +395,23 @@ public class RecentContactsFragment extends TFragment {
                         }
                         if (CommonUtil.role == CommonUtil.SELLER) {
                             List<RecentContact> list = new ArrayList<>();
+                            List<RecentContact> visiList = new ArrayList<>();
                             for (int i = 0; i < recents.size(); i++) {
                                 if (!recents.get(i).getContactId().startsWith("visi")) {
                                     list.add(recents.get(i));
                                 }else {
+                                   visiList.add(recents.get(i));
                                     Log.e("recent",recents.get(i).getContactId());
                                 }
                             }
                             loadedRecents = list;
+                            int unreadNum = 0;
+                            for (int i=0;i<visiList.size();i++) {
+                                unreadNum += visiList.get(i).getUnreadCount();
+                            }
+                            visiUnreadNum = unreadNum;
+                            dropFake.setVisibility(visiUnreadNum > 0 ? View.VISIBLE : View.GONE);
+                            dropFake.setText(unreadCountShowRule(visiUnreadNum));
                         } else {
                             loadedRecents = recents;
                         }
@@ -402,7 +421,6 @@ public class RecentContactsFragment extends TFragment {
                                 updateOfflineContactAited(loadedRecent);
                             }
                         }
-
                         // 此处如果是界面刚初始化，为了防止界面卡顿，可先在后台把需要显示的用户资料和群组资料在后台加载好，然后再刷新界面
                         //
                         msgLoaded = true;
@@ -445,10 +463,9 @@ public class RecentContactsFragment extends TFragment {
             //int unreadNum = NIMClient.getService(MsgService.class).getTotalUnreadCount();
 
             if (callback != null) {
-                callback.onUnreadCountChange(unreadNum);
+                callback.onUnreadCountChange(unreadNum+visiUnreadNum);
             }
-
-            Badger.updateBadgerCount(unreadNum);
+            Badger.updateBadgerCount(unreadNum+visiUnreadNum);
         }
     }
 
@@ -550,8 +567,28 @@ public class RecentContactsFragment extends TFragment {
 
                 return;
             }
+            if (CommonUtil.role == CommonUtil.SELLER) {
+                List<RecentContact> list = new ArrayList<>();
+                List<RecentContact> visiList = new ArrayList<>();
+                for (int i=0;i<recentContacts.size();i++) {
+                    if (!recentContacts.get(i).getContactId().startsWith("visi")) {
+                        list.add(recentContacts.get(i));
+                    } else {
+                        visiList.add(recentContacts.get(i));
+                    }
+                }
+                int unreadNum = 0;
+                for (int i=0;i<visiList.size();i++) {
+                    unreadNum += visiList.get(i).getUnreadCount();
+                }
+                visiUnreadNum = unreadNum;
+                dropFake.setVisibility(visiUnreadNum > 0 ? View.VISIBLE : View.GONE);
+                dropFake.setText(unreadCountShowRule(visiUnreadNum));
+                onRecentContactChanged(list);
+            } else {
+                onRecentContactChanged(recentContacts);
+            }
 
-            onRecentContactChanged(recentContacts);
         }
     };
 

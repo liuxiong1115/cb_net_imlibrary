@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.wrapper.NimToolBarOptions;
-import com.netease.nim.uikit.business.recent.RecentContactsFragment;
 import com.netease.nim.uikit.business.recent.VistorFragment;
 import com.netease.nim.uikit.common.activity.UI;
 

@@ -187,9 +187,9 @@ public class MsgViewHolderReplyCustom extends MsgViewHolderBase {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (attachment.getMsgType().equals("video")) {
-                    WatchVideoActivity.start(context, message);
-                } else {}
+//                if (attachment.getMsgType().equals("video")) {
+//                    WatchVideoActivity.start(context, message);
+//                } else {}
             }
         });
     }

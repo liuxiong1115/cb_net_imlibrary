@@ -25,9 +25,13 @@ import com.netease.nim.demo.session.extension.RedPacketOpenedAttachment;
 import com.netease.nim.demo.session.extension.ReplyAttachment;
 import com.netease.nim.demo.session.extension.SnapChatAttachment;
 import com.netease.nim.demo.session.extension.StickerAttachment;
+import com.netease.nim.uikit.business.contact.ContactsFragment;
 import com.netease.nim.uikit.business.recent.RecentContactsCallback;
 import com.netease.nim.uikit.business.recent.RecentContactsFragment;
+import com.netease.nim.uikit.business.recent.VistorFragment;
+import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nim.uikit.common.activity.UI;
+import com.netease.nim.uikit.common.fragment.TFragment;
 import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
@@ -63,6 +67,7 @@ public class SessionListFragment extends MainTabFragment {
     private View multiportBar;
 
     private RecentContactsFragment fragment;
+    private VistorFragment vistorFragment;
 
     public SessionListFragment() {
         this.setContainerId(MainTab.RECENT_CONTACTS.fragmentId);

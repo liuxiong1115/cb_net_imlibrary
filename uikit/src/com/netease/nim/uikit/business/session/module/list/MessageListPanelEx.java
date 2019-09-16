@@ -1067,6 +1067,10 @@ public class MessageListPanelEx {
                             String string = message.getAttachment().getClass().toString();
                             if (string.equals("class com.netease.nim.demo.session.extension.DefaultCustomAttachment")) {
                                 return;
+                            } else if(string.equals("class com.netease.nim.demo.session.extension.ForwardAttachment")) {
+                                return;
+                            } else if (string.equals("class com.netease.nim.demo.session.extension.ReplyAttachment")){
+                                return;
                             }
                             selectMsg.add(message);
                         }
@@ -1532,7 +1536,7 @@ public class MessageListPanelEx {
         }
     }
 
-    // 转发消息  --多选
+    // 转发消息逐步转发  --多选
     private void onForwardMessage(final String sessionId, SessionTypeEnum sessionTypeEnum,IMMessage item) {
         IMMessage message;
         if (item.getMsgType() == MsgTypeEnum.robot) {

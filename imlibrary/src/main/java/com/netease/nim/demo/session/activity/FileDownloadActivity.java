@@ -175,10 +175,10 @@ public class FileDownloadActivity extends UI {
 
     private void updateUI() {
         if (lable.equals("reply")) {
-            FileAttachment attachment = (FileAttachment) message.getAttachment();
+            ReplyAttachment attachment = (ReplyAttachment) message.getAttachment();
             if (attachment != null) {
-                fileNameText.setText(attachment.getDisplayName());
-                int iconResId = FileIcons.smallIcon(attachment.getDisplayName());
+                fileNameText.setText(attachment.getMsg().getAttachment().getDisplayName());
+                int iconResId = FileIcons.smallIcon(attachment.getMsg().getAttachment().getDisplayName());
                 imageView.setImageResource(iconResId);
             }
         } else {
