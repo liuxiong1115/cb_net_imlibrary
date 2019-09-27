@@ -118,6 +118,11 @@ public class RecentContactsFragment extends TFragment {
     private void notifyDataSetChanged() {
         adapter.notifyDataSetChanged();
         boolean empty = items.isEmpty() && msgLoaded;
+        if (empty) {
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+        }
         emptyBg.setVisibility(empty ? View.VISIBLE : View.GONE);
         if (CommonUtil.role == CommonUtil.STUD) {
             emptyHint.setHint("还没有消息哦，快去找我们课程顾问聊聊吧");

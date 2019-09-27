@@ -112,6 +112,11 @@ public class VistorFragment extends TFragment {
     private void notifyDataSetChanged() {
         adapter.notifyDataSetChanged();
         boolean empty = items.isEmpty() && msgLoaded;
+        if (empty) {
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+        }
         emptyBg.setVisibility(empty ? View.VISIBLE : View.GONE);
         if (CommonUtil.role == CommonUtil.STUD) {
             emptyHint.setHint("还没有访客哦");

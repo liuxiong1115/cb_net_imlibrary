@@ -1,16 +1,24 @@
 package com.netease.nim.demo;
 
 import android.app.Application;
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
+import com.netease.nim.avchatkit.AVChatKit;
+import com.netease.nim.avchatkit.config.AVChatOptions;
+import com.netease.nim.avchatkit.model.ITeamDataProvider;
+import com.netease.nim.avchatkit.model.IUserInfoProvider;
 import com.netease.nim.demo.chatroom.ChatRoomSessionHelper;
+import com.netease.nim.demo.common.util.LogHelper;
 import com.netease.nim.demo.common.util.crash.AppCrashHandler;
 import com.netease.nim.demo.config.preference.Preferences;
 import com.netease.nim.demo.config.preference.UserPreferences;
 import com.netease.nim.demo.contact.ContactHelper;
 import com.netease.nim.demo.event.DemoOnlineStateContentProvider;
+import com.netease.nim.demo.main.activity.MainActivity;
+import com.netease.nim.demo.main.activity.WelcomeActivity;
 import com.netease.nim.demo.mixpush.DemoMixPushMessageHandler;
 import com.netease.nim.demo.mixpush.DemoPushContentProvider;
 import com.netease.nim.demo.redpacket.NIMRedPacketClient;
@@ -18,11 +26,13 @@ import com.netease.nim.demo.session.SessionHelper;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.UIKitOptions;
 import com.netease.nim.uikit.business.contact.core.query.PinYin;
+import com.netease.nim.uikit.business.team.helper.TeamHelper;
+import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
 import com.netease.nim.uikit.common.CommonUtil;
-import com.netease.nim.uikit.common.util.sys.ScreenUtil;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.mixpush.NIMPushClient;
+import com.netease.nimlib.sdk.uinfo.model.UserInfo;
 import com.netease.nimlib.sdk.util.NIMUtil;
 import com.orm.SugarContext;
 
@@ -41,7 +51,7 @@ public class NimApplication extends Application {
         SugarContext.init(this);
         DemoCache.setContext(this);
 
-      //  CommonUtil.setRole(CommonUtil.SELLER);
+     //   CommonUtil.setRole(CommonUtil.STUD);
         // 4.6.0 开始，第三方推送配置入口改为 SDKOption#mixPushConfig，旧版配置方式依旧支持。
         NIMClient.init(this, getLoginInfo(), NimSDKOptionConfig.getSDKOptions(this));
 
@@ -124,42 +134,42 @@ public class NimApplication extends Application {
     }
 
     private void initAVChatKit() {
-//        AVChatOptions avChatOptions = new AVChatOptions() {
-//            @Override
-//            public void logout(Context context) {
-//                MainActivity.logout(context, true);
-//            }
-//        };
-//        avChatOptions.entranceActivity = WelcomeActivity.class;
-//        avChatOptions.notificationIconRes = R.drawable.ic_stat_notify_msg;
-//        AVChatKit.init(avChatOptions);
-//
-//        // 初始化日志系统
-//        LogHelper.init();
-//        // 设置用户相关资料提供者
-//        AVChatKit.setUserInfoProvider(new IUserInfoProvider() {
-//            @Override
-//            public ClassbroUserInfo getUserInfo(String account) {
-//                return NimUIKit.getUserInfoProvider().getUserInfo(account);
-//            }
-//
-//            @Override
-//            public String getUserDisplayName(String account) {
-//                return UserInfoHelper.getUserDisplayName(account);
-//            }
-//        });
-//        // 设置群组数据提供者
-//        AVChatKit.setTeamDataProvider(new ITeamDataProvider() {
-//            @Override
-//            public String getDisplayNameWithoutMe(String teamId, String account) {
-//                return TeamHelper.getDisplayNameWithoutMe(teamId, account);
-//            }
-//
-//            @Override
-//            public String getTeamMemberDisplayName(String teamId, String account) {
-//                return TeamHelper.getTeamMemberDisplayName(teamId, account);
-//            }
-//        });
+        AVChatOptions avChatOptions = new AVChatOptions() {
+            @Override
+            public void logout(Context context) {
+                MainActivity.logout(context, true);
+            }
+        };
+     //   avChatOptions.entranceActivity = WelcomeActivity.class;
+        avChatOptions.notificationIconRes = R.drawable.appicon;
+        AVChatKit.init(avChatOptions);
+
+        // 初始化日志系统
+        LogHelper.init();
+        // 设置用户相关资料提供者
+        AVChatKit.setUserInfoProvider(new IUserInfoProvider() {
+            @Override
+            public UserInfo getUserInfo(String account) {
+                return NimUIKit.getUserInfoProvider().getUserInfo(account);
+            }
+
+            @Override
+            public String getUserDisplayName(String account) {
+                return UserInfoHelper.getUserDisplayName(account);
+            }
+        });
+        // 设置群组数据提供者
+        AVChatKit.setTeamDataProvider(new ITeamDataProvider() {
+            @Override
+            public String getDisplayNameWithoutMe(String teamId, String account) {
+                return TeamHelper.getDisplayNameWithoutMe(teamId, account);
+            }
+
+            @Override
+            public String getTeamMemberDisplayName(String teamId, String account) {
+                return TeamHelper.getTeamMemberDisplayName(teamId, account);
+            }
+        });
     }
 
     private void initRTSKit() {

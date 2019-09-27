@@ -209,7 +209,7 @@ public class TeamNotificationHelper {
                 }
             } else if (field.getKey() == TeamFieldEnum.Extension) {
                 sb.append("群消息更新");
-            } else if (field.getKey() == TeamFieldEnum.Ext_Server) {
+            } else if (field.getKey() == TeamFieldEnum.Ext_Server_Only) {
                 Object value = field.getValue();
                 String data = "";
                 if (value != null) {

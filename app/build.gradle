@@ -66,8 +66,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-base:11.6.0'
     implementation 'com.meizu.flyme.internet:push-internal:3.6.3@aar'
 
-   // implementation 'com.huawei.android.hms:push:2.6.0.301'
-  //  implementation 'com.huawei.android.hms:push:2.6.3.301'
+    // implementation 'com.huawei.android.hms:push:2.6.0.301'
+    //  implementation 'com.huawei.android.hms:push:2.6.3.301'
     compile group: 'com.huawei.android.hms', name: 'push', version: '2.5.2.302'
 
 

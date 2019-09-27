@@ -22,7 +22,7 @@
 
         <meta-data
             android:name="com.netease.nim.appKey"
-            android:value="39b5b8380a846355afbe1d31f0b83705" />
+            android:value="8d5e58eca6d456b7064476433f702b4a" />
         <!-- android:value="39b5b8380a846355afbe1d31f0b83705" 线下 -->
         <!-- android:value="1fe5406367b44a65224e9e2a48e02b80"  线上 -->
     </application>

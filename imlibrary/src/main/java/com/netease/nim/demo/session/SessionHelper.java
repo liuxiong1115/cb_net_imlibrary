@@ -7,6 +7,7 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.netease.nim.avchatkit.TeamAVChatProfile;
 import com.netease.nim.demo.DemoCache;
 import com.netease.nim.demo.R;
 import com.netease.nim.demo.contact.activity.RobotProfileActivity;
@@ -14,42 +15,41 @@ import com.netease.nim.demo.contact.activity.UserProfileActivity;
 import com.netease.nim.demo.redpacket.NIMRedPacketClient;
 import com.netease.nim.demo.session.action.AVChatAction;
 import com.netease.nim.demo.session.action.FileAction;
-import com.netease.nim.demo.session.extension.ForwardAttachment;
-import com.netease.nim.demo.session.extension.NotifyAttchment;
-import com.netease.nim.demo.session.extension.ReplyAttachment;
-import com.netease.nim.demo.session.viewholder.MsgViewHolderForwardCustom;
-import com.netease.nim.demo.session.viewholder.MsgViewHolderReplyCustom;
-import com.netease.nim.demo.session.viewholder.NotifyViewHolder;
-import com.netease.nim.uikit.business.session.actions.ScheduleAction;
 import com.netease.nim.demo.session.action.TeamAVChatAction;
 import com.netease.nim.demo.session.activity.AckMsgInfoActivity;
 import com.netease.nim.demo.session.activity.MessageHistoryActivity;
 import com.netease.nim.demo.session.activity.MessageInfoActivity;
 import com.netease.nim.demo.session.extension.CustomAttachParser;
 import com.netease.nim.demo.session.extension.DefaultCustomAttachment;
+import com.netease.nim.demo.session.extension.ForwardAttachment;
 import com.netease.nim.demo.session.extension.GuessAttachment;
+import com.netease.nim.demo.session.extension.NotifyAttchment;
 import com.netease.nim.demo.session.extension.RedPacketAttachment;
 import com.netease.nim.demo.session.extension.RedPacketOpenedAttachment;
+import com.netease.nim.demo.session.extension.ReplyAttachment;
 import com.netease.nim.demo.session.extension.SnapChatAttachment;
 import com.netease.nim.demo.session.extension.StickerAttachment;
 import com.netease.nim.demo.session.search.SearchMessageActivity;
+import com.netease.nim.demo.session.viewholder.MsgViewHolderAVChat;
 import com.netease.nim.demo.session.viewholder.MsgViewHolderDefCustom;
 import com.netease.nim.demo.session.viewholder.MsgViewHolderFile;
+import com.netease.nim.demo.session.viewholder.MsgViewHolderForwardCustom;
 import com.netease.nim.demo.session.viewholder.MsgViewHolderGuess;
+import com.netease.nim.demo.session.viewholder.MsgViewHolderReplyCustom;
 import com.netease.nim.demo.session.viewholder.MsgViewHolderSnapChat;
 import com.netease.nim.demo.session.viewholder.MsgViewHolderSticker;
 import com.netease.nim.demo.session.viewholder.MsgViewHolderTip;
+import com.netease.nim.demo.session.viewholder.NotifyViewHolder;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.model.recent.RecentCustomization;
 import com.netease.nim.uikit.api.model.session.SessionCustomization;
 import com.netease.nim.uikit.api.model.session.SessionEventListener;
 import com.netease.nim.uikit.api.wrapper.NimMessageRevokeObserver;
 import com.netease.nim.uikit.business.session.actions.BaseAction;
-import com.netease.nim.uikit.business.session.fragment.MessageFragment;
+import com.netease.nim.uikit.business.session.actions.ScheduleAction;
 import com.netease.nim.uikit.business.session.helper.MessageListPanelHelper;
 import com.netease.nim.uikit.business.session.module.MsgForwardFilter;
 import com.netease.nim.uikit.business.session.module.MsgRevokeFilter;
-import com.netease.nim.uikit.business.session.module.input.InputPanel;
 import com.netease.nim.uikit.business.session.module.model.ReplyMsgData;
 import com.netease.nim.uikit.business.session.viewholder.MsgViewHolderUnknown;
 import com.netease.nim.uikit.business.team.model.TeamExtras;
@@ -69,7 +69,6 @@ import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
-import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum;
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
@@ -190,7 +189,7 @@ public class SessionHelper {
             // 定制加号点开后可以包含的操作， 默认已经有图片，视频等消息了
             ArrayList<BaseAction> actions = new ArrayList<>();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                actions.add(new AVChatAction(AVChatType.AUDIO));
+             //   actions.add(new AVChatAction(AVChatType.AUDIO));
              //   actions.add(new AVChatAction(AVChatType.VIDEO));
             }
 //            actions.add(new RTSAction());
@@ -414,10 +413,13 @@ public class SessionHelper {
             //TODO Team actions 按钮自定义
             // 定制加号点开后可以包含的操作， 默认已经有图片，视频等消息了
             final TeamAVChatAction avChatAction = new TeamAVChatAction(AVChatType.VIDEO);
-//            TeamAVChatProfile.sharedInstance().registerObserver(true);
+        //    final TeamAVChatAction avChatAction = new TeamAVChatAction(AVChatType.AUDIO);
+
+            TeamAVChatProfile.sharedInstance().registerObserver(true);
 
             ArrayList<BaseAction> actions = new ArrayList<>();
             actions.add(avChatAction);
+
 //            actions.add(new GuessAction());
             actions.add(new FileAction());
             //教师权限添加排课按钮
@@ -458,10 +460,11 @@ public class SessionHelper {
         if (advancedTeamCustomization == null) {
             // 定制加号点开后可以包含的操作， 默认已经有图片，视频等消息了
             final TeamAVChatAction avChatAction = new TeamAVChatAction(AVChatType.VIDEO);
-//            TeamAVChatProfile.sharedInstance().registerObserver(true);
+            TeamAVChatProfile.sharedInstance().registerObserver(true);
 
             final ArrayList<BaseAction> actions = new ArrayList<>();
             actions.add(new FileAction());
+            actions.add(avChatAction);
             //教师权限添加排课按钮
             if (CommonUtil.role == CommonUtil.TEAC) {
                 actions.add(new ScheduleAction());
@@ -515,7 +518,7 @@ public class SessionHelper {
 
     private static void registerViewHolders() {
         NimUIKit.registerMsgItemViewHolder(FileAttachment.class, MsgViewHolderFile.class);
-//        NimUIKit.registerMsgItemViewHolder(AVChatAttachment.class, MsgViewHolderAVChat.class);
+        NimUIKit.registerMsgItemViewHolder(AVChatAttachment.class, MsgViewHolderAVChat.class);
         NimUIKit.registerMsgItemViewHolder(GuessAttachment.class, MsgViewHolderGuess.class);
         NimUIKit.registerMsgItemViewHolder(DefaultCustomAttachment.class, MsgViewHolderDefCustom.class);
         NimUIKit.registerMsgItemViewHolder(ReplyAttachment.class, MsgViewHolderReplyCustom.class);  //回复消息

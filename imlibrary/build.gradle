@@ -97,15 +97,17 @@ dependencies {
     }
     testImplementation 'junit:junit:4.12'
     implementation project(path: ':uikit')
+    implementation project(':avchatkit')
+
     implementation 'com.google.firebase:firebase-messaging:11.6.0'
     implementation 'com.google.android.gms:play-services-base:11.6.0'
 
-    compile files('libs/MiPush_SDK_Client_3_6_2.jar')
-    compile files('libs/nim-push-5.7.0.jar')
-    compile files('libs/nim-rts-5.7.0.jar')
-    compile files('libs/nrtc-sdk.jar')
-    compile files('libs/nim-avchat-5.7.0.jar')
-    compile files('libs/AMap2DMap_3.0.0_AMapSearch_3.6.1_AMapLocation_3.2.1_20161228.jar')
+//    compile files('libs/MiPush_SDK_Client_3_6_2.jar')
+//    compile files('libs/nim-push-5.7.0.jar')
+//    compile files('libs/nim-rts-5.7.0.jar')
+//    compile files('libs/nrtc-sdk.jar')
+//    compile files('libs/nim-avchat-5.7.0.jar')
+//    compile files('libs/AMap2DMap_3.0.0_AMapSearch_3.6.1_AMapLocation_3.2.1_20161228.jar')
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.7.8'
     implementation 'com.meizu.flyme.internet:push-internal:3.6.3@aar'
     //  implementation 'com.huawei.android.hms:push:2.6.3.301'

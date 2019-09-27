@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/call_bg"
+    android:orientation="vertical">
+    <!--<android.support.v7.widget.AppCompatTextView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Classbro Online Discuss"-->
+    <!--android:textSize="25sp"-->
+    <!--android:gravity="center"-->
+    <!--android:layout_marginTop="120px"-->
+    <!--android:textStyle="bold"-->
+    <!--android:textColor="@color/white"/>-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/call_title_bg" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="0.75">
+
+        <FrameLayout
+            android:id="@+id/top_stud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/call_stud_bg">
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/call_top_stud_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="50dp"
+                android:gravity="center"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/call_top_teac_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="30dp"
+                android:gravity="center"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                android:textSize="16sp" />
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/call_top_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:gravity="center"
+                android:textColor="#666666"
+                android:text="正在呼叫您..."
+                android:layout_marginBottom="40dp"
+                android:textSize="16sp" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@drawable/viewline_bg"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:layerType="software"></View>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="0.75">
+        <FrameLayout
+            android:id="@+id/bottom_teac"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/call_teac_bg">
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/call_bottom_teac_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="30dp"
+                android:gravity="center"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/call_bottom_stud_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="50dp"
+                android:gravity="center"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                android:textSize="16sp" />
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/call_bottom_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:gravity="center"
+                android:text="请尽快接听"
+                android:textColor="#666666"
+                android:layout_marginBottom="40dp"
+                android:textSize="16sp" />
+        </FrameLayout>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/received_call_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingBottom="50dip"
+        android:text="@string/avchat_audio_call_request"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <LinearLayout
+            android:id="@+id/refuse"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:src="@drawable/call_guaduan" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/avchat_refuse"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/receive"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:src="@drawable/call_jieting" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/avchat_pickup"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
