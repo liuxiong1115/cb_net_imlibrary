@@ -1,5 +1,6 @@
 package com.netease.nim.uikit.business.session.viewholder;
 
+import com.netease.nim.uikit.R;
 import com.netease.nimlib.sdk.msg.attachment.AudioAttachment;
 import com.netease.nimlib.sdk.msg.attachment.ImageAttachment;
 import com.netease.nimlib.sdk.msg.attachment.LocationAttachment;

@@ -268,7 +268,11 @@ public abstract class MsgViewHolderBase extends RecyclerViewHolder<BaseMultiItem
         switch (status) {
             case fail:
                 progressBar.setVisibility(View.GONE);
-                alertButton.setVisibility(View.VISIBLE);
+                if (message.getMsgType() == MsgTypeEnum.image) {
+                    alertButton.setVisibility(View.GONE);
+                } else {
+                    alertButton.setVisibility(View.VISIBLE);
+                }
                 break;
             case sending:
                 progressBar.setVisibility(View.VISIBLE);

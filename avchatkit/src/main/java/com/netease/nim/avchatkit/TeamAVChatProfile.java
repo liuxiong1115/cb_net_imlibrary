@@ -107,7 +107,7 @@ public class TeamAVChatProfile {
                         LogUtil.ui("receive team video chat notification " + teamId + " room " + roomName);
                         if (isTeamAVChatting || AVChatProfile.getInstance().isAVChatting()) {
                             LogUtil.ui("cancel launch team av chat isTeamAVChatting = " + isTeamAVChatting);
-                            Toast.makeText(AVChatKit.getContext(), "正在进行视频通话", Toast.LENGTH_SHORT).show();
+                       //     Toast.makeText(AVChatKit.getContext(), "正在进行视频通话", Toast.LENGTH_SHORT).show();
                             return;
                         }
                         LogUtil.ui("isSyncComplete = " + isSyncComplete);

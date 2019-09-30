@@ -2,12 +2,17 @@ package com.netease.nim.avchatkit.teamavchat.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatTextView;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Pair;
@@ -28,10 +33,9 @@ import com.netease.nim.avchatkit.common.permission.MPermission;
 import com.netease.nim.avchatkit.common.permission.annotation.OnMPermissionDenied;
 import com.netease.nim.avchatkit.common.permission.annotation.OnMPermissionGranted;
 import com.netease.nim.avchatkit.common.permission.annotation.OnMPermissionNeverAskAgain;
-import com.netease.nim.avchatkit.common.recyclerview.decoration.SpacingDecoration;
-import com.netease.nim.avchatkit.common.util.ScreenUtil;
 import com.netease.nim.avchatkit.config.AVChatConfigs;
 import com.netease.nim.avchatkit.config.AVPrivatizationConfig;
+import com.netease.nim.avchatkit.constant.AVChatExitCode;
 import com.netease.nim.avchatkit.controll.AVChatSoundPlayer;
 import com.netease.nim.avchatkit.teamavchat.TeamAVChatNotification;
 import com.netease.nim.avchatkit.teamavchat.TeamAVChatVoiceMuteDialog;
@@ -40,7 +44,6 @@ import com.netease.nim.avchatkit.teamavchat.module.SimpleAVChatStateObserver;
 import com.netease.nim.avchatkit.teamavchat.module.TeamAVChatItem;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
-import com.netease.nimlib.sdk.ResponseCode;
 import com.netease.nimlib.sdk.StatusCode;
 import com.netease.nimlib.sdk.auth.AuthServiceObserver;
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
@@ -48,10 +51,11 @@ import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.AVChatStateObserver;
 import com.netease.nimlib.sdk.avchat.AVChatStateObserverLite;
 import com.netease.nimlib.sdk.avchat.constant.AVChatControlCommand;
+import com.netease.nimlib.sdk.avchat.constant.AVChatEventType;
 import com.netease.nimlib.sdk.avchat.constant.AVChatType;
 import com.netease.nimlib.sdk.avchat.constant.AVChatUserRole;
 import com.netease.nimlib.sdk.avchat.constant.AVChatVideoCropRatio;
-import com.netease.nimlib.sdk.avchat.constant.AVChatVideoScalingType;
+import com.netease.nimlib.sdk.avchat.model.AVChatCalleeAckEvent;
 import com.netease.nimlib.sdk.avchat.model.AVChatControlEvent;
 import com.netease.nimlib.sdk.avchat.model.AVChatData;
 import com.netease.nimlib.sdk.avchat.model.AVChatParameters;
@@ -59,7 +63,6 @@ import com.netease.nimlib.sdk.avchat.video.AVChatCameraCapturer;
 import com.netease.nimlib.sdk.avchat.video.AVChatVideoCapturerFactory;
 import com.netease.nimlib.sdk.uinfo.UserService;
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
-import com.netease.nimlib.sdk.uinfo.model.UserInfo;
 import com.netease.nrtc.video.render.IVideoRender;
 
 import java.io.Serializable;
@@ -69,8 +72,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static com.netease.nim.avchatkit.teamavchat.module.TeamAVChatItem.TYPE.TYPE_DATA;
 
 /**
  * 多人音视频界面：包含音视频通话界面和接受拒绝界面
@@ -95,7 +96,7 @@ import static com.netease.nim.avchatkit.teamavchat.module.TeamAVChatItem.TYPE.TY
  * </ol></p>
  */
 
-public class TeamAVChatActivity extends UI {
+public class TeamAVChatActivity extends UI implements SensorEventListener{
     // CONST
     private static final String TAG = "TeamAVChat";
     private static final String KEY_RECEIVED_CALL = "call";
@@ -104,8 +105,8 @@ public class TeamAVChatActivity extends UI {
     private static final String KEY_STUDLIST= "studList";
     private static final String KEY_TEACLIST= "teacList";
     private static final String KEY_TNAME = "teamName";
-    private static final int AUTO_REJECT_CALL_TIMEOUT = 45 * 1000;
-    private static final int CHECK_RECEIVED_CALL_TIMEOUT = 45 * 1000;
+    private static final int AUTO_REJECT_CALL_TIMEOUT = 30 * 1000;
+    private static final int CHECK_RECEIVED_CALL_TIMEOUT = 30 * 1000;
     private static final int MAX_SUPPORT_ROOM_USERS_COUNT = 9;
     private static final int BASIC_PERMISSION_REQUEST_CODE = 0x100;
     // DATA
@@ -151,6 +152,13 @@ public class TeamAVChatActivity extends UI {
 
     private TeamAVChatNotification notifier;
 
+    private Sensor mSensor;
+    private PowerManager.WakeLock mWakeLock;
+    private SensorManager sensorManager;
+    private AudioManager audioManager;
+    private PowerManager mPowerManager;
+    private int label =0;
+
     public static void startActivity(Context context, boolean receivedCall, String teamId, String roomId, List<String> studList,List<String> teacList, String teamName,int role) {
         needFinish = false;
         Intent intent = new Intent();
@@ -185,8 +193,16 @@ public class TeamAVChatActivity extends UI {
         findLayouts();
         showViews();
         setChatting(true);
-
         NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(userStatusObserver, true);
+        AVChatManager.getInstance().setSpeaker(false);  //默认不开启免提
+
+        //注册传感器
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        //息屏设置
+        mPowerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        mWakeLock = mPowerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,TAG);
+        audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
     }
 
     @Override
@@ -200,8 +216,44 @@ public class TeamAVChatActivity extends UI {
         // 取消通知栏
         activeCallingNotifier(false);
         // 禁止自动锁屏
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
-                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+//                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        //注册传感器,先判断有没有传感器
+        if (mSensor != null)
+            sensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    /**
+     * 传感器变化
+     *
+     * @param event
+     */
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.values[0] == 0.0) {
+            //贴近手机
+            //设置免提
+//            audioManager.setSpeakerphoneOn(false);
+//            audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+            //关闭屏幕
+            if (!mWakeLock.isHeld())
+                mWakeLock.acquire();
+
+        } else {
+            //离开手机
+            audioManager.setMode(AudioManager.MODE_NORMAL);
+            //设置免提
+         //   audioManager.setSpeakerphoneOn(true);
+
+            //唤醒设备
+            if (mWakeLock.isHeld())
+                mWakeLock.release();
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 
     @Override
@@ -234,6 +286,13 @@ public class TeamAVChatActivity extends UI {
         activeCallingNotifier(false);
         setChatting(false);
         NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(userStatusObserver, false);
+        //传感器取消监听
+        sensorManager.unregisterListener(this);
+        //释放息屏
+        if (mWakeLock.isHeld())
+            mWakeLock.release();
+        mWakeLock = null;
+        mPowerManager = null;
     }
 
     @Override
@@ -607,12 +666,13 @@ public class TeamAVChatActivity extends UI {
     private void onJoinRoomSuccess() {
 //        startTimer();
 //        startLocalPreview();
-//        startTimerForCheckReceivedCall();
+        startTimerForCheckReceivedCall();
 //        LogUtil.i(TAG, "team avchat running..." + ", roomId=" + roomId);
     }
 
     private void onJoinRoomFailed(int code, Throwable e) {
         Toast.makeText(this,"通话已结束",Toast.LENGTH_SHORT).show();
+        hangup();
         finish();
 //        if (code == ResponseCode.RES_ENONEXIST) {
 //            showToast(getString(R.string.t_avchat_join_fail_not_exist));
@@ -627,11 +687,7 @@ public class TeamAVChatActivity extends UI {
         if (timer == null) {
             startTimer();
         }
-        startLocalPreview();
-        startTimerForCheckReceivedCall();
         LogUtil.i(TAG, "team avchat running..." + ", roomId=" + roomId);
-
-
 //        int index = getItemIndex(account);
 //        if (index >= 0) {
 //            TeamAVChatItem item = data.get(index);
@@ -769,15 +825,16 @@ public class TeamAVChatActivity extends UI {
         mainHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                int index = 0;
-                for (TeamAVChatItem item : data) {
-                    if (item.type == TYPE_DATA && item.state == TeamAVChatItem.STATE.STATE_WAITING) {
-                        item.state = TeamAVChatItem.STATE.STATE_END;
-                    //    adapter.notifyItemChanged(index);
-                    }
-                    index++;
-                }
-                checkAllHangUp();
+//                int index = 0;
+//                for (TeamAVChatItem item : data) {
+//                    if (item.type == TYPE_DATA && item.state == TeamAVChatItem.STATE.STATE_WAITING) {
+//                        item.state = TeamAVChatItem.STATE.STATE_END;
+//                    //    adapter.notifyItemChanged(index);
+//                    }
+//                    index++;
+//                }
+                //    checkAllHangUp();
+
             }
         }, CHECK_RECEIVED_CALL_TIMEOUT);
     }
@@ -806,13 +863,6 @@ public class TeamAVChatActivity extends UI {
      * 除了所有人都没接通，其他情况不做自动挂断
      */
     private void checkAllHangUp() {
-//        for (TeamAVChatItem item : data) {
-//            if (item.account != null &&
-//                    !item.account.equals(AVChatKit.getAccount()) &&
-//                    item.state != TeamAVChatItem.STATE.STATE_END) {
-//                return;
-//            }
-//        }
         mainHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -820,6 +870,14 @@ public class TeamAVChatActivity extends UI {
                 finish();
             }
         }, 200);
+//        for (TeamAVChatItem item : data) {
+//            if (item.account != null &&
+//                    !item.account.equals(AVChatKit.getAccount()) &&
+//                    item.state != TeamAVChatItem.STATE.STATE_END) {
+//                return;
+//            }
+//        }
+
     }
 
     /**

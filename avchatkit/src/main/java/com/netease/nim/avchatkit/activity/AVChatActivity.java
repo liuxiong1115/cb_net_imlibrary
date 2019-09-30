@@ -253,7 +253,6 @@ public class AVChatActivity extends UI implements AVChatVideoUI.TouchZoneCallbac
         avChatVideoUI = new AVChatVideoUI(this, root, avChatData, displayName, avChatController, this, this);
     }
 
-
     private void registerObserves(boolean register) {
         AVChatManager.getInstance().observeAVChatState(avchatStateObserver, register);
         AVChatManager.getInstance().observeHangUpNotification(callHangupObserver, register);
@@ -303,7 +302,6 @@ public class AVChatActivity extends UI implements AVChatVideoUI.TouchZoneCallbac
                 avChatVideoUI.doOutgoingCall(receiverId);
             }
         }
-
     }
 
     /**

@@ -167,7 +167,8 @@ public class MsgViewHolderReplyCustom extends MsgViewHolderBase {
             }
         }
         //回复消息
-        account.setText(attachment.getContent() == null ? "" : attachment.getContent());
+        MoonUtil.identifyFaceExpression(NimUIKit.getContext(), account, attachment.getContent() == null ? "" : attachment.getContent(), ImageSpan.ALIGN_BOTTOM);
+       // account.setText(attachment.getContent() == null ? "" : attachment.getContent());
         //是否是接收消息
         if (isReceivedMessage()) {
             layout.setBackgroundResource(NimUIKitImpl.getOptions().messageLeftBackground);
