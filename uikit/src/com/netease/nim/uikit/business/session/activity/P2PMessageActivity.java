@@ -126,41 +126,47 @@ public class P2PMessageActivity extends BaseMessageActivity {
                             .setCallback(new RequestCallback<List<NimUserInfo>>() {
                                 @Override
                                 public void onSuccess(List<NimUserInfo> userInfos) {
-                                    NimUserInfo nimUserInfo = userInfos.get(0);
-                                    if (nimUserInfo != null) {
-                                        String content = nimUserInfo.getExtension();
-                                        if (!TextUtils.isEmpty(content)) {
-                                            try {
+                                    if (userInfos != null && userInfos.size() != 0) {
+                                        NimUserInfo nimUserInfo = userInfos.get(0);
+                                        if (nimUserInfo != null) {
+                                            String content = nimUserInfo.getExtension();
+                                            if (!TextUtils.isEmpty(content)) {
                                                 Log.e("userInfo", content.toString());
-                                                org.json.JSONObject jsonObject = new org.json.JSONObject(content);
-                                                Integer activa = jsonObject.getInt("activa");
-                                                Integer type = jsonObject.getInt("isInternal");
-                                                wxNo = jsonObject.optString("wxNo");
-                                                if (type == 0) {  //内部
-                                                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                                                    isActiva = 1;
-                                                } else {
-                                                    CommonUtil.AddUserInfoListener listener = CommonUtil.addUserInfoListener;
-                                                    if (listener != null) {
-                                                        listener.addUserInfo(P2PMessageActivity.this, sessionId);
-                                                    }
-                                                    if (activa == 0) { //未激活
-                                                        toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
-                                                        isActiva = activa;
-                                                    } else {
-                                                        toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.nim_ic_messge_history));
+                                                try {
+                                                    org.json.JSONObject jsonObject = new org.json.JSONObject(content);
+                                                    Integer activa = jsonObject.getInt("activa");
+                                                    Integer type = jsonObject.getInt("isInternal");
+                                                    wxNo = jsonObject.optString("wxNo");
+                                                    if (type == 0) {  //内部
+                                                        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                                                         isActiva = 1;
+                                                    } else {
+                                                        CommonUtil.AddUserInfoListener listener = CommonUtil.addUserInfoListener;
+                                                        if (listener != null) {
+                                                            listener.addUserInfo(P2PMessageActivity.this, sessionId);
+                                                        }
+                                                        if (activa == 0) { //未激活
+                                                            toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
+                                                            isActiva = activa;
+                                                        } else {
+                                                            toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.nim_ic_messge_history));
+                                                            isActiva = 1;
+                                                        }
+                                                        if (isActiva != 0) {
+                                                         //   toolbar.setMenuVisible(false);
+                                                            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                                                        }
                                                     }
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                                                 }
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
+                                            } else {
                                                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                                             }
                                         } else {
                                             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                                         }
-                                    } else {
-                                        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                                     }
                                 }
 
@@ -177,10 +183,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
                 } else {
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 }
-                if (isActiva != 0) {
-                    toolbar.setMenuVisible(false);
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                }
+
             }
         }
     }

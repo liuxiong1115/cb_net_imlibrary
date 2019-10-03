@@ -418,7 +418,9 @@ public class SessionHelper {
             TeamAVChatProfile.sharedInstance().registerObserver(true);
 
             ArrayList<BaseAction> actions = new ArrayList<>();
-            actions.add(avChatAction);
+            if (CommonUtil.role != CommonUtil.SELLER) {
+                actions.add(avChatAction);
+            }
 
 //            actions.add(new GuessAction());
             actions.add(new FileAction());
