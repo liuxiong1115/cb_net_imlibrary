@@ -418,9 +418,9 @@ public class SessionHelper {
             TeamAVChatProfile.sharedInstance().registerObserver(true);
 
             ArrayList<BaseAction> actions = new ArrayList<>();
-            if (CommonUtil.role != CommonUtil.SELLER) {
-                actions.add(avChatAction);
-            }
+//            if (CommonUtil.role != CommonUtil.SELLER) {
+//                actions.add(avChatAction);
+//            }
 
 //            actions.add(new GuessAction());
             actions.add(new FileAction());
@@ -466,9 +466,9 @@ public class SessionHelper {
 
             final ArrayList<BaseAction> actions = new ArrayList<>();
             actions.add(new FileAction());
-            if (CommonUtil.role != CommonUtil.SELLER) {
-                actions.add(avChatAction);
-            }
+//            if (CommonUtil.role != CommonUtil.SELLER) {
+//                actions.add(avChatAction);
+//            }
             //教师权限添加排课按钮
             if (CommonUtil.role == CommonUtil.TEAC) {
                 actions.add(new ScheduleAction());
