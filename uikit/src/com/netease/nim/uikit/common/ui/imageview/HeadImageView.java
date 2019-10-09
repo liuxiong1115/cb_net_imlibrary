@@ -16,7 +16,13 @@ import com.netease.nimlib.sdk.nos.model.NosThumbParam;
 import com.netease.nimlib.sdk.nos.util.NosThumbImageUtil;
 import com.netease.nimlib.sdk.robot.model.RobotAttachment;
 import com.netease.nimlib.sdk.team.model.Team;
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 import com.netease.nimlib.sdk.uinfo.model.UserInfo;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Map;
 
 /**
  * Created by huangjun on 2015/11/13.
@@ -59,7 +65,6 @@ public class HeadImageView extends CircleImageView {
     }
 
 
-
     /**
      * 加载用户头像（默认大小的缩略图）
      *
@@ -73,7 +78,30 @@ public class HeadImageView extends CircleImageView {
                 account = attachment.getFromRobotAccount();
             }
         }
-        loadBuddyAvatar(account);
+        if (CommonUtil.role == CommonUtil.SELLER) {
+            Map<String, Object> map = message.getRemoteExtension();
+            if (map != null) {
+                String type = (String) map.get("fromType");
+                if (TextUtils.isEmpty(type)) {
+                    loadBuddyAvatar(account);
+                    return;
+                }
+                if (type.equals("1")) {
+                    String url = (String) map.get("headImgUrl");
+                    if (!TextUtils.isEmpty(url)) {
+                        doLoadImage(url, DEFAULT_AVATAR_RES_ID, DEFAULT_AVATAR_THUMB_SIZE);
+                    } else {
+                        loadBuddyAvatar(account);
+                    }
+                } else {
+                    loadBuddyAvatar(account);
+                }
+            } else {
+                loadBuddyAvatar(account);
+            }
+        } else {
+            loadBuddyAvatar(account);
+        }
     }
 
     /**

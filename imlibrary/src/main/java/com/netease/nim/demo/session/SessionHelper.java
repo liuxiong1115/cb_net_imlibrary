@@ -466,7 +466,9 @@ public class SessionHelper {
 
             final ArrayList<BaseAction> actions = new ArrayList<>();
             actions.add(new FileAction());
-            actions.add(avChatAction);
+            if (CommonUtil.role != CommonUtil.SELLER) {
+                actions.add(avChatAction);
+            }
             //教师权限添加排课按钮
             if (CommonUtil.role == CommonUtil.TEAC) {
                 actions.add(new ScheduleAction());

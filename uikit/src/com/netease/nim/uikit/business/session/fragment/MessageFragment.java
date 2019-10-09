@@ -163,6 +163,7 @@ public class MessageFragment extends TFragment implements ModuleProxy {
         } else {
             inputPanel.reload(container, customization);
         }
+        //转发
         if (forwardPanel == null) {
             forwardPanel = new ForwardPanel(container,rootView);
         }

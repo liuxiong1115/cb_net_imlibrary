@@ -8,44 +8,51 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
             <LinearLayout
                 android:id="@+id/visitor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp">
+
                 <com.netease.nim.uikit.common.ui.imageview.HeadImageView
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/appicon"/>
+                    android:src="@drawable/appicon" />
+
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:text="访客通知"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="16sp"
-                    android:textColor="@color/color_black_333333"
-                    android:layout_height="wrap_content" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="您有一条新消息"
                         android:layout_marginLeft="10dp"
-                        android:textSize="14sp"
+                        android:text="访客通知"
+                        android:textColor="@color/color_black_333333"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="5dp"
-                        android:textColor="#999999"/>
+                        android:text="您有一条新消息"
+                        android:textColor="#999999"
+                        android:textSize="14sp" />
                 </LinearLayout>
+
                 <com.netease.nim.uikit.common.ui.drop.DropFake
                     android:id="@+id/unread_number"
                     android:layout_width="28dip"
@@ -59,10 +66,12 @@
                     android:textSize="12sp"
                     android:visibility="visible" />
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#f4f4f4"></View>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"

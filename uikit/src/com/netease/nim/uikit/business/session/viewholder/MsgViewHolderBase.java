@@ -35,6 +35,8 @@ import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 
+import java.util.Map;
+
 /**
  * 会话窗口消息列表项的ViewHolder基类，负责每个消息项的外层框架，包括头像，昵称，发送/接收进度条，重发按钮等。<br>
  * 具体的消息展示项可继承该基类，然后完成具体消息内容展示即可。
@@ -268,11 +270,7 @@ public abstract class MsgViewHolderBase extends RecyclerViewHolder<BaseMultiItem
         switch (status) {
             case fail:
                 progressBar.setVisibility(View.GONE);
-                if (message.getMsgType() == MsgTypeEnum.image) {
-                    alertButton.setVisibility(View.GONE);
-                } else {
-                    alertButton.setVisibility(View.VISIBLE);
-                }
+                alertButton.setVisibility(View.VISIBLE);
                 break;
             case sending:
                 progressBar.setVisibility(View.VISIBLE);
@@ -392,7 +390,29 @@ public abstract class MsgViewHolderBase extends RecyclerViewHolder<BaseMultiItem
             return;
         }
         nameTextView.setVisibility(View.VISIBLE);
-        nameTextView.setText(getNameText());
+        if (CommonUtil.role == CommonUtil.SELLER) {
+            Map<String, Object> map = message.getRemoteExtension();
+            if (map != null) {
+                String type = (String) map.get("fromType");
+                if (TextUtils.isEmpty(type)) {
+                    nameTextView.setText(getNameText());
+                    return;
+                }
+                if (type.equals("1")) {
+                    String nickName = (String) map.get("nickName");
+                    if (!TextUtils.isEmpty(nickName)) {
+                        nameTextView.setText(nickName);
+                    } else {
+                        nameTextView.setText(getNameText());
+                    }
+                }
+            } else {
+                nameTextView.setText(getNameText());
+            }
+
+        } else {
+            nameTextView.setText(getNameText());
+        }
     }
 
 
