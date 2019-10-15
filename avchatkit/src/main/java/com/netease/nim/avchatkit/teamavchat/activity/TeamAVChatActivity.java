@@ -1,5 +1,6 @@
 package com.netease.nim.avchatkit.teamavchat.activity;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
@@ -72,6 +73,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.netease.nim.avchatkit.teamavchat.module.TeamAVChatItem.TYPE.TYPE_DATA;
 
 /**
  * 多人音视频界面：包含音视频通话界面和接受拒绝界面
@@ -214,7 +217,7 @@ public class TeamAVChatActivity extends UI implements SensorEventListener{
     protected void onResume() {
         super.onResume();
         // 取消通知栏
-        activeCallingNotifier(false);
+        activeCallingNotifier(true);
         // 禁止自动锁屏
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 //                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -833,7 +836,7 @@ public class TeamAVChatActivity extends UI implements SensorEventListener{
 //                    }
 //                    index++;
 //                }
-                //    checkAllHangUp();
+//                    checkAllHangUp();
 
             }
         }, CHECK_RECEIVED_CALL_TIMEOUT);

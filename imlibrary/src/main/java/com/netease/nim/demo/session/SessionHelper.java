@@ -413,14 +413,14 @@ public class SessionHelper {
             //TODO Team actions 按钮自定义
             // 定制加号点开后可以包含的操作， 默认已经有图片，视频等消息了
             final TeamAVChatAction avChatAction = new TeamAVChatAction(AVChatType.VIDEO);
-        //    final TeamAVChatAction avChatAction = new TeamAVChatAction(AVChatType.AUDIO);
+         //  final TeamAVChatAction avChatAction = new TeamAVChatAction(AVChatType.AUDIO);
 
             TeamAVChatProfile.sharedInstance().registerObserver(true);
 
             ArrayList<BaseAction> actions = new ArrayList<>();
-//            if (CommonUtil.role != CommonUtil.SELLER) {
-//                actions.add(avChatAction);
-//            }
+            if (CommonUtil.role != CommonUtil.SELLER) {
+                actions.add(avChatAction);
+            }
 
 //            actions.add(new GuessAction());
             actions.add(new FileAction());
@@ -466,9 +466,9 @@ public class SessionHelper {
 
             final ArrayList<BaseAction> actions = new ArrayList<>();
             actions.add(new FileAction());
-//            if (CommonUtil.role != CommonUtil.SELLER) {
-//                actions.add(avChatAction);
-//            }
+            if (CommonUtil.role != CommonUtil.SELLER) {
+                actions.add(avChatAction);
+            }
             //教师权限添加排课按钮
             if (CommonUtil.role == CommonUtil.TEAC) {
                 actions.add(new ScheduleAction());

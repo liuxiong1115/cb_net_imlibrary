@@ -34,7 +34,7 @@ public class DemoCache {
         NimUIKit.setAccount(account);
         AVChatKit.setAccount(account);
 //        RTSKit.setAccount(account);
-        AVChatKit.setContext(context);
+
     }
 
     public static void setNotificationConfig(StatusBarNotificationConfig notificationConfig) {
@@ -51,8 +51,7 @@ public class DemoCache {
 
     public static void setContext(Context context) {
         DemoCache.context = context.getApplicationContext();
-
-//        AVChatKit.setContext(context);
+        AVChatKit.setContext(context);
 //        RTSKit.setContext(context);
     }
 

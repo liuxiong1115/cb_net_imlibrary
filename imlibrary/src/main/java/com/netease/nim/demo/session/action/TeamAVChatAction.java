@@ -10,6 +10,7 @@ import com.netease.nim.avchatkit.TeamAVChatProfile;
 import com.netease.nim.avchatkit.teamavchat.activity.TeamAVChatActivity;
 import com.netease.nim.demo.DemoCache;
 import com.netease.nim.demo.R;
+import com.netease.nim.demo.main.activity.CustomNotificationActivity;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.model.SimpleCallback;
 import com.netease.nim.uikit.business.contact.core.item.AbsContactItem;
@@ -20,9 +21,11 @@ import com.netease.nim.uikit.business.contact.selector.activity.ContactSelectAct
 import com.netease.nim.uikit.business.team.helper.TeamHelper;
 import com.netease.nim.uikit.business.team.model.TeamRequestCode;
 import com.netease.nim.uikit.common.CommonUtil;
+import com.netease.nim.uikit.common.util.C;
 import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nim.uikit.common.util.string.StringUtil;
 import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.avchat.AVChatCallback;
 import com.netease.nimlib.sdk.avchat.AVChatManager;
 import com.netease.nimlib.sdk.avchat.constant.AVChatType;
@@ -247,7 +250,7 @@ public class TeamAVChatAction extends AVChatAction {
 //        tipConfig.enableRoaming = false;
 //        tipConfig.enablePush = false;
         String teamNick = TeamHelper.getDisplayNameWithoutMe(teamID, DemoCache.getAccount());
-//        message.setContent(teamNick + getActivity().getString(R.string.t_avchat_start));
+     //   message.setContent(teamNick + getActivity().getString(R.string.t_avchat_start));
 //        message.setConfig(tipConfig);
 //        sendMessage(message);
         // 对各个成员发送点对点自定义通知
@@ -255,9 +258,8 @@ public class TeamAVChatAction extends AVChatAction {
         String content = TeamAVChatProfile.sharedInstance().buildContent(roomName, teamID, accounts, teamName);
         CustomNotificationConfig config = new CustomNotificationConfig();
         config.enablePush = true;
-        config.enablePushNick = false;
+        config.enablePushNick = true;
         config.enableUnreadCount = true;
-
         for (String account : accounts) {
             CustomNotification command = new CustomNotification();
             command.setSessionId(account);
@@ -265,7 +267,6 @@ public class TeamAVChatAction extends AVChatAction {
             command.setConfig(config);
             command.setContent(content);
             command.setApnsText(teamNick + getActivity().getString(R.string.t_avchat_push_content));
-
             command.setSendToOnlineUserOnly(false);
             NIMClient.getService(MsgService.class).sendCustomNotification(command);
         }
