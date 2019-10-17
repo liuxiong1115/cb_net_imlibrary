@@ -108,8 +108,8 @@ public class TeamAVChatActivity extends UI implements SensorEventListener{
     private static final String KEY_STUDLIST= "studList";
     private static final String KEY_TEACLIST= "teacList";
     private static final String KEY_TNAME = "teamName";
-    private static final int AUTO_REJECT_CALL_TIMEOUT = 30 * 1000;
-    private static final int CHECK_RECEIVED_CALL_TIMEOUT = 30 * 1000;
+    private static final int AUTO_REJECT_CALL_TIMEOUT = 45 * 1000;
+    private static final int CHECK_RECEIVED_CALL_TIMEOUT = 45 * 1000;
     private static final int MAX_SUPPORT_ROOM_USERS_COUNT = 9;
     private static final int BASIC_PERMISSION_REQUEST_CODE = 0x100;
     // DATA
@@ -597,6 +597,7 @@ public class TeamAVChatActivity extends UI implements SensorEventListener{
 
             @Override
             public void onUserJoined(String account) {
+                label = 1;
                 onAVChatUserJoined(account);
             }
 
@@ -828,6 +829,10 @@ public class TeamAVChatActivity extends UI implements SensorEventListener{
         mainHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (label != 1) {
+                    Toast.makeText(TeamAVChatActivity.this, "对方暂未接听", Toast.LENGTH_SHORT).show();
+                    checkAllHangUp();
+                }
 //                int index = 0;
 //                for (TeamAVChatItem item : data) {
 //                    if (item.type == TYPE_DATA && item.state == TeamAVChatItem.STATE.STATE_WAITING) {
@@ -836,7 +841,7 @@ public class TeamAVChatActivity extends UI implements SensorEventListener{
 //                    }
 //                    index++;
 //                }
-//                    checkAllHangUp();
+//
 
             }
         }, CHECK_RECEIVED_CALL_TIMEOUT);

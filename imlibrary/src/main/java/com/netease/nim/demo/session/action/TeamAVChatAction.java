@@ -21,6 +21,7 @@ import com.netease.nim.uikit.business.contact.selector.activity.ContactSelectAct
 import com.netease.nim.uikit.business.team.helper.TeamHelper;
 import com.netease.nim.uikit.business.team.model.TeamRequestCode;
 import com.netease.nim.uikit.common.CommonUtil;
+import com.netease.nim.uikit.common.ToastHelper;
 import com.netease.nim.uikit.common.util.C;
 import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nim.uikit.common.util.string.StringUtil;
@@ -99,15 +100,15 @@ public class TeamAVChatAction extends AVChatAction {
                 final List<String> studList = new ArrayList<>();
                 final List<String> teacList = new ArrayList<>();
                 if (success && result != null) {
-                    for (int i=0;i<result.size();i++) {
+                    for (int i = 0; i < result.size(); i++) {
                         if (result.get(i).getAccount().toLowerCase().startsWith("stud")) {
                             studList.add(result.get(i).getAccount());
                         } else if (result.get(i).getAccount().toLowerCase().startsWith("teac")) {
                             teacList.add(result.get(i).getAccount());
                         }
                     }
-                    if (studList.size() == 0 || studList.size()>1) {
-                        Toast.makeText(getActivity(),"特殊订单暂不支持语音通话", Toast.LENGTH_SHORT).show();
+                    if (studList.size() == 0 || studList.size() > 1) {
+                        Toast.makeText(getActivity(), "特殊订单暂不支持语音通话", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     final String roomName = StringUtil.get32UUID();
@@ -130,8 +131,12 @@ public class TeamAVChatAction extends AVChatAction {
                             String teamName = TeamHelper.getTeamName(transaction.getTeamID());
 
                             TeamAVChatProfile.sharedInstance().setTeamAVChatting(true);
-                            AVChatKit.outgoingTeamCall(getActivity(), false, transaction.getTeamID(), roomName, studList,teacList, teamName,CommonUtil.role);
-                            transaction = null;
+                            if (studList.size() == 0 || teacList.size() == 0) {
+                                ToastHelper.showToast(getActivity(), "暂无可通话人员");
+                            } else {
+                                AVChatKit.outgoingTeamCall(getActivity(), false, transaction.getTeamID(), roomName, studList, teacList, teamName, CommonUtil.role);
+                                transaction = null;
+                            }
                         }
 
                         @Override
@@ -147,7 +152,7 @@ public class TeamAVChatAction extends AVChatAction {
                             if (!checkTransactionValid()) {
                                 return;
                             }
-                           // onCreateRoomFail();
+                            // onCreateRoomFail();
                         }
                     });
 //                    if (result.size() < 2) {
@@ -188,7 +193,7 @@ public class TeamAVChatAction extends AVChatAction {
                 String teamName = TeamHelper.getTeamName(transaction.getTeamID());
 
                 TeamAVChatProfile.sharedInstance().setTeamAVChatting(true);
-         //       AVChatKit.outgoingTeamCall(getActivity(), false, transaction.getTeamID(), roomName, accounts, teamName);
+                //       AVChatKit.outgoingTeamCall(getActivity(), false, transaction.getTeamID(), roomName, accounts, teamName);
                 transaction = null;
             }
 
@@ -250,7 +255,7 @@ public class TeamAVChatAction extends AVChatAction {
 //        tipConfig.enableRoaming = false;
 //        tipConfig.enablePush = false;
         String teamNick = TeamHelper.getDisplayNameWithoutMe(teamID, DemoCache.getAccount());
-     //   message.setContent(teamNick + getActivity().getString(R.string.t_avchat_start));
+        //   message.setContent(teamNick + getActivity().getString(R.string.t_avchat_start));
 //        message.setConfig(tipConfig);
 //        sendMessage(message);
         // 对各个成员发送点对点自定义通知
