@@ -82,12 +82,12 @@ public class MainActivity extends AppCompatActivity {
         // 在这里直接使用同步到云信服务器的帐号和token登录。
         // 这里为了简便起见，demo就直接使用了密码的md5作为token。
         // 如果开发者直接使用这个demo，只更改appkey，然后就登入自己的账户体系的话，需要传入同步到云信服务器的token，而不是用户密码。
-        final String account = "STUD111";
-        final String token = "ca3b942d-864f-4656-b6d6-cd33192dcc95";
+//        final String account = "STUD111";
+//        final String token = "ca3b942d-864f-4656-b6d6-cd33192dcc95";
 //        final String account = "TEAC125";
 //        final String token = "6ebaf776-1074-4a1f-8a44-028d2b9dcfe1";
-//        final String account = "CRM2";
-//        final String token = "38360e6aa7216897fc02732b9ef280e8";
+        final String account = "CRM2";
+        final String token = "38360e6aa7216897fc02732b9ef280e8";
 //        final String account = "STUD805";
 //        final String token = "1222f909-01a2-457e-b3ae-9911d63f61e6";
 //        final String account = "TEAC10065";

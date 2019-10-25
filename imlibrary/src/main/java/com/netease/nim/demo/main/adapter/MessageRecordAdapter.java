@@ -91,16 +91,17 @@ public class MessageRecordAdapter extends BaseQuickAdapter<Message, BaseViewHold
                 if (!TextUtils.isEmpty(path)) {
                     loadImageView(item);
                 } else {
-                    String status = item.getAttachStatus();
-                    switch (status) {
-                        case "def":
-                            updateFileStatusLabel(item);
-                            break;
-                        case "transferred":
-                        case "fail":
-                            updateFileStatusLabel(item);
-                            break;
-                    }
+                    updateFileStatusLabel(item);
+//                    String status = item.getAttachStatus();
+//                    switch (status) {
+//                        case "def":
+//                            updateFileStatusLabel(item);
+//                            break;
+//                        case "transferred":
+//                        case "fail":
+//                            updateFileStatusLabel(item);
+//                            break;
+//                    }
                 }
             } else if (item.getMsgType().equals("custom")) {
                 fileLayout.setVisibility(View.GONE);

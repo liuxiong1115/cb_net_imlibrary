@@ -31,18 +31,13 @@ public class Message implements Serializable{
      * uuid : 0aecbb4691044757a20bcc9cb8f41cbd
      */
 
-    private String attachStatus;
     private AttachmentBean attachment;
-    private ConfigBean config;
     private String content;
     private String direct;
     private String fromAccount;
-    private int fromClientType;
     private String fromNick;
-    private MemberPushOptionBean memberPushOption;
     private String msgType;
     private String pushContent;
-    private PushPayloadBean pushPayload;
     private boolean remoteRead;
     private String sessionId;
     private String sessionType;
@@ -53,28 +48,12 @@ public class Message implements Serializable{
     private String uuid;
 
 
-    public String getAttachStatus() {
-        return attachStatus;
-    }
-
-    public void setAttachStatus(String attachStatus) {
-        this.attachStatus = attachStatus;
-    }
-
     public AttachmentBean getAttachment() {
         return attachment;
     }
 
     public void setAttachment(AttachmentBean attachment) {
         this.attachment = attachment;
-    }
-
-    public ConfigBean getConfig() {
-        return config;
-    }
-
-    public void setConfig(ConfigBean config) {
-        this.config = config;
     }
 
     public String getContent() {
@@ -101,14 +80,6 @@ public class Message implements Serializable{
         this.fromAccount = fromAccount;
     }
 
-    public int getFromClientType() {
-        return fromClientType;
-    }
-
-    public void setFromClientType(int fromClientType) {
-        this.fromClientType = fromClientType;
-    }
-
     public String getFromNick() {
         return fromNick;
     }
@@ -117,13 +88,7 @@ public class Message implements Serializable{
         this.fromNick = fromNick;
     }
 
-    public MemberPushOptionBean getMemberPushOption() {
-        return memberPushOption;
-    }
 
-    public void setMemberPushOption(MemberPushOptionBean memberPushOption) {
-        this.memberPushOption = memberPushOption;
-    }
 
     public String getMsgType() {
         return msgType;
@@ -141,13 +106,6 @@ public class Message implements Serializable{
         this.pushContent = pushContent;
     }
 
-    public PushPayloadBean getPushPayload() {
-        return pushPayload;
-    }
-
-    public void setPushPayload(PushPayloadBean pushPayload) {
-        this.pushPayload = pushPayload;
-    }
 
     public boolean isRemoteRead() {
         return remoteRead;
@@ -426,131 +384,7 @@ public class Message implements Serializable{
         }
     }
 
-    public static class ConfigBean implements Serializable{
-        /**
-         * enableHistory : true
-         * enablePersist : true
-         * enablePush : true
-         * enablePushNick : true
-         * enableRoaming : true
-         * enableRoute : true
-         * enableSelfSync : true
-         * enableUnreadCount : true
-         */
 
-        private boolean enableHistory;
-        private boolean enablePersist;
-        private boolean enablePush;
-        private boolean enablePushNick;
-        private boolean enableRoaming;
-        private boolean enableRoute;
-        private boolean enableSelfSync;
-        private boolean enableUnreadCount;
 
-        public boolean isEnableHistory() {
-            return enableHistory;
-        }
 
-        public void setEnableHistory(boolean enableHistory) {
-            this.enableHistory = enableHistory;
-        }
-
-        public boolean isEnablePersist() {
-            return enablePersist;
-        }
-
-        public void setEnablePersist(boolean enablePersist) {
-            this.enablePersist = enablePersist;
-        }
-
-        public boolean isEnablePush() {
-            return enablePush;
-        }
-
-        public void setEnablePush(boolean enablePush) {
-            this.enablePush = enablePush;
-        }
-
-        public boolean isEnablePushNick() {
-            return enablePushNick;
-        }
-
-        public void setEnablePushNick(boolean enablePushNick) {
-            this.enablePushNick = enablePushNick;
-        }
-
-        public boolean isEnableRoaming() {
-            return enableRoaming;
-        }
-
-        public void setEnableRoaming(boolean enableRoaming) {
-            this.enableRoaming = enableRoaming;
-        }
-
-        public boolean isEnableRoute() {
-            return enableRoute;
-        }
-
-        public void setEnableRoute(boolean enableRoute) {
-            this.enableRoute = enableRoute;
-        }
-
-        public boolean isEnableSelfSync() {
-            return enableSelfSync;
-        }
-
-        public void setEnableSelfSync(boolean enableSelfSync) {
-            this.enableSelfSync = enableSelfSync;
-        }
-
-        public boolean isEnableUnreadCount() {
-            return enableUnreadCount;
-        }
-
-        public void setEnableUnreadCount(boolean enableUnreadCount) {
-            this.enableUnreadCount = enableUnreadCount;
-        }
-    }
-
-    public static class MemberPushOptionBean implements Serializable{
-        /**
-         * forcePush : false
-         */
-
-        private boolean forcePush;
-
-        public boolean isForcePush() {
-            return forcePush;
-        }
-
-        public void setForcePush(boolean forcePush) {
-            this.forcePush = forcePush;
-        }
-    }
-
-    public static class PushPayloadBean implements Serializable{
-        /**
-         * sessionID : 2676424627
-         * sessionType : 1
-         */
-
-        private String sessionID;
-        private int sessionType;
-
-        public String getSessionID() {
-            return sessionID;
-        }
-
-        public void setSessionID(String sessionID) {
-            this.sessionID = sessionID;
-        }
-
-        public int getSessionType() {
-            return sessionType;
-        }
-
-        public void setSessionType(int sessionType) {
-            this.sessionType = sessionType;
-        }
-    }
 }
