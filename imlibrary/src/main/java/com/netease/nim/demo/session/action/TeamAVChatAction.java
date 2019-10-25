@@ -11,6 +11,8 @@ import com.netease.nim.avchatkit.teamavchat.activity.TeamAVChatActivity;
 import com.netease.nim.demo.DemoCache;
 import com.netease.nim.demo.R;
 import com.netease.nim.demo.main.activity.CustomNotificationActivity;
+import com.netease.nim.demo.session.extension.CustomAttachmentType;
+import com.netease.nim.demo.session.extension.CustomAvChatAttachment;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.model.SimpleCallback;
 import com.netease.nim.uikit.business.contact.core.item.AbsContactItem;
@@ -20,6 +22,7 @@ import com.netease.nim.uikit.business.contact.core.model.IContact;
 import com.netease.nim.uikit.business.contact.selector.activity.ContactSelectActivity;
 import com.netease.nim.uikit.business.team.helper.TeamHelper;
 import com.netease.nim.uikit.business.team.model.TeamRequestCode;
+import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.ToastHelper;
 import com.netease.nim.uikit.common.util.C;
@@ -254,8 +257,16 @@ public class TeamAVChatAction extends AVChatAction {
 //        tipConfig.enableHistory = false;
 //        tipConfig.enableRoaming = false;
 //        tipConfig.enablePush = false;
-        String teamNick = TeamHelper.getDisplayNameWithoutMe(teamID, DemoCache.getAccount());
-        //   message.setContent(teamNick + getActivity().getString(R.string.t_avchat_start));
+      String teamNick = TeamHelper.getDisplayNameWithoutMe(teamID, DemoCache.getAccount());
+        if (accounts != null && accounts.size() != 0) {
+            String nickName = UserInfoHelper.getUserDisplayName(accounts.get(0));
+            CustomAvChatAttachment customAvChatAttachment = new CustomAvChatAttachment();
+            customAvChatAttachment.setType(CustomAttachmentType.avChatCall);
+            customAvChatAttachment.setContent(nickName+getActivity().getResources().getString(R.string.avchat_initiate_call));
+            IMMessage message = MessageBuilder.createCustomMessage(teamID,SessionTypeEnum.Team,nickName+getActivity().getResources().getString(R.string.avchat_initiate_call),customAvChatAttachment);
+            sendMessage(message);
+        }
+        //    message.setContent(teamNick + getActivity().getString(R.string.t_avchat_start));
 //        message.setConfig(tipConfig);
 //        sendMessage(message);
         // 对各个成员发送点对点自定义通知

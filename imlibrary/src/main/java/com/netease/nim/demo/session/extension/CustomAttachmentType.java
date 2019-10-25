@@ -36,4 +36,5 @@ public interface CustomAttachmentType {
 
     int ReplyMsg = 360;//回复信息
     int ForWardMsg = 361;//合并转发消息
+    int avChatCall = 362;//语音通话回拨
 }

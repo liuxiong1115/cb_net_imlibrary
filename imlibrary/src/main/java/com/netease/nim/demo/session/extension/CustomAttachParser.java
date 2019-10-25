@@ -51,6 +51,9 @@ public class CustomAttachParser implements MsgAttachmentParser {
                 case CustomAttachmentType.ForWardMsg: //合并转发消息
                     attachment = new ForwardAttachment();
                     break;
+                case CustomAttachmentType.avChatCall: //语音通话
+                    attachment = new CustomAvChatAttachment();
+                    break;
                 default:   //自定义
                     attachment = new DefaultCustomAttachment();
                     break;
@@ -61,6 +64,8 @@ public class CustomAttachParser implements MsgAttachmentParser {
                 } else if (attachment instanceof ReplyAttachment){
                     attachment.fromJson(data);
                 }else if (attachment instanceof ForwardAttachment) {
+                    attachment.fromJson(data);
+                }else if (attachment instanceof CustomAvChatAttachment) {
                     attachment.fromJson(data);
                 }else {
                     attachment.fromJson(object);

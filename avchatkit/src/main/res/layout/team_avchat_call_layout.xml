@@ -33,36 +33,39 @@
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:background="@drawable/call_stud_bg">
+
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/call_top_stud_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="50dp"
+                android:layout_marginLeft="10dp"
                 android:gravity="center"
-                android:layout_marginLeft="5dp"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
+
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/call_top_teac_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="30dp"
-                android:gravity="center"
                 android:layout_marginLeft="8dp"
+                android:gravity="center"
                 android:textColor="@color/white"
-                android:visibility="gone"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="gone" />
+
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/call_top_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
-                android:gravity="center"
-                android:textColor="#666666"
-                android:text="正在呼叫您..."
                 android:layout_marginBottom="40dp"
+                android:gravity="center"
+                android:text="正在呼叫您..."
+                android:textColor="#666666"
                 android:textSize="16sp" />
         </FrameLayout>
     </LinearLayout>
@@ -93,7 +96,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="30dp"
                 android:gravity="center"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="10dp"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
             <android.support.v7.widget.AppCompatTextView

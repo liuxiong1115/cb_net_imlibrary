@@ -18,7 +18,7 @@ public class AVChatAction extends BaseAction {
 
     public AVChatAction(AVChatType avChatType) {
         super(avChatType == AVChatType.AUDIO ? R.drawable.message_plus_audio_chat_selector : R.drawable.message_plus_audio_chat_selector,
-                avChatType == AVChatType.AUDIO ? R.string.input_panel_audio_call : R.string.input_panel_audio_call);
+                avChatType == AVChatType.AUDIO ? R.string.input_panel_internet_call : R.string.input_panel_internet_call);
         this.avChatType = avChatType;
     }
 
