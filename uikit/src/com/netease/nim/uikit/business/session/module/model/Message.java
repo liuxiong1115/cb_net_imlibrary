@@ -1,12 +1,12 @@
-package com.netease.nim.uikit.business.session.module.model;
 
+package com.netease.nim.uikit.business.session.module.model;
 import java.io.Serializable;
 
 /**
  * Created by mike on 2019/9/9.
  */
 
-public class Message implements Serializable{
+public class Message implements Serializable {
 
     /**
      * attachStatus : def
@@ -383,8 +383,5 @@ public class Message implements Serializable{
             this.width = width;
         }
     }
-
-
-
-
 }
+
