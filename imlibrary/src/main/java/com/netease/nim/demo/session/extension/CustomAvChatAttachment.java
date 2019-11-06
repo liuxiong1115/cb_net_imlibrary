@@ -27,7 +27,7 @@ public class CustomAvChatAttachment extends CustomAttachment {
     private Integer type;
 
     private static final String KEY_CONTENT = "content";
-    
+
     @Override
     protected void parseData(JSONObject data) {
         content = data.getString(KEY_CONTENT);
