@@ -53,7 +53,7 @@ dependencies {
     api 'me.everything:overscroll-decor-android:1.0.4'
     api "me.leolin:ShortcutBadger:1.1.17@aar"
     api 'com.github.satyan:sugar:1.5'  //数据库
-    api 'com.github.bumptech.glide:glide:4.2.0'
+    //api 'com.github.bumptech.glide:glide:4.2.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
     api 'jp.wasabeef:glide-transformations:3.0.1'
     api 'com.google.code.gson:gson:2.6.2'

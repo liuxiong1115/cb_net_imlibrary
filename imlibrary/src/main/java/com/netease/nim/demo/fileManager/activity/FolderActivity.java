@@ -270,7 +270,7 @@ public class FolderActivity extends UI {
                             FileInfo document = FileUtil.getFileInfoFromFile(new File(file[i].getAbsolutePath()));
                             zipData.add(document);
                         } else if (file[i].getName().endsWith(".txt") || file[i].getName().endsWith(".java") ||
-                                file[i].getName().endsWith(".log") || file[i].getName().endsWith(".html")) {
+                                file[i].getName().endsWith(".html")) {
                             //往图片集合中 添加图片的路径
                             FileInfo document = FileUtil.getFileInfoFromFile(new File(file[i].getAbsolutePath()));
                             allData.add(document);
