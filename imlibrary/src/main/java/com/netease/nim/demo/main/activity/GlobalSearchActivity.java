@@ -4,8 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,9 +15,9 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 
 import com.netease.nim.demo.R;
+import com.netease.nim.demo.main.activity.view.NestListView;
 import com.netease.nim.demo.session.SessionHelper;
 import com.netease.nim.demo.session.search.DisplayMessageActivity;
 import com.netease.nim.uikit.api.wrapper.NimToolBarOptions;
@@ -31,6 +32,7 @@ import com.netease.nim.uikit.business.contact.core.query.IContactDataProvider;
 import com.netease.nim.uikit.business.contact.core.viewholder.ContactHolder;
 import com.netease.nim.uikit.business.contact.core.viewholder.LabelHolder;
 import com.netease.nim.uikit.business.contact.core.viewholder.MsgHolder;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
 import com.netease.nim.uikit.common.activity.UI;
 import com.netease.nim.uikit.common.util.string.StringUtil;
@@ -44,11 +46,13 @@ import com.netease.nimlib.sdk.search.model.MsgIndexRecord;
  */
 public class GlobalSearchActivity extends UI implements OnItemClickListener {
 
-    private ContactDataAdapter adapter;
+    public ContactDataAdapter adapter;
 
-    private ListView lvContacts;
+    public NestListView lvContacts;
 
-    private SearchView searchView;
+    public SearchView searchView;
+
+    public RecyclerView rvExFriend;
 
     public static final void start(Context context) {
         Intent intent = new Intent();
@@ -82,7 +86,7 @@ public class GlobalSearchActivity extends UI implements OnItemClickListener {
         });
 
         searchView = (SearchView) MenuItemCompat.getActionView(item);
-        searchView.setOnQueryTextListener(new OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -98,6 +102,10 @@ public class GlobalSearchActivity extends UI implements OnItemClickListener {
                     lvContacts.setVisibility(View.VISIBLE);
                 }
                 adapter.query(query);
+                CommonUtil.onSearchContactsListener listener = CommonUtil.onSearchContactsListener;
+                if (listener != null) {
+                    listener.onData(query,GlobalSearchActivity.this);
+                }
                 return true;
             }
         });
@@ -114,7 +122,7 @@ public class GlobalSearchActivity extends UI implements OnItemClickListener {
         ToolBarOptions options = new NimToolBarOptions();
         setToolBar(R.id.toolbar, options);
 
-        lvContacts = (ListView) findViewById(R.id.searchResultList);
+        lvContacts = findViewById(R.id.searchResultList);
         lvContacts.setVisibility(View.GONE);
         SearchGroupStrategy searchGroupStrategy = new SearchGroupStrategy();
         IContactDataProvider dataProvider = new ContactDataProvider(ItemTypes.FRIEND, ItemTypes.TEAM, ItemTypes.MSG);
@@ -148,6 +156,10 @@ public class GlobalSearchActivity extends UI implements OnItemClickListener {
                 return false;
             }
         });
+
+        rvExFriend = findViewById(R.id.rvExFriend);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        rvExFriend.setLayoutManager(linearLayoutManager);
     }
 
     @Override
@@ -162,12 +174,14 @@ public class GlobalSearchActivity extends UI implements OnItemClickListener {
         public static final String GROUP_FRIEND = "FRIEND";
         public static final String GROUP_TEAM = "TEAM";
         public static final String GROUP_MSG = "MSG";
+        public static final String EXFRIEND = "EXFRIEND"; //外部联系人
 
         SearchGroupStrategy() {
             add(ContactGroupStrategy.GROUP_NULL, 0, "");
             add(GROUP_TEAM, 1, "群组");
             add(GROUP_FRIEND, 2, "好友");
             add(GROUP_MSG, 3, "聊天记录");
+            add(EXFRIEND,4,"外部联系人");
         }
 
         @Override
@@ -179,6 +193,8 @@ public class GlobalSearchActivity extends UI implements OnItemClickListener {
                     return GROUP_TEAM;
                 case ItemTypes.MSG:
                     return GROUP_MSG;
+                case ItemTypes.EXFRIEND:
+                    return EXFRIEND;
                 default:
                     return null;
             }

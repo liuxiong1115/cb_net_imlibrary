@@ -76,7 +76,6 @@ public final class MsgDataProvider {
         long startTime = System.currentTimeMillis();
         List<MsgIndexRecord> result = NIMClient.getService(LuceneService.class).searchAllSessionBlock(query, -1);
         log(false, result, System.currentTimeMillis() - startTime);
-
         return result;
     }
 

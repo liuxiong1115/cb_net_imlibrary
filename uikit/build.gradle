@@ -50,11 +50,12 @@ dependencies {
     api("com.android.support:design:${DESIGIN_SUPPORT_VERSION}")
     api("com.android.support.constraint:constraint-layout:${CONSTRAIT_SUPPORT_VERSION}")
 
+//    compile 'com.netease.nimlib:lucene:6.6.7'
     api 'me.everything:overscroll-decor-android:1.0.4'
     api "me.leolin:ShortcutBadger:1.1.17@aar"
     api 'com.github.satyan:sugar:1.5'  //数据库
-//    implementation 'com.github.bumptech.glide:glide:4.2.0'
-//    annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
+    implementation 'com.github.bumptech.glide:glide:4.2.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
     api 'jp.wasabeef:glide-transformations:3.0.1'
     api 'com.google.code.gson:gson:2.6.2'
     //api 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1' // if you want to use the Glide GPU Filters

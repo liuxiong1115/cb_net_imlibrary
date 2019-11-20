@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.netease.nim.demo.R;
@@ -23,12 +22,8 @@ import com.netease.nim.demo.team.TeamCreateHelper;
 import com.netease.nim.demo.team.activity.AdvancedTeamSearchActivity;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.model.main.LoginSyncDataStatusObserver;
-import com.netease.nim.uikit.business.contact.core.item.ContactIdFilter;
 import com.netease.nim.uikit.business.contact.selector.activity.ContactSelectActivity;
-import com.netease.nim.uikit.business.session.activity.P2PMessageActivity;
-import com.netease.nim.uikit.business.team.activity.NormalTeamInfoActivity;
 import com.netease.nim.uikit.business.team.helper.TeamHelper;
-import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.activity.UI;
 import com.netease.nim.uikit.common.ui.dialog.DialogMaker;
 import com.netease.nim.uikit.common.util.log.LogUtil;
@@ -106,6 +101,24 @@ public class MainActivity extends UI {
         }
 
         onInit();
+
+//        CommonUtil.setOnSearchContactsListener(new CommonUtil.onSearchContactsListener() {
+//            @Override
+//            public void onData(String query,Activity context) {
+//                RecyclerView recyclerView = context.findViewById(R.id.rvExFriend);
+//                ExFriendAdapter exFriendAdapter = (ExFriendAdapter) recyclerView.getAdapter();
+//                if (!TextUtils.isEmpty(query)) {
+//                    List<String> list = new ArrayList<>();
+//                    for (int i=0;i<5;i++) {
+//                        list.add("张三"+i);
+//                    }
+//                    exFriendAdapter.setNewData(list);
+//                } else {
+//                    exFriendAdapter.setNewData(null);
+//                }
+//
+//            }
+//        });
 
     }
 
@@ -223,7 +236,7 @@ public class MainActivity extends UI {
             AddFriendActivity.start(MainActivity.this);
 
         } else if (i == R.id.search_btn) {
-            GlobalSearchActivity.start(MainActivity.this);
+         //   GlobalSearchActivity.start(MainActivity.this);
 
         } else {
         }

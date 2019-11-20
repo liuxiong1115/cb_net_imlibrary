@@ -202,4 +202,13 @@ public class CommonUtil {
     public interface onUnReadNumListener {
         void underNum(int num);
     }
+
+    //搜索联系人
+    public static onSearchContactsListener onSearchContactsListener;
+    public static void setOnSearchContactsListener(onSearchContactsListener listener) {
+        onSearchContactsListener = listener;
+    }
+    public interface onSearchContactsListener {
+        void onData(String query,Activity context);
+    }
 }

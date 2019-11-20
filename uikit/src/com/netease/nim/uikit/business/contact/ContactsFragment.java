@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+//import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 
 /**
@@ -151,7 +151,7 @@ public class ContactsFragment extends TFragment {
         // count
         View countLayout = View.inflate(getView().getContext(), R.layout.nim_contacts_count_item, null);
         countLayout.setClickable(false);
-        countText = (TextView) countLayout.findViewById(R.id.contactCountText);
+        countText = countLayout.findViewById(R.id.contactCountText);
 
         // ListView
         listView = findView(R.id.contact_list_view);
@@ -175,14 +175,14 @@ public class ContactsFragment extends TFragment {
         listView.setOnItemLongClickListener(listener);
 
         // ios style
-        OverScrollDecoratorHelper.setUpOverScroll(listView);
+//        OverScrollDecoratorHelper.setUpOverScroll(listView);
     }
 
     private void buildLitterIdx(View view) {
-        LetterIndexView livIndex = (LetterIndexView) view.findViewById(R.id.liv_index);
+        LetterIndexView livIndex = view.findViewById(R.id.liv_index);
         livIndex.setNormalColor(getResources().getColor(R.color.contacts_letters_color));
-        ImageView imgBackLetter = (ImageView) view.findViewById(R.id.img_hit_letter);
-        TextView litterHit = (TextView) view.findViewById(R.id.tv_hit_letter);
+        ImageView imgBackLetter = view.findViewById(R.id.img_hit_letter);
+        TextView litterHit = view.findViewById(R.id.tv_hit_letter);
         litterIdx = adapter.createLivIndex(listView, livIndex, litterHit, imgBackLetter);
 
         litterIdx.show();

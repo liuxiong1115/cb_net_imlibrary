@@ -3,15 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/global_search_root"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
+    android:layout_height="fill_parent">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
         android:paddingTop="20dp"
+        android:theme="@style/AppTheme.AppBarOverlay"
         app:elevation="0dp">
 
         <com.netease.nim.uikit.common.ui.widget.MyToolbar
@@ -25,15 +24,32 @@
     </android.support.design.widget.AppBarLayout>
 
     <!--<include layout="@layout/nim_layout_toolbar"></include>-->
-    <ListView
-        android:id="@+id/searchResultList"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@color/white"
-        android:layout_below="@id/app_bar_layout"
-        android:cacheColorHint="@color/transparent"
-        android:divider="@color/transparent"
-        android:dividerHeight="0dp"
-        android:scrollbars="none" />
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/app_bar_layout">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvExFriend"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="false"
+                android:background="@color/white"
+                />
+            <com.netease.nim.demo.main.activity.view.NestListView
+                android:id="@+id/searchResultList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:cacheColorHint="@color/transparent"
+                android:divider="@color/transparent"
+                android:dividerHeight="0dp"
+                android:scrollbars="none" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 </RelativeLayout>

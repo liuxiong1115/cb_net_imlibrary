@@ -44,7 +44,6 @@ public abstract class AbsContactDataList {
         if (groupStrategy == null) {
             groupStrategy = new NoneGroupStrategy();
         }
-
         this.groupStrategy = groupStrategy;
     }
 
@@ -97,7 +96,6 @@ public abstract class AbsContactDataList {
                 groupMap.put(id, group);
             }
         }
-
         group.add(item);
     }
 

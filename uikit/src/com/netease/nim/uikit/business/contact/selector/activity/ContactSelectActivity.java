@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.wrapper.NimToolBarOptions;
@@ -40,6 +39,8 @@ import com.netease.nim.uikit.business.contact.selector.adapter.ContactSelectAdap
 import com.netease.nim.uikit.business.contact.selector.adapter.ContactSelectAvatarAdapter;
 import com.netease.nim.uikit.business.contact.selector.viewholder.ContactsMultiSelectHolder;
 import com.netease.nim.uikit.business.contact.selector.viewholder.ContactsSelectHolder;
+import com.netease.nim.uikit.business.session.constant.Extras;
+import com.netease.nim.uikit.common.ToastHelper;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
 import com.netease.nim.uikit.common.activity.UI;
 import com.netease.nim.uikit.common.ui.liv.LetterIndexView;
@@ -54,10 +55,11 @@ import java.util.List;
  * <p/>
  * Created by huangjun on 2015/3/3.
  */
-public class ContactSelectActivity extends UI implements View.OnClickListener, android.support.v7.widget.SearchView.OnQueryTextListener {
+public class ContactSelectActivity extends UI implements View.OnClickListener, SearchView.OnQueryTextListener {
 
     public static final String EXTRA_DATA = "EXTRA_DATA"; // 请求数据：Option
     public static final String RESULT_DATA = "RESULT_DATA"; // 返回结果
+    public static final String RESULT_NAME = "RESULT_NAME";//返回结果对应的的昵称或群名称
 
     // adapter
 
@@ -396,7 +398,7 @@ public class ContactSelectActivity extends UI implements View.OnClickListener, a
                                 contactSelectedAdapter.addContact(contact);
                             }
                         } else {
-                            Toast.makeText(ContactSelectActivity.this, option.maxSelectedTip, Toast.LENGTH_SHORT).show();
+                            ToastHelper.showToast(ContactSelectActivity.this, option.maxSelectedTip);
                         }
 
                         if (!TextUtils.isEmpty(queryText) && searchView != null) {
@@ -410,8 +412,10 @@ public class ContactSelectActivity extends UI implements View.OnClickListener, a
                     if (item instanceof ContactItem) {
                         final IContact contact = ((ContactItem) item).getContact();
                         ArrayList<String> selectedIds = new ArrayList<>();
+                        ArrayList<String> selectedNames = new ArrayList<>();
                         selectedIds.add(contact.getContactId());
-                        onSelected(selectedIds);
+                        selectedNames.add(contact.getDisplayName());
+                        onSelected(selectedIds, selectedNames);
                     }
 
                     arrangeSelected();
@@ -558,11 +562,13 @@ public class ContactSelectActivity extends UI implements View.OnClickListener, a
             List<IContact> contacts = contactSelectedAdapter
                     .getSelectedContacts();
             if (option.allowSelectEmpty || checkMinMaxSelection(contacts.size())) {
+                ArrayList<String> selectedNames = new ArrayList<>();
                 ArrayList<String> selectedAccounts = new ArrayList<>();
                 for (IContact c : contacts) {
                     selectedAccounts.add(c.getContactId());
+                    selectedNames.add(c.getDisplayName());
                 }
-                onSelected(selectedAccounts);
+                onSelected(selectedAccounts, selectedNames);
             }
 
         }
@@ -579,16 +585,17 @@ public class ContactSelectActivity extends UI implements View.OnClickListener, a
 
     private boolean showMaxMinSelectTip(boolean min) {
         if (min) {
-            Toast.makeText(this, option.minSelectedTip, Toast.LENGTH_SHORT).show();
+            ToastHelper.showToast(this, option.minSelectedTip);
         } else {
-            Toast.makeText(this, option.maxSelectedTip, Toast.LENGTH_SHORT).show();
+            ToastHelper.showToast(this, option.maxSelectedTip);
         }
         return false;
     }
 
-    public void onSelected(ArrayList<String> selects) {
+    public void onSelected(ArrayList<String> selects, ArrayList<String> selectedNames) {
         Intent intent = new Intent();
         intent.putStringArrayListExtra(RESULT_DATA, selects);
+        intent.putStringArrayListExtra(Extras.RESULT_NAME, selectedNames);
         setResult(Activity.RESULT_OK, intent);
         this.finish();
     }
