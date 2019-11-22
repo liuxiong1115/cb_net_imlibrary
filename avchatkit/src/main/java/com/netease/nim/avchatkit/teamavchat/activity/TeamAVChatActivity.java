@@ -293,7 +293,9 @@ public class TeamAVChatActivity extends UI implements SensorEventListener{
         setChatting(false);
         NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(userStatusObserver, false);
         //传感器取消监听
-        sensorManager.unregisterListener(this);
+        if(sensorManager != null) {
+            sensorManager.unregisterListener(this);
+        }
         //释放息屏
         if (mWakeLock.isHeld())
             mWakeLock.release();

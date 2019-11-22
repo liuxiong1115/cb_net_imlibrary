@@ -25,6 +25,7 @@ import com.netease.nim.demo.session.extension.RedPacketOpenedAttachment;
 import com.netease.nim.demo.session.extension.ReplyAttachment;
 import com.netease.nim.demo.session.extension.SnapChatAttachment;
 import com.netease.nim.demo.session.extension.StickerAttachment;
+import com.netease.nim.demo.session.search.SearchMessageActivity;
 import com.netease.nim.uikit.business.contact.ContactsFragment;
 import com.netease.nim.uikit.business.recent.RecentContactsCallback;
 import com.netease.nim.uikit.business.recent.RecentContactsFragment;
@@ -243,6 +244,7 @@ public class SessionListFragment extends MainTabFragment {
                 // 回调函数，以供打开会话窗口时传入定制化参数，或者做其他动作
                 switch (recent.getSessionType()) {
                     case P2P:
+                       // SearchMessageActivity.start(getActivity(), recent.getContactId(), recent.getSessionType());
                         SessionHelper.startP2PSession(getActivity(), recent.getContactId());
                         break;
                     case Team:

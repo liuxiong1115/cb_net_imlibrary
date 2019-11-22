@@ -98,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
 //        final String token = "f144f57a2343fcd5c8ffb81226a9a4ed";
 //        final String account = "CRM72";
 //        final String token = "e8900e72002f73a243e02434796ae324";
+//        final String account = "CRM179";
+//        final String token = "1e82ac0c2e3c5ebb2155f551b41d47c8";
         // 登录
         loginRequest = NimUIKit.login(new LoginInfo(account, token), new RequestCallback<LoginInfo>() {
             @Override

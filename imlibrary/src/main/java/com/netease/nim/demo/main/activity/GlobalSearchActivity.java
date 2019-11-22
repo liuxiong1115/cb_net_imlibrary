@@ -36,6 +36,8 @@ import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
 import com.netease.nim.uikit.common.activity.UI;
 import com.netease.nim.uikit.common.util.string.StringUtil;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.lucene.LuceneService;
 import com.netease.nimlib.sdk.search.model.MsgIndexRecord;
 
 /**
@@ -156,7 +158,6 @@ public class GlobalSearchActivity extends UI implements OnItemClickListener {
                 return false;
             }
         });
-
         rvExFriend = findViewById(R.id.rvExFriend);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         rvExFriend.setLayoutManager(linearLayoutManager);

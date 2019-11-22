@@ -41,6 +41,11 @@ android {
     packagingOptions {
         pickFirst 'lib/armeabi/libstlport_shared.so'
     }
+    compileOptions {//使用JAVA8语法解析
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 

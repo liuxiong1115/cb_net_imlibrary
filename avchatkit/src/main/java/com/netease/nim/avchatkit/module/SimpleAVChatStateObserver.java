@@ -5,6 +5,8 @@ import com.netease.nimlib.sdk.avchat.model.AVChatAudioFrame;
 import com.netease.nimlib.sdk.avchat.model.AVChatNetworkStats;
 import com.netease.nimlib.sdk.avchat.model.AVChatSessionStats;
 import com.netease.nimlib.sdk.avchat.model.AVChatVideoFrame;
+import com.netease.nrtc.sdk.common.VideoFilterParameter;
+import com.netease.nrtc.sdk.video.VideoFrame;
 
 import java.util.Map;
 import java.util.Set;
@@ -14,38 +16,83 @@ import java.util.Set;
  */
 
 public class SimpleAVChatStateObserver implements AVChatStateObserver {
+//    @Override
+//    public void onTakeSnapshotResult(String account, boolean success, String file) {
+//
+//    }
+//
+//    @Override
+//    public void onAVRecordingCompletion(String account, String filePath) {
+//
+//    }
+//
+//    @Override
+//    public void onAudioRecordingCompletion(String filePath) {
+//
+//    }
+//
+//    @Override
+//    public void onLowStorageSpaceWarning(long availableSize) {
+//
+//    }
+//
+//    @Override
+//    public void onAudioMixingProgressUpdated(long progressMs, long durationMs) {
+//
+//    }
+//
+//    @Override
+//    public void onAudioMixingEvent(int event) {
+//
+//    }
+//
+//    @Override
+//    public void onAudioEffectPreload(int effectId, int result) {
+//
+//    }
+
     @Override
-    public void onTakeSnapshotResult(String account, boolean success, String file) {
+    public void onTakeSnapshotResult(String s, boolean b, String s1) {
 
     }
 
     @Override
-    public void onAVRecordingCompletion(String account, String filePath) {
+    public void onAVRecordingStart(String s, String s1) {
 
     }
 
     @Override
-    public void onAudioRecordingCompletion(String filePath) {
+    public void onAudioRecordingStart(String s) {
 
     }
 
     @Override
-    public void onLowStorageSpaceWarning(long availableSize) {
+    public void onAVRecordingCompletion(String s, String s1) {
 
     }
 
     @Override
-    public void onAudioMixingProgressUpdated(long progressMs, long durationMs) {
+    public void onAudioRecordingCompletion(String s) {
 
     }
 
     @Override
-    public void onAudioMixingEvent(int event) {
+    public void onLowStorageSpaceWarning(long l) {
 
     }
 
     @Override
-    public void onAudioEffectPreload(int effectId, int result) {
+    public void onAudioMixingProgressUpdated(long l, long l1) {
+
+    }
+
+    @Override
+    public void onAudioMixingEvent(int i) {
+
+    }
+
+    @Override
+    public void onAudioEffectPreload(int i, int i1) {
 
     }
 
@@ -65,17 +112,17 @@ public class SimpleAVChatStateObserver implements AVChatStateObserver {
     }
 
     @Override
-    public void onSubscribeVideoResult(String account, int result) {
+    public void onSubscribeVideoResult(String s, int i, int i1) {
 
     }
 
     @Override
-    public void onUnsubscribeVideoResult(String account, int result) {
+    public void onUnsubscribeVideoResult(String s, int i, int i1) {
 
     }
 
     @Override
-    public void onRemotePublishVideo(String account) {
+    public void onRemotePublishVideo(String s, int[] ints) {
 
     }
 
@@ -166,6 +213,11 @@ public class SimpleAVChatStateObserver implements AVChatStateObserver {
 
     @Override
     public boolean onVideoFrameFilter(AVChatVideoFrame frame, boolean maybeDualInput) {
+        return false;
+    }
+
+    @Override
+    public boolean onVideoFrameFilter(VideoFrame videoFrame, VideoFrame[] videoFrames, VideoFilterParameter videoFilterParameter) {
         return false;
     }
 

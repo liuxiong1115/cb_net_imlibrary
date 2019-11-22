@@ -93,7 +93,7 @@ public class ContactDataAdapter extends BaseAdapter {
         return datas != null ? datas.getQuery() : null;
     }
 
-    public void updateData(AbsContactDataList datas) {
+    private void updateData(AbsContactDataList datas) {
         this.datas = datas;
         updateIndexes(datas.getIndexes());
         notifyDataSetChanged();
@@ -260,6 +260,7 @@ public class ContactDataAdapter extends BaseAdapter {
         }
     }
 
+
     /**
      * 数据未准备
      */
@@ -280,6 +281,7 @@ public class ContactDataAdapter extends BaseAdapter {
     protected List<? extends AbsContactItem> onNonDataItems() {
         return null;
     }
+
 
     private Map<String, Integer> getIndexes() {
         return this.indexes;
