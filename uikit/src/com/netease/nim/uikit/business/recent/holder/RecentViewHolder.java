@@ -12,11 +12,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.business.recent.RecentContactsCallback;
 import com.netease.nim.uikit.business.recent.RecentContactsFragment;
 import com.netease.nim.uikit.business.recent.adapter.RecentContactAdapter;
+import com.netease.nim.uikit.business.recent.model.UserInfoExtension;
 import com.netease.nim.uikit.business.session.emoji.MoonUtil;
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
 import com.netease.nim.uikit.common.CommonUtil;
@@ -171,11 +173,34 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
     private void updateBackground(BaseViewHolder holder, RecentContact recent, int position) {
         topLine.setVisibility(getAdapter().isFirstDataItem(position) ? View.GONE : View.VISIBLE);
         bottomLine.setVisibility(getAdapter().isLastDataItem(position) ? View.VISIBLE : View.GONE);
-        if ((recent.getTag() & RecentContactsFragment.RECENT_TAG_STICKY) == 0) {
+        UserInfoExtension userInfoExtension;
+        String titleStr= null;
+        NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(CommonUtil.userAccount);
+        if (userInfo != null) {
+            String extension = userInfo.getExtension();
+            if (!TextUtils.isEmpty(extension)) {
+                userInfoExtension = JSON.parseObject(extension,UserInfoExtension.class);
+                // 先比较置顶tag
+                if (userInfoExtension != null && userInfoExtension.getToplist() != null) {
+                    for (String s : userInfoExtension.getToplist()) {
+                        if (s.equals(recent.getContactId())) {
+                            titleStr = s;
+                        }
+                    }
+                }
+
+            }
+        }
+        if (titleStr == null) {
             holder.getConvertView().setBackgroundResource(R.drawable.nim_touch_bg);
         } else {
             holder.getConvertView().setBackgroundResource(R.drawable.nim_recent_contact_sticky_selecter);
         }
+//        if ((recent.getTag() & RecentContactsFragment.RECENT_TAG_STICKY) == 0) {
+//            holder.getConvertView().setBackgroundResource(R.drawable.nim_touch_bg);
+//        } else {
+//            holder.getConvertView().setBackgroundResource(R.drawable.nim_recent_contact_sticky_selecter);
+//        }
     }
 
     /**

@@ -45,6 +45,8 @@ public class CommonUtil {
     public static MsgAttachment replyAttachment,forwardAttachment;
     //是否开启留言  0-未开启   1-开启
     public static int isOPeenMessage = 0;
+
+    public static String userAccount; //当前登录用户
     public static void setRole (int lable) {
         role = lable;
     }

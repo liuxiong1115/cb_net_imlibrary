@@ -6,6 +6,7 @@ import android.util.Log;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.business.team.helper.TeamHelper;
 import com.netease.nim.uikit.common.CommonUtil;
+import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 import com.netease.nimlib.sdk.uinfo.model.UserInfo;
@@ -40,7 +41,7 @@ public class UserInfoHelper {
         if (!TextUtils.isEmpty(alias)) {
             return alias;
         } else {
-            NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(account);
+            NimUserInfo userInfo = (NimUserInfo) NimUIKitImpl.getUserInfoProvider().getUserInfo(account);
             if (userInfo == null) {
                 return account;
             }

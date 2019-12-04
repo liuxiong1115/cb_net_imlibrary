@@ -2,6 +2,7 @@ package com.netease.nim.demo;
 
 import android.app.Application;
 import android.content.Context;
+import android.preference.Preference;
 import android.text.TextUtils;
 
 import com.crashlytics.android.Crashlytics;
@@ -51,7 +52,7 @@ public class NimApplication extends Application {
         SugarContext.init(this);
         DemoCache.setContext(this);
 
-     //   CommonUtil.setRole(CommonUtil.TEAC);
+        CommonUtil.setRole(CommonUtil.SELLER);
         // 4.6.0 开始，第三方推送配置入口改为 SDKOption#mixPushConfig，旧版配置方式依旧支持。
         NIMClient.init(this, getLoginInfo(), NimSDKOptionConfig.getSDKOptions(this));
         // crash handler
@@ -88,7 +89,7 @@ public class NimApplication extends Application {
 
         // Initialize Fabric with the debug-disabled crashlytics.
         Fabric.with(this, crashlyticsKit);
-
+        CommonUtil.userAccount = Preferences.getUserAccount();
     }
 
     private LoginInfo getLoginInfo() {

@@ -238,10 +238,11 @@ public class EmoticonView {
 
         List<StickerCategory> categories = manager.getCategories();
 
-        categoryDataList.addAll(categories); // 贴图
-        for (StickerCategory c : categories) {
-            categoryPageNumberList.add(getCategoryPageCount(c));
-        }
+        //todo  贴图
+//        categoryDataList.addAll(categories); // 贴图
+//        for (StickerCategory c : categories) {
+//            categoryPageNumberList.add(getCategoryPageCount(c));
+//        }
 
         pageCount = 0;//总页数
         for (Integer count : categoryPageNumberList) {

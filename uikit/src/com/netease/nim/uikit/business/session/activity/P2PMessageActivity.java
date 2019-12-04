@@ -73,6 +73,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
     public String session;
     public boolean isGradeFrist = true, isCountryFrist = true, isSchoolFrist = true, isMojorFrist = true, isEduFrist = true;
     public String wxNo;
+
     public static void start(Context context, String contactId, SessionCustomization customization, IMMessage anchor) {
         Intent intent = new Intent();
         intent.putExtra(Extras.EXTRA_ACCOUNT, contactId);
@@ -106,7 +107,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
     }
 
     private void initData() {
-      //  toolbar.setMenuView(R.layout.p2p_toolbar_layout);
+        //  toolbar.setMenuView(R.layout.p2p_toolbar_layout);
         //如果是学生 禁止滑动侧边栏
         if (CommonUtil.role == CommonUtil.TEAC || CommonUtil.role == CommonUtil.STUD) {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -121,69 +122,49 @@ public class P2PMessageActivity extends BaseMessageActivity {
                 if (session.startsWith("stud")) {
                     List<String> list = new ArrayList<>();
                     list.add(session);
-                    //从服务器获取用户个人资料
-                    NIMClient.getService(UserService.class).fetchUserInfo(list)
-                            .setCallback(new RequestCallback<List<NimUserInfo>>() {
-                                @Override
-                                public void onSuccess(List<NimUserInfo> userInfos) {
-                                    if (userInfos != null && userInfos.size() != 0) {
-                                        NimUserInfo nimUserInfo = userInfos.get(0);
-                                        if (nimUserInfo != null) {
-                                            String content = nimUserInfo.getExtension();
-                                            if (!TextUtils.isEmpty(content)) {
-                                                Log.e("userInfo", content.toString());
-                                                try {
-                                                    org.json.JSONObject jsonObject = new org.json.JSONObject(content);
-                                                    Integer activa = jsonObject.getInt("activa");
-                                                    Integer type = jsonObject.getInt("isInternal");
-                                                    wxNo = jsonObject.optString("wxNo");
-                                                    if (type == 0) {  //内部
-                                                        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                                                        isActiva = 1;
-                                                    } else {
-                                                        CommonUtil.AddUserInfoListener listener = CommonUtil.addUserInfoListener;
-                                                        if (listener != null) {
-                                                            listener.addUserInfo(P2PMessageActivity.this, sessionId);
-                                                        }
-                                                        if (activa == 0) { //未激活
-                                                            toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
-                                                            isActiva = activa;
-                                                        } else {
-                                                            toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.nim_ic_messge_history));
-                                                            isActiva = 1;
-                                                        }
-                                                        if (isActiva != 0) {
-                                                         //   toolbar.setMenuVisible(false);
-                                                            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                                                        }
-                                                    }
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
-                                                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                                                }
-                                            } else {
-                                                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                                            }
-                                        } else {
-                                            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                                        }
+                    NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(session);
+                    if (nimUserInfo != null) {
+                        String content = nimUserInfo.getExtension();
+                        if (!TextUtils.isEmpty(content)) {
+                            Log.e("userInfo", content.toString());
+                            try {
+                                org.json.JSONObject jsonObject = new org.json.JSONObject(content);
+                                Integer activa = jsonObject.getInt("activa");
+                                Integer type = jsonObject.getInt("isInternal");
+                                wxNo = jsonObject.optString("wxNo");
+                                if (type == 0) {  //内部
+                                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                                    isActiva = 1;
+                                } else {
+                                    CommonUtil.AddUserInfoListener listener = CommonUtil.addUserInfoListener;
+                                    if (listener != null) {
+                                        listener.addUserInfo(P2PMessageActivity.this, sessionId);
+                                    }
+                                    if (activa == 0) { //未激活
+                                        toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
+                                        isActiva = activa;
+                                    } else {
+                                        toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.nim_ic_messge_history));
+                                        isActiva = 1;
+                                    }
+                                    if (isActiva != 0) {
+                                        //   toolbar.setMenuVisible(false);
+                                        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                                     }
                                 }
-
-                                @Override
-                                public void onFailed(int i) {
-
-                                }
-
-                                @Override
-                                public void onException(Throwable throwable) {
-
-                                }
-                            });
-                } else {
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                            }
+                        } else {
+                            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                        }
+                    } else {
+                        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                    }
                 }
-
+            } else {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
         }
     }
@@ -208,8 +189,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
         isResume = false;
     }
 
-    private void requestBuddyInfo()
-    {
+    private void requestBuddyInfo() {
         setTitle(UserInfoHelper.getUserTitleName(sessionId, SessionTypeEnum.P2P));
 
         if (CommonUtil.role == CommonUtil.SELLER) {
@@ -361,6 +341,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
         fragment.setContainerId(R.id.message_fragment_container);
         return fragment;
     }
+
     @Override
     protected int getContentViewId() {
         return R.layout.nim_message_activity;
@@ -387,7 +368,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
             } else {
                 CommonUtil.CheckHistoryMessageListener listener = CommonUtil.checkHistoryMessageListener;
                 if (listener != null) {
-                    listener.checkMessage(wxNo,session);
+                    listener.checkMessage(wxNo, session);
                 }
             }
         }

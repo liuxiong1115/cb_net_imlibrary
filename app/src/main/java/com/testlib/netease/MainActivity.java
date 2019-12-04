@@ -96,20 +96,20 @@ public class MainActivity extends AppCompatActivity {
         final String token = "e0fd8d49ce019f1b914d24e4a743989b";*/
 //        final String account = "CRM77";
 //        final String token = "f144f57a2343fcd5c8ffb81226a9a4ed";
-//        final String account = "CRM72";
+//        final String account = "crm72";
 //        final String token = "e8900e72002f73a243e02434796ae324";
 //        final String account = "CRM179";
 //        final String token = "1e82ac0c2e3c5ebb2155f551b41d47c8";
         // 登录
-        loginRequest = NimUIKit.login(new LoginInfo(account, token), new RequestCallback<LoginInfo>() {
+        loginRequest = NimUIKit.login(new LoginInfo(account.toLowerCase(), token), new RequestCallback<LoginInfo>() {
             @Override
             public void onSuccess(LoginInfo param) {
                 LogUtil.i(TAG, "login success");
 
                 onLoginDone();
 
-                DemoCache.setAccount(account);
-                saveLoginInfo(account, token);
+                DemoCache.setAccount(account.toLowerCase());
+                saveLoginInfo(account.toLowerCase(), token);
 
                 // 初始化消息提醒配置
                 initNotificationConfig();

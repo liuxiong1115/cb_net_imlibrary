@@ -144,11 +144,12 @@ public class EmoticonPickerView extends LinearLayout implements IEmoticonCategor
         btn.setCheckedImageId(R.drawable.nim_emoji_icon);
 
         // 贴图
-        List<StickerCategory> categories = manager.getCategories();
-        for (StickerCategory category : categories) {
-            btn = addEmoticonTabBtn(index++, tabCheckListener);
-            setCheckedButtomImage(btn, category);
-        }
+        //todo
+//        List<StickerCategory> categories = manager.getCategories();
+//        for (StickerCategory category : categories) {
+//            btn = addEmoticonTabBtn(index++, tabCheckListener);
+//            setCheckedButtomImage(btn, category);
+//        }
     }
 
 
