@@ -467,7 +467,7 @@ public class RecentContactsFragment extends TFragment {
                     return;
                 }
                 // 查询最近联系人列表数据
-                NIMClient.getService(MsgService.class).queryRecentContacts().setCallback(new RequestCallbackWrapper<List<RecentContact>>() {
+                NIMClient.getService(MsgService.class).queryRecentContacts(200).setCallback(new RequestCallbackWrapper<List<RecentContact>>() {
 
                     @Override
                     public void onResult(int code, List<RecentContact> recents, Throwable exception) {
@@ -485,7 +485,15 @@ public class RecentContactsFragment extends TFragment {
                                     Log.e("recent", recents.get(i).getContactId());
                                 }
                             }
-                            loadedRecents = list;
+                            if (list.size() > 100) {
+                                List<RecentContact> temp = new ArrayList<>();
+                                for (int i=0;i<101;i++) {
+                                    temp.add(list.get(i));
+                                }
+                                loadedRecents = temp;
+                            } else {
+                                loadedRecents = list;
+                            }
                             int unreadNum = 0;
                             for (int i = 0; i < visiList.size(); i++) {
                                 unreadNum += visiList.get(i).getUnreadCount();
@@ -848,7 +856,6 @@ public class RecentContactsFragment extends TFragment {
                             return;
                         }
                     }
-                    //    refreshMessages(false);
                 }
             };
         }
