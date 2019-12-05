@@ -74,7 +74,12 @@ public class MsgViewHolderDefCustom extends MsgViewHolderBase {
                 RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.appicon);
                 GlideUtils.lxGlide(context, attachment.getIcon(), imageView, requestOptions);
             }
-        } else {
+        }  else if (attachment.getMsgType() == CustomAttachmentType.FriendVerification) { //好友验证
+            imageView.setVisibility(View.GONE);
+            MoonUtil.identifyFaceExpressionAndATags(context, titleView, "验证消息", ImageSpan.ALIGN_BASELINE);  //标题
+            MoonUtil.identifyFaceExpressionAndATags(context, contentView, attachment.getSubTitle() == null ? ""
+                    : attachment.getSubTitle(), ImageSpan.ALIGN_BOTTOM);  //内容
+        }else {
             MoonUtil.identifyFaceExpressionAndATags(context, contentView, attachment.getSubTitle() == null ? ""
                     : attachment.getSubTitle(), ImageSpan.ALIGN_BOTTOM);  //内容
             //图片

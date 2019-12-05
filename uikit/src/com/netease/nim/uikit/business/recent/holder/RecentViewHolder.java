@@ -1,5 +1,6 @@
 package com.netease.nim.uikit.business.recent.holder;
 
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -188,13 +189,14 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
                         }
                     }
                 }
-
             }
         }
         if (titleStr == null) {
             holder.getConvertView().setBackgroundResource(R.drawable.nim_touch_bg);
+          //  tvMessage.setTextColor(Color.parseColor("#ffaaaaaa"));
         } else {
             holder.getConvertView().setBackgroundResource(R.drawable.nim_recent_contact_sticky_selecter);
+          //  tvMessage.setTextColor(Color.parseColor("#333333"));
         }
 //        if ((recent.getTag() & RecentContactsFragment.RECENT_TAG_STICKY) == 0) {
 //            holder.getConvertView().setBackgroundResource(R.drawable.nim_touch_bg);
