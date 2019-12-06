@@ -149,7 +149,7 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
         updateNewIndicator(recent);
 
         if (CommonUtil.role == CommonUtil.SELLER) {
-            setWXTip(recent, holder);
+           setWXTip(recent, holder);
         }
 
         if (shouldBoom) {

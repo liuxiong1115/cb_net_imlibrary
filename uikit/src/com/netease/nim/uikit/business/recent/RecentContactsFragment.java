@@ -108,8 +108,6 @@ public class RecentContactsFragment extends TFragment {
 
     public int visiUnreadNum = 0;
 
-    public UserInfoExtension userInfoExtension;
-
     public static RecentContactsFragment instance() {
         RecentContactsFragment recentContactsFragment = new RecentContactsFragment();
         return recentContactsFragment;
@@ -198,6 +196,7 @@ public class RecentContactsFragment extends TFragment {
      * 初始化消息列表
      */
     private void initMessageList() {
+
         if (CommonUtil.role != CommonUtil.SELLER) {
             visitorLayout.setVisibility(View.GONE);
         }
@@ -467,7 +466,7 @@ public class RecentContactsFragment extends TFragment {
                     return;
                 }
                 // 查询最近联系人列表数据
-                NIMClient.getService(MsgService.class).queryRecentContacts(200).setCallback(new RequestCallbackWrapper<List<RecentContact>>() {
+                NIMClient.getService(MsgService.class).queryRecentContacts(100).setCallback(new RequestCallbackWrapper<List<RecentContact>>() {
 
                     @Override
                     public void onResult(int code, List<RecentContact> recents, Throwable exception) {
@@ -477,6 +476,7 @@ public class RecentContactsFragment extends TFragment {
                         if (CommonUtil.role == CommonUtil.SELLER) {
                             List<RecentContact> list = new ArrayList<>();
                             List<RecentContact> visiList = new ArrayList<>();
+                            int unreadNum = 0;
                             for (int i = 0; i < recents.size(); i++) {
                                 if (!recents.get(i).getContactId().startsWith("visi")) {
                                     list.add(recents.get(i));
@@ -485,16 +485,7 @@ public class RecentContactsFragment extends TFragment {
                                     Log.e("recent", recents.get(i).getContactId());
                                 }
                             }
-                            if (list.size() > 100) {
-                                List<RecentContact> temp = new ArrayList<>();
-                                for (int i=0;i<101;i++) {
-                                    temp.add(list.get(i));
-                                }
-                                loadedRecents = temp;
-                            } else {
-                                loadedRecents = list;
-                            }
-                            int unreadNum = 0;
+                            loadedRecents = list;
                             for (int i = 0; i < visiList.size(); i++) {
                                 unreadNum += visiList.get(i).getUnreadCount();
                             }
@@ -536,7 +527,6 @@ public class RecentContactsFragment extends TFragment {
     }
 
     private void refreshMessages(boolean unreadChanged) {
-
         sortRecentContacts(items);
         notifyDataSetChanged();
 
@@ -566,7 +556,7 @@ public class RecentContactsFragment extends TFragment {
         if (list.size() == 0) {
             return;
         }
-        Collections.sort(list, comp);
+       Collections.sort(list, comp);
     }
 
     private static Comparator<RecentContact> comp = new Comparator<RecentContact>() {
@@ -602,7 +592,7 @@ public class RecentContactsFragment extends TFragment {
             }
             long time = o1.getTime() - o2.getTime();
             return time == 0 ? 0 : (time > 0 ? -1 : 1);
-            // 先比较置顶tag
+//             先比较置顶tag
 //            long sticky = (o1.getTag() & RECENT_TAG_STICKY) - (o2.getTag() & RECENT_TAG_STICKY);
 //            if (sticky != 0) {
 //                return sticky > 0 ? -1 : 1;
