@@ -85,8 +85,6 @@ public class VistorFragment extends TFragment {
     private RecentContactsCallback callback;
 
     private UserInfoObserver userInfoObserver;
-    private View visitorLayout;
-    private DropFake dropFake;
 
     public static VistorFragment instance() {
         VistorFragment vistorFragment = new VistorFragment();
@@ -146,24 +144,14 @@ public class VistorFragment extends TFragment {
         recyclerView = findView(R.id.recycler_view);
         emptyBg = findView(R.id.emptyBg);
         emptyHint = findView(R.id.message_list_empty_hint);
-        visitorLayout = findView(R.id.visitor);
-        dropFake = findView(R.id.unread_number);
         recyclerView.setNestedScrollingEnabled(false);
 
-        visitorLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), VisitorActivity.class);
-                getContext().startActivity(intent);
-            }
-        });
     }
 
     /**
      * 初始化消息列表
      */
     private void initMessageList() {
-        visitorLayout.setVisibility(View.GONE);
         items = new ArrayList<>();
         cached = new HashMap<>(3);
 

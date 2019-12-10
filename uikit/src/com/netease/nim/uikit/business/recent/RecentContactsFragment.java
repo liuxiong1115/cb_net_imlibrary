@@ -109,6 +109,7 @@ public class RecentContactsFragment extends TFragment {
 
     public int visiUnreadNum = 0;
 
+    public View view;
     public static RecentContactsFragment instance() {
         RecentContactsFragment recentContactsFragment = new RecentContactsFragment();
         return recentContactsFragment;
@@ -117,13 +118,16 @@ public class RecentContactsFragment extends TFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        view = View.inflate(getContext(),R.layout.recent_head,null);
         findViews();
         initMessageList();
         requestMessages(true);
         registerObservers(true);
         registerDropCompletedListener(true);
         registerOnlineStateChangeListener(true);
+        if (CommonUtil.role == CommonUtil.SELLER) {
+            addHeaderView(view);
+        }
     }
 
     @Override
@@ -168,10 +172,9 @@ public class RecentContactsFragment extends TFragment {
         recyclerView = findView(R.id.recycler_view);
         emptyBg = findView(R.id.emptyBg);
         emptyHint = findView(R.id.message_list_empty_hint);
-        visitorLayout = findView(R.id.visitor);
-        dropFake = findView(R.id.unread_number);
+        visitorLayout = view.findViewById(R.id.visitor);
+        dropFake = view.findViewById(R.id.unread_number);
         dropFake.setVisibility(View.GONE);
-        recyclerView.setNestedScrollingEnabled(false);
 
         visitorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -467,7 +470,7 @@ public class RecentContactsFragment extends TFragment {
                     return;
                 }
                 // 查询最近联系人列表数据
-                NIMClient.getService(MsgService.class).queryRecentContacts(100).setCallback(new RequestCallbackWrapper<List<RecentContact>>() {
+                NIMClient.getService(MsgService.class).queryRecentContacts(200).setCallback(new RequestCallbackWrapper<List<RecentContact>>() {
 
                     @Override
                     public void onResult(int code, List<RecentContact> recents, Throwable exception) {
