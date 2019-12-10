@@ -26,7 +26,6 @@ public interface ItemTypes {
 
     int MSG = 4; // 消息
 
-    int EXFRIEND = 5; //外部联系人
 
     /**
      * 子类型

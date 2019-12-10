@@ -49,6 +49,7 @@ import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.QueryDirectionEnum;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
+import com.netease.nimlib.sdk.team.constant.TeamMessageNotifyTypeEnum;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
 import com.netease.nimlib.sdk.uinfo.UserService;
@@ -536,7 +537,19 @@ public class RecentContactsFragment extends TFragment {
 
             int unreadNum = 0;
             for (RecentContact r : items) {
-                unreadNum += r.getUnreadCount();
+                if (CommonUtil.role == CommonUtil.SELLER) {
+                    if (r.getSessionType() == SessionTypeEnum.Team) {
+                        Team team = NimUIKit.getTeamProvider().getTeamById(r.getContactId());
+                        if (team != null) {
+                            if (team.getMessageNotifyType() == TeamMessageNotifyTypeEnum.Mute) {
+                                continue;
+                            }
+                        }
+                    }
+                    unreadNum += r.getUnreadCount();
+                } else {
+                    unreadNum += r.getUnreadCount();
+                }
             }
 
             // 方式二：直接从SDK读取（相对慢）
@@ -556,7 +569,7 @@ public class RecentContactsFragment extends TFragment {
         if (list.size() == 0) {
             return;
         }
-       Collections.sort(list, comp);
+        Collections.sort(list, comp);
     }
 
     private static Comparator<RecentContact> comp = new Comparator<RecentContact>() {

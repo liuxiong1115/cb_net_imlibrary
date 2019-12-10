@@ -175,14 +175,12 @@ public class GlobalSearchActivity extends UI implements OnItemClickListener {
         public static final String GROUP_FRIEND = "FRIEND";
         public static final String GROUP_TEAM = "TEAM";
         public static final String GROUP_MSG = "MSG";
-        public static final String EXFRIEND = "EXFRIEND"; //外部联系人
 
         SearchGroupStrategy() {
             add(ContactGroupStrategy.GROUP_NULL, 0, "");
             add(GROUP_TEAM, 1, "群组");
             add(GROUP_FRIEND, 2, "好友");
             add(GROUP_MSG, 3, "聊天记录");
-            add(EXFRIEND,4,"外部联系人");
         }
 
         @Override
@@ -194,8 +192,6 @@ public class GlobalSearchActivity extends UI implements OnItemClickListener {
                     return GROUP_TEAM;
                 case ItemTypes.MSG:
                     return GROUP_MSG;
-                case ItemTypes.EXFRIEND:
-                    return EXFRIEND;
                 default:
                     return null;
             }

@@ -352,6 +352,7 @@ public class AdvancedTeamInfoActivity extends UI implements
         findLayoutInfoUpdate();
         // 被邀请人身份验证
         findLayoutInviteeAuthen();*/
+      initNotify();
     }
 
     /**
@@ -1230,13 +1231,13 @@ public class AdvancedTeamInfoActivity extends UI implements
     }
 
     private void updateTeamNotifyText(TeamMessageNotifyTypeEnum typeEnum) {
-       /* if (typeEnum == TeamMessageNotifyTypeEnum.All) {
+        if (typeEnum == TeamMessageNotifyTypeEnum.All) {
             notificationConfigText.setText(getString(R.string.team_notify_all));
         } else if (typeEnum == TeamMessageNotifyTypeEnum.Manager) {
             notificationConfigText.setText(getString(R.string.team_notify_manager));
         } else if (typeEnum == TeamMessageNotifyTypeEnum.Mute) {
             notificationConfigText.setText(getString(R.string.team_notify_mute));
-        }*/
+        }
     }
 
     /**

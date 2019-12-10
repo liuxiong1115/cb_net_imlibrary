@@ -138,6 +138,16 @@
                             android:textColor="@android:color/white"
                             android:textSize="12sp"
                             android:visibility="visible" />
+                        <ImageView
+                            android:id="@+id/ivNotify"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:visibility="visible"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_toEndOf="@+id/unread_number_explosion"
+                            android:gravity="center_vertical"
+                            android:src="@drawable/icon_no_notify"/>
 
                         <ImageView
                             android:id="@+id/unread_number_explosion"

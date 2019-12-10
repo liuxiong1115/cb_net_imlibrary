@@ -38,6 +38,7 @@ import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.netease.nimlib.sdk.team.TeamService;
+import com.netease.nimlib.sdk.team.constant.TeamMessageNotifyTypeEnum;
 import com.netease.nimlib.sdk.team.constant.TeamTypeEnum;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
@@ -73,7 +74,7 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
     protected View tvDelete, deleteLayout;
 
     // 消息发送错误状态标记，目前没有逻辑处理
-    protected ImageView imgMsgStatus, groupActiva;
+    protected ImageView imgMsgStatus, groupActiva, noNotify;
 
     protected View bottomLine;
 
@@ -110,6 +111,7 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
         this.tvOnlineState = holder.getView(R.id.tv_online_state);
         this.groupActiva = holder.getView(R.id.group_activa);
         this.contacts_type = holder.getView(R.id.contacts_type);
+        this.noNotify = holder.getView(R.id.ivNotify);
         holder.addOnClickListener(R.id.unread_number_tip);
         this.tvUnread.setTouchListener(new DropFake.ITouchListener() {
             @Override
@@ -149,7 +151,7 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
         updateNewIndicator(recent);
 
         if (CommonUtil.role == CommonUtil.SELLER) {
-           setWXTip(recent, holder);
+            setWXTip(recent, holder);
         }
 
         if (shouldBoom) {
@@ -175,12 +177,12 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
         topLine.setVisibility(getAdapter().isFirstDataItem(position) ? View.GONE : View.VISIBLE);
         bottomLine.setVisibility(getAdapter().isLastDataItem(position) ? View.VISIBLE : View.GONE);
         UserInfoExtension userInfoExtension;
-        String titleStr= null;
+        String titleStr = null;
         NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(CommonUtil.userAccount);
         if (userInfo != null) {
             String extension = userInfo.getExtension();
             if (!TextUtils.isEmpty(extension)) {
-                userInfoExtension = JSON.parseObject(extension,UserInfoExtension.class);
+                userInfoExtension = JSON.parseObject(extension, UserInfoExtension.class);
                 // 先比较置顶tag
                 if (userInfoExtension != null && userInfoExtension.getToplist() != null) {
                     for (String s : userInfoExtension.getToplist()) {
@@ -193,10 +195,10 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
         }
         if (titleStr == null) {
             holder.getConvertView().setBackgroundResource(R.drawable.nim_touch_bg);
-          //  tvMessage.setTextColor(Color.parseColor("#ffaaaaaa"));
+            //  tvMessage.setTextColor(Color.parseColor("#ffaaaaaa"));
         } else {
             holder.getConvertView().setBackgroundResource(R.drawable.nim_recent_contact_sticky_selecter);
-          //  tvMessage.setTextColor(Color.parseColor("#333333"));
+            //  tvMessage.setTextColor(Color.parseColor("#333333"));
         }
 //        if ((recent.getTag() & RecentContactsFragment.RECENT_TAG_STICKY) == 0) {
 //            holder.getConvertView().setBackgroundResource(R.drawable.nim_touch_bg);
@@ -221,9 +223,27 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
     }
 
     private void updateNewIndicator(RecentContact recent) {
-        int unreadNum = recent.getUnreadCount();
-        tvUnread.setVisibility(unreadNum > 0 ? View.VISIBLE : View.GONE);
-        tvUnread.setText(unreadCountShowRule(unreadNum));
+        if (CommonUtil.role == CommonUtil.SELLER) {
+            if (recent.getSessionType() == SessionTypeEnum.Team) {
+                Team team = NimUIKit.getTeamProvider().getTeamById(recent.getContactId());
+                if (team != null) {
+                    if (team.getMessageNotifyType() == TeamMessageNotifyTypeEnum.Mute) {
+                        tvUnread.setVisibility(View.GONE);
+                        noNotify.setVisibility(View.VISIBLE);
+                        return;
+                    }
+                }
+
+            }
+            noNotify.setVisibility(View.GONE);
+            int unreadNum = recent.getUnreadCount();
+            tvUnread.setVisibility(unreadNum > 0 ? View.VISIBLE : View.GONE);
+            tvUnread.setText(unreadCountShowRule(unreadNum));
+        } else {
+            int unreadNum = recent.getUnreadCount();
+            tvUnread.setVisibility(unreadNum > 0 ? View.VISIBLE : View.GONE);
+            tvUnread.setText(unreadCountShowRule(unreadNum));
+        }
     }
 
     private void updateMsgLabel(BaseViewHolder holder, RecentContact recent) {
@@ -297,106 +317,102 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
         contacts_type.setVisibility(View.INVISIBLE);
         groupActiva.setVisibility(View.INVISIBLE);
         //学生和老师不用设置标签
-        if (CommonUtil.role == CommonUtil.SELLER) {
-            if (recentContact.getSessionType() == SessionTypeEnum.Team) {
-                contacts_type.setVisibility(View.GONE);
-                Team team = NimUIKit.getTeamProvider().getTeamById(recentContact.getContactId());
-                if (team == null) {
-                    return;
-                }
-                if (team.getType() == TeamTypeEnum.Normal) {
-                    return;
-                }
-                //获取群成员
-                NIMClient.getService(TeamService.class).queryMemberList(recentContact.getContactId()).setCallback(new RequestCallbackWrapper<List<TeamMember>>() {
-                    @Override
-                    public void onResult(int code, final List<TeamMember> members, Throwable exception) {
-                        List<String> studs = new ArrayList<>();
-                        for (int i = 0; i < members.size(); i++) {
-                            if (members.get(i).getAccount().startsWith("stud")) {
-                                studs.add(members.get(i).getAccount());
-                            }
+        if (recentContact.getSessionType() == SessionTypeEnum.Team) {
+            contacts_type.setVisibility(View.GONE);
+            Team team = NimUIKit.getTeamProvider().getTeamById(recentContact.getContactId());
+            if (team == null) {
+                return;
+            }
+            if (team.getType() == TeamTypeEnum.Normal) {
+                return;
+            }
+            //获取群成员
+            NIMClient.getService(TeamService.class).queryMemberList(recentContact.getContactId()).setCallback(new RequestCallbackWrapper<List<TeamMember>>() {
+                @Override
+                public void onResult(int code, final List<TeamMember> members, Throwable exception) {
+                    List<String> studs = new ArrayList<>();
+                    for (int i = 0; i < members.size(); i++) {
+                        if (members.get(i).getAccount().startsWith("stud")) {
+                            studs.add(members.get(i).getAccount());
                         }
-                        if (studs.size() == 0 || studs.size() > 1) {
-                            return;
-                        }
-                        //获取成员资料
-                        NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(studs.get(0));
-                        if (userInfo != null) {
-                            String content = userInfo.getExtension();
-                            if (content != null) {
-                                try {
-                                    JSONObject jsonObject = new JSONObject(content);
-                                    Integer isInternal = 1;  //外部--1  内部--0
-                                    if (content.contains("isInternal")) {
-                                        isInternal = jsonObject.optInt("isInternal");
+                    }
+                    if (studs.size() == 0 || studs.size() > 1) {
+                        return;
+                    }
+                    //获取成员资料
+                    NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(studs.get(0));
+                    if (userInfo != null) {
+                        String content = userInfo.getExtension();
+                        if (content != null) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(content);
+                                //外部--1  内部--0
+                                Integer isInternal = jsonObject.optInt("isInternal");
+                                if (isInternal == 1) {
+                                    Integer isActiva = jsonObject.optInt("activa");
+                                    //未激活：0  已激活：1
+                                    if (isActiva == 1) {
+                                        groupActiva.setVisibility(View.VISIBLE);
                                     }
-                                    if (isInternal == 1) {
-                                        Integer isActiva = jsonObject.optInt("activa");
-                                        //未激活：0  已激活：1
-                                        if (isActiva == 1) {
-                                            groupActiva.setVisibility(View.VISIBLE);
-                                        }
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
                                 }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
                         }
                     }
-                });
+                }
+            });
+        } else {
+            groupActiva.setVisibility(View.INVISIBLE);
+            if (recentContact.getContactId().toLowerCase().equals(NimUIKit.getAccount().toLowerCase())) {
+                return;
+            }
+            if (recentContact.getContactId().startsWith("visi")) {
+                return;
+            }
+            if (recentContact.getContactId().startsWith("teac") || recentContact.getContactId().startsWith("crm")) {
+//                contacts_type.setVisibility(View.VISIBLE);
+//                contacts_type.setBackgroundResource(R.drawable.inside_bg);
+//                contacts_type.setText("内部");
+                return;
+            }
+            List<String> list = new ArrayList<>();
+            list.add(recentContact.getContactId());
+            NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(recentContact.getContactId());
+            if (nimUserInfo == null) {
+                contacts_type.setVisibility(View.GONE);
             } else {
-                groupActiva.setVisibility(View.INVISIBLE);
-                if (recentContact.getContactId().toLowerCase().equals(NimUIKit.getAccount().toLowerCase())) {
-                    return;
-                }
-                if (recentContact.getContactId().startsWith("visi")) {
-                    return;
-                }
-                if (recentContact.getContactId().startsWith("teac") || recentContact.getContactId().startsWith("crm")) {
-                    contacts_type.setVisibility(View.VISIBLE);
-                    contacts_type.setBackgroundResource(R.drawable.inside_bg);
-                    contacts_type.setText("内部");
-                    return;
-                }
-                List<String> list = new ArrayList<>();
-                list.add(recentContact.getContactId());
-                NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(recentContact.getContactId());
-                if (nimUserInfo == null) {
+                String content = nimUserInfo.getExtension();
+
+                if (TextUtils.isEmpty(content)) {
                     contacts_type.setVisibility(View.GONE);
                 } else {
-                    String content = nimUserInfo.getExtension();
-
-                    if (TextUtils.isEmpty(content)) {
-                        contacts_type.setVisibility(View.GONE);
-                    } else {
-                        try {
-                            //    Log.e("userInfo", content.toString());
-                            JSONObject jsonObject = new JSONObject(content);
-                            Integer type = jsonObject.optInt("isInternal");
-                            //isInternal 0是内部  1和0
-                            if (type == 0) {
+                    try {
+                        //    Log.e("userInfo", content.toString());
+                        JSONObject jsonObject = new JSONObject(content);
+                        Integer type = jsonObject.optInt("isInternal");
+                        //isInternal 0是内部  1和0
+                        if (type == 0) {
                                 /*contacts_type.setVisibility(View.VISIBLE);
                                 contacts_type.setBackgroundResource(R.drawable.inside_bg);
                                 contacts_type.setText("内部");*/
-                            } else {
-                                //外部联系人
-                                int labelWidth = ScreenUtil.screenWidth;
-                                String source = jsonObject.optString("wxNo");
-                                if (!TextUtils.isEmpty(source)) {
-                                    if (source.length() > 10) {
-                                        tvNickname.setMaxWidth(labelWidth / 4);
-                                    } else {
-                                        tvNickname.setMaxWidth(labelWidth / 3);
-                                    }
-                                    contacts_type.setVisibility(View.VISIBLE);
-                                    contacts_type.setBackgroundResource(R.drawable.outside_bg);
-                                    contacts_type.setText(source);
+                        } else {
+                            //外部联系人
+                            int labelWidth = ScreenUtil.screenWidth;
+                            String source = jsonObject.optString("wxNo");
+                            if (!TextUtils.isEmpty(source)) {
+                                if (source.length() > 10) {
+                                    tvNickname.setMaxWidth(labelWidth / 4);
+                                } else {
+                                    tvNickname.setMaxWidth(labelWidth / 3);
                                 }
+                                contacts_type.setVisibility(View.VISIBLE);
+                                contacts_type.setBackgroundResource(R.drawable.outside_bg);
+                                contacts_type.setText(source);
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
             }

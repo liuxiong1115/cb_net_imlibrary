@@ -180,7 +180,7 @@
 
                 <include
                     android:id="@+id/team_notification_config_layout"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     layout="@layout/nim_advanced_team_info_divider_item" />
             </LinearLayout>
 
