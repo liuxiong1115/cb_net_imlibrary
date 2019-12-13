@@ -120,8 +120,6 @@ public class P2PMessageActivity extends BaseMessageActivity {
             }
             if (!TextUtils.isEmpty(session)) {
                 if (session.startsWith("stud")) {
-                    List<String> list = new ArrayList<>();
-                    list.add(session);
                     NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(session);
                     if (nimUserInfo != null) {
                         String content = nimUserInfo.getExtension();
@@ -133,7 +131,6 @@ public class P2PMessageActivity extends BaseMessageActivity {
                                 Integer type = jsonObject.getInt("isInternal");
                                 wxNo = jsonObject.optString("wxNo");
                                 if (type == 0) {  //内部
-                                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                                     isActiva = 1;
                                 } else {
                                     CommonUtil.AddUserInfoListener listener = CommonUtil.addUserInfoListener;
@@ -146,26 +143,19 @@ public class P2PMessageActivity extends BaseMessageActivity {
                                     } else {
                                         toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.nim_ic_messge_history));
                                         isActiva = 1;
-                                    }
-                                    if (isActiva != 0) {
-                                        //   toolbar.setMenuVisible(false);
                                         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                                        return;
                                     }
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                             }
-                        } else {
-                            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                         }
-                    } else {
-                        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                     }
                 }
-            } else {
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
     }
 

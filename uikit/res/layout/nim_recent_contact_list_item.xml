@@ -34,8 +34,8 @@
 
                     <FrameLayout
                         android:id="@+id/portrait_panel"
-                        android:layout_width="75dp"
-                        android:layout_height="75dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true">
 
@@ -53,7 +53,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="10dp"
                         android:layout_toRightOf="@id/portrait_panel"
                         android:ellipsize="end"
                         android:includeFontPadding="false"
@@ -86,11 +86,11 @@
                     <LinearLayout
                         android:id="@+id/content_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
                         android:layout_alignBottom="@id/portrait_panel"
                         android:layout_marginBottom="8dp"
                         android:layout_marginRight="10dp"
-                        android:layout_marginTop="6dp"
+                        android:layout_marginTop="8dp"
                         android:layout_toRightOf="@id/portrait_panel"
                         android:orientation="horizontal">
 
@@ -115,16 +115,16 @@
 
                         <TextView
                             android:id="@+id/tv_message"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:autoLink="none"
                             android:ellipsize="end"
-                            android:gravity="center_vertical"
                             android:lines="1"
                             android:scrollHorizontally="true"
                             android:textColor="@color/color_aaaaaa_content_text"
-                            android:textSize="14sp" />
+                            android:gravity="center_vertical"
+                            android:textSize="14sp"/> />
 
                         <com.netease.nim.uikit.common.ui.drop.DropFake
                             android:id="@+id/unread_number_tip"
@@ -145,6 +145,8 @@
                             android:visibility="visible"
                             android:layout_alignParentRight="true"
                             android:layout_alignParentTop="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_gravity="center"
                             android:layout_toEndOf="@+id/unread_number_explosion"
                             android:gravity="center_vertical"
                             android:src="@drawable/icon_no_notify"/>
