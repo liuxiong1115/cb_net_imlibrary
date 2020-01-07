@@ -927,12 +927,15 @@ public class MessageListPanelEx {
             longClickItemDelete(selectedItem, list);
             // 5 trans
             longClickItemVoidToText(selectedItem, msgType, list);
-
+            if (CommonUtil.role == CommonUtil.SELLER) {
+                list.add("收藏");
+            }
             list.add("多选");
             //TODO 长按Message Item弹出框选项
             if (!NimUIKitImpl.getMsgForwardFilter().shouldIgnore(selectedItem) && !recordOnly) {
-                list.add("转发个人");
-                list.add("转发群");
+                list.add("转发");
+//                list.add("转发个人");
+//                list.add("转发群");
 //                // 6 forward to person
 //                longClickItemForwardToPerson(selectedItem, alertDialog);
 //                // 7 forward to team
@@ -952,7 +955,7 @@ public class MessageListPanelEx {
             //是否跟随手指显示，默认false，设置true后翻转高度无效，永远在上方显示
             bubblePopup.setShowTouchLocation(false);
             //要实现顶部气泡向下，需要添加翻转高度，默认为0不翻转（举例：导航栏高度40dp，列表item高度40dp,需设置40+40=80）
-            bubblePopup.setmReversalHeight(5f);
+            bubblePopup.setmReversalHeight(50f);
             bubblePopup.setTextPaddingTop(20);
             bubblePopup.setTextPaddingBottom(20);
             //参数分别是：View（我这里就是List的item），position（用于回调返回），手指落下X坐标，手指落下Y坐标，气泡按钮集合，回调监听
@@ -961,7 +964,6 @@ public class MessageListPanelEx {
                 public boolean showPopupList(View adapterView, View contextView, int contextPosition) {
                     return true;
                 }
-
 
                 @Override
                 public void onPopupListClick(View contextView, int contextPosition, int position) {
@@ -998,30 +1000,44 @@ public class MessageListPanelEx {
                                         Toast.makeText(container.activity, "revoke msg failed, code:" + code, Toast.LENGTH_SHORT).show();
                                     }
                                 }
-
                                 @Override
                                 public void onException(Throwable exception) {
-
                                 }
                             });
                             break;
-                        case "转发个人":
-                            forwardMessage = selectedItem;
-                            ContactSelectActivity.Option option = new ContactSelectActivity.Option();
-                            option.title = "选择转发的人";
-                            option.type = ContactSelectActivity.ContactSelectType.BUDDY;
-                            option.multi = false;
-                            option.maxSelectNum = 1;
-                            NimUIKit.startContactSelector(container.activity, option, REQUEST_CODE_FORWARD_PERSON);
-                            break;
-                        case "转发群":
-                            forwardMessage = selectedItem;
-                            ContactSelectActivity.Option option1 = new ContactSelectActivity.Option();
-                            option1.title = "选择转发的群";
-                            option1.type = ContactSelectActivity.ContactSelectType.TEAM;
-                            option1.multi = false;
-                            option1.maxSelectNum = 1;
-                            NimUIKit.startContactSelector(container.activity, option1, REQUEST_CODE_FORWARD_TEAM);
+                            case "收藏":
+                                CommonUtil.onCollectionListener onCollectionListener = CommonUtil.collectionListener;
+                                if (onCollectionListener != null) {
+                                    onCollectionListener.onCollection(selectedItem,container.activity);
+                                }
+                                break;
+                        case "转发":
+                            CustomAlertDialog customAlertDialog = new CustomAlertDialog(container.activity);
+                            customAlertDialog.addItem("转发到个人", new CustomAlertDialog.onSeparateItemClickListener() {
+                                @Override
+                                public void onClick() {
+                                    forwardMessage = selectedItem;
+                                    ContactSelectActivity.Option option = new ContactSelectActivity.Option();
+                                    option.title = "选择转发的人";
+                                    option.type = ContactSelectActivity.ContactSelectType.BUDDY;
+                                    option.multi = false;
+                                    option.maxSelectNum = 1;
+                                    NimUIKit.startContactSelector(container.activity, option, REQUEST_CODE_FORWARD_PERSON);
+                                }
+                            });
+                            customAlertDialog.addItem("转发到群组", new CustomAlertDialog.onSeparateItemClickListener() {
+                                @Override
+                                public void onClick() {
+                                    forwardMessage = selectedItem;
+                                    ContactSelectActivity.Option option1 = new ContactSelectActivity.Option();
+                                    option1.title = "选择转发的群";
+                                    option1.type = ContactSelectActivity.ContactSelectType.TEAM;
+                                    option1.multi = false;
+                                    option1.maxSelectNum = 1;
+                                    NimUIKit.startContactSelector(container.activity, option1, REQUEST_CODE_FORWARD_TEAM);
+                                }
+                            });
+                            customAlertDialog.show();
                             break;
                         case "多选":
                             lable = 2;
@@ -1067,9 +1083,9 @@ public class MessageListPanelEx {
                             String string = message.getAttachment().getClass().toString();
                             if (string.equals("class com.netease.nim.demo.session.extension.DefaultCustomAttachment")) {
                                 return;
-                            } else if(string.equals("class com.netease.nim.demo.session.extension.ForwardAttachment")) {
+                            } else if (string.equals("class com.netease.nim.demo.session.extension.ForwardAttachment")) {
                                 return;
-                            } else if (string.equals("class com.netease.nim.demo.session.extension.ReplyAttachment")){
+                            } else if (string.equals("class com.netease.nim.demo.session.extension.ReplyAttachment")) {
                                 return;
                             }
                             selectMsg.add(message);
@@ -1508,27 +1524,27 @@ public class MessageListPanelEx {
                 case REQUEST_CODE_FORWARD_TEAM:
                     if (isStep) {
                         for (int i = 0; i < selectMsg.size(); i++) {
-                            onForwardMessage(selected.get(0), SessionTypeEnum.Team,selectMsg.get(i));
+                            onForwardMessage(selected.get(0), SessionTypeEnum.Team, selectMsg.get(i));
                         }
                         isStep = false;
                     } else if (isMerge) {  //合并转发群
                         isMerge = false;
-                       // onForwardMessage(selected.get(0),SessionTypeEnum.Team,selectMsg.get(0));
-                        createForward(selected.get(0),SessionTypeEnum.Team);
-                    }else {
+                        // onForwardMessage(selected.get(0),SessionTypeEnum.Team,selectMsg.get(0));
+                        createForward(selected.get(0), SessionTypeEnum.Team);
+                    } else {
                         doForwardMessage(selected.get(0), SessionTypeEnum.Team);
                     }
                     break;
                 case REQUEST_CODE_FORWARD_PERSON:
                     if (isStep) {
                         for (int i = 0; i < selectMsg.size(); i++) {
-                            onForwardMessage(selected.get(0), SessionTypeEnum.P2P,selectMsg.get(i));
+                            onForwardMessage(selected.get(0), SessionTypeEnum.P2P, selectMsg.get(i));
                         }
                         isStep = false;
                     } else if (isMerge) {
                         isMerge = false;
-                        createForward(selected.get(0),SessionTypeEnum.P2P);
-                    }else {
+                        createForward(selected.get(0), SessionTypeEnum.P2P);
+                    } else {
                         doForwardMessage(selected.get(0), SessionTypeEnum.P2P);
                     }
                     break;
@@ -1537,7 +1553,7 @@ public class MessageListPanelEx {
     }
 
     // 转发消息逐步转发  --多选
-    private void onForwardMessage(final String sessionId, SessionTypeEnum sessionTypeEnum,IMMessage item) {
+    private void onForwardMessage(final String sessionId, SessionTypeEnum sessionTypeEnum, IMMessage item) {
         IMMessage message;
         if (item.getMsgType() == MsgTypeEnum.robot) {
             message = buildForwardRobotMessage(sessionId, sessionTypeEnum);
@@ -1555,6 +1571,7 @@ public class MessageListPanelEx {
             onMsgSend(message);
         }
     }
+
     // 转发消息
     private void doForwardMessage(final String sessionId, SessionTypeEnum sessionTypeEnum) {
         IMMessage message;
@@ -1589,7 +1606,7 @@ public class MessageListPanelEx {
     /**
      * 创建多选合并消息
      */
-    public void createForward (String sessionId,SessionTypeEnum sessionTypeEnum) {
+    public void createForward(String sessionId, SessionTypeEnum sessionTypeEnum) {
         String account;
         if (container.sessionType == SessionTypeEnum.Team) {  //群聊  直接显示群聊天记录
             Team team = NimUIKit.getTeamProvider().getTeamById(container.account);
@@ -1600,18 +1617,18 @@ public class MessageListPanelEx {
             }
             CommonUtil.onMergeForwardListener listener = CommonUtil.mergeForwardListener;
             if (listener != null) {
-                listener.mergeForward(selectMsg,account+"群的聊天记录");
+                listener.mergeForward(selectMsg, account + "群的聊天记录");
             }
         } else {  //单聊 显示谁和谁的聊天记录
             NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(container.account);
             if (userInfo != null) {
-                account = userInfo.getName() == null?"":userInfo.getName();
+                account = userInfo.getName() == null ? "" : userInfo.getName();
             } else {
                 account = container.account == null ? "" : container.account;
             }
             CommonUtil.onMergeForwardListener listener = CommonUtil.mergeForwardListener;
             if (listener != null) {
-                listener.mergeForward(selectMsg,selectMsg.get(0).getFromNick()+"和"+account+"的聊天记录");
+                listener.mergeForward(selectMsg, selectMsg.get(0).getFromNick() + "和" + account + "的聊天记录");
             }
         }
         MsgAttachment msgAttachment = CommonUtil.forwardAttachment;
