@@ -127,22 +127,20 @@ public class P2PMessageActivity extends BaseMessageActivity {
                             Log.e("userInfo", content.toString());
                             try {
                                 org.json.JSONObject jsonObject = new org.json.JSONObject(content);
-                                Integer activa = jsonObject.getInt("activa");
+                                isActiva = jsonObject.getInt("activa");
                                 Integer type = jsonObject.getInt("isInternal");
                                 wxNo = jsonObject.optString("wxNo");
                                 if (type == 0) {  //内部
-                                    isActiva = 1;
+                                  return;
                                 } else {
                                     CommonUtil.AddUserInfoListener listener = CommonUtil.addUserInfoListener;
                                     if (listener != null) {
                                         listener.addUserInfo(P2PMessageActivity.this, sessionId);
                                     }
-                                    if (activa == 0) { //未激活
+                                    if (isActiva == 0) { //未激活
                                         toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
-                                        isActiva = activa;
                                     } else {
                                         toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.nim_ic_messge_history));
-                                        isActiva = 1;
                                         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                                         return;
                                     }
