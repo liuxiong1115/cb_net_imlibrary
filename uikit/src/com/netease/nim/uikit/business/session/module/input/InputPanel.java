@@ -212,6 +212,8 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
 
         // 显示录音按钮
         switchToTextButtonInInputBar.setVisibility(View.GONE);
+        //TODO 语音显示
+      //  switchToAudioButtonInInputBar.setVisibility(View.VISIBLE);
         switchToAudioButtonInInputBar.setVisibility(View.GONE);
 
         // 文本录音按钮切换布局
@@ -388,8 +390,9 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
         audioRecordBtn.setVisibility(View.GONE);
         messageEditText.setVisibility(View.VISIBLE);
         switchToTextButtonInInputBar.setVisibility(View.GONE);
+        //TODO  切换成语音
+       // switchToAudioButtonInInputBar.setVisibility(View.VISIBLE);
         switchToAudioButtonInInputBar.setVisibility(View.GONE);
-
         messageInputBar.setVisibility(View.VISIBLE);
 
         if (needShowInput) {
