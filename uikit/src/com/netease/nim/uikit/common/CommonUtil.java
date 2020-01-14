@@ -9,6 +9,7 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.business.recent.adapter.RecentContactAdapter;
 import com.netease.nim.uikit.business.session.module.model.ReplyMsgData;
+import com.netease.nim.uikit.common.ui.widget.MyToolbar;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
@@ -250,5 +251,16 @@ public class CommonUtil {
 
     public interface onCollectionListener {
         void onCollection(IMMessage message, Activity context);
+    }
+
+    //获取好友的微信号
+    public static onGetFriendWxIdListener getFriendWxIdListener;
+
+    public static void setOnGetFriendWxIdListener(onGetFriendWxIdListener listener) {
+        getFriendWxIdListener = listener;
+    }
+
+    public interface onGetFriendWxIdListener {
+        void onFriendWxId(String wxNo, String sessionId, MyToolbar toolbar);
     }
 }

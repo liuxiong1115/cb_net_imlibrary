@@ -197,7 +197,11 @@ public class P2PMessageActivity extends BaseMessageActivity {
                     toolbar.setSubtitleVisible(true);
                     toolbar.setSubtitleTextSize(14);
                     toolbar.setSubtitleTextColor(getResources().getColor(R.color.color_aaaaaa_content_text));
-                    toolbar.setSubtitle(source == null ? "" : source);
+                    CommonUtil.onGetFriendWxIdListener onGetFriendWxIdListener = CommonUtil.getFriendWxIdListener;
+                    if (onGetFriendWxIdListener != null) {
+                        onGetFriendWxIdListener.onFriendWxId(source,sessionId,toolbar);
+                    }
+                 //   toolbar.setSubtitle(source == null ? "" : source);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
