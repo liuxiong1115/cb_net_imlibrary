@@ -3,26 +3,35 @@ package com.netease.nim.uikit.business.session.viewholder;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.business.session.audio.MessageAudioControl;
+import com.netease.nim.uikit.common.CommonUtil;
+import com.netease.nim.uikit.common.ToastHelper;
 import com.netease.nim.uikit.common.media.audioplayer.Playable;
 import com.netease.nim.uikit.common.ui.recyclerview.adapter.BaseMultiItemFetchLoadAdapter;
+import com.netease.nim.uikit.common.util.log.sdk.util.FileUtils;
 import com.netease.nim.uikit.common.util.sys.ScreenUtil;
 import com.netease.nim.uikit.common.util.sys.TimeUtil;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.attachment.AudioAttachment;
+import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
 import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum;
 import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum;
 import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
+
+import java.io.File;
+import java.util.Map;
 
 /**
  * Created by zhoujianghua on 2015/8/5.
@@ -35,12 +44,12 @@ public class MsgViewHolderAudio extends MsgViewHolderBase {
 
     public static final int CLICK_TO_PLAY_AUDIO_DELAY = 500;
 
-    private TextView durationLabel;
-    private View containerView;
-    private View unreadIndicator;
-    private ImageView animationView;
+    public TextView durationLabel;
+    public View containerView;
+    public View unreadIndicator;
+    public ImageView animationView;
 
-    private MessageAudioControl audioControl;
+    public MessageAudioControl audioControl;
 
     @Override
     protected int getContentResId() {
@@ -80,7 +89,27 @@ public class MsgViewHolderAudio extends MsgViewHolderBase {
                 // 将未读标识去掉,更新数据库
                 unreadIndicator.setVisibility(View.GONE);
             }
+            AudioAttachment audioAttachment = (AudioAttachment) message.getAttachment();
 
+            File file = new File(audioAttachment.getPathForSave());
+            if (!file.exists()) {
+                Map<String, Object> map = message.getRemoteExtension();
+                if (map != null) {
+                    String wxMsgId = (String) map.get("wxMsgId");
+                    if (!TextUtils.isEmpty(wxMsgId)) {
+                        FileAttachment fileAttachment = (FileAttachment) message.getAttachment();
+                        boolean isExit = FileUtils.isFileExist(fileAttachment.getDisplayName());
+                        if (!isExit) {
+                            CommonUtil.onGetMediaUrlListener onGetMediaUrlListener = CommonUtil.getMediaUrlListener;
+                            if (onGetMediaUrlListener != null) {
+                                onGetMediaUrlListener.onMediaUrl(message, context,wxMsgId);
+                                ToastHelper.showToast(context, "正在获取语音消息！");
+                                Log.e("fileUrl", fileAttachment.getUrl());
+                            }
+                        }
+                    }
+                }
+            }
             initPlayAnim(); // 设置语音播放动画
 
             audioControl.startPlayAudioDelay(CLICK_TO_PLAY_AUDIO_DELAY, message, onPlayListener);
@@ -111,7 +140,7 @@ public class MsgViewHolderAudio extends MsgViewHolderBase {
         }
     }
 
-    private void refreshStatus() {// 消息状态
+    public void refreshStatus() {// 消息状态
         AudioAttachment attachment = (AudioAttachment) message.getAttachment();
         MsgStatusEnum status = message.getStatus();
         AttachStatusEnum attachStatus = message.getAttachStatus();
@@ -172,7 +201,7 @@ public class MsgViewHolderAudio extends MsgViewHolderBase {
         return (int) (0.1875 * ScreenUtil.screenMin);
     }
 
-    private void setAudioBubbleWidth(long milliseconds) {
+    public void setAudioBubbleWidth(long milliseconds) {
         long seconds = TimeUtil.getSecondsByMilliseconds(milliseconds);
 
         int currentBubbleWidth = calculateBubbleWidth(seconds, NimUIKitImpl.getOptions().audioRecordMaxTime);
@@ -181,7 +210,7 @@ public class MsgViewHolderAudio extends MsgViewHolderBase {
         containerView.setLayoutParams(layoutParams);
     }
 
-    private int calculateBubbleWidth(long seconds, int MAX_TIME) {
+    public int calculateBubbleWidth(long seconds, int MAX_TIME) {
         int maxAudioBubbleWidth = getAudioMaxEdge();
         int minAudioBubbleWidth = getAudioMinEdge();
 

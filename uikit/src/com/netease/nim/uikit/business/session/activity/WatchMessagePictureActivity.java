@@ -1179,8 +1179,8 @@ public class WatchMessagePictureActivity extends UI {
 
         String srcFilename = attachment.getFileName();
         //默认jpg
-        String extension = TextUtils.isEmpty(attachment.getExtension()) ? "jpg" : attachment.getExtension();
-        srcFilename += ("." + extension);
+      //  String extension = TextUtils.isEmpty(attachment.getExtension()) ? "jpg" : attachment.getExtension();
+        srcFilename += ("." + "jpg");
 
         String picPath = StorageUtil.getSystemImagePath();
         String dstPath = picPath + srcFilename;

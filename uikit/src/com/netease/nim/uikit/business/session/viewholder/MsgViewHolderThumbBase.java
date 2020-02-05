@@ -250,7 +250,7 @@ public abstract class MsgViewHolderThumbBase extends MsgViewHolderBase {
         }
     }
 
-    private int maskBg() {
+    public int maskBg() {
         return R.drawable.nim_message_item_round_bg;
     }
 

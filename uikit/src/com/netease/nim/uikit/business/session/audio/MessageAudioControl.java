@@ -43,7 +43,6 @@ public class MessageAudioControl extends BaseAudioControl<IMMessage> {
                 }
             }
         }
-
         return mMessageAudioControl;
     }
 
@@ -117,8 +116,11 @@ public class MessageAudioControl extends BaseAudioControl<IMMessage> {
             final IMMessage message,
             final AudioControlListener audioControlListener, final int audioStreamType) {
         // 如果不存在则下载
-        AudioAttachment audioAttachment = (AudioAttachment) message.getAttachment();
-        File file = new File(audioAttachment.getPathForSave());
+        //TODO 语音播放
+        File file;
+            AudioAttachment audioAttachment = (AudioAttachment) message.getAttachment();
+            file = new File(audioAttachment.getPathForSave());
+
         if (!file.exists()) {
             NIMClient.getService(MsgService.class).downloadAttachment(message, false).setCallback(new RequestCallbackWrapper() {
                 @Override

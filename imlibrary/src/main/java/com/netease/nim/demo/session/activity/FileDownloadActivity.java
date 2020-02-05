@@ -131,6 +131,7 @@ public class FileDownloadActivity extends UI {
             });
         } else {
             final FileAttachment attachment = (FileAttachment) message.getAttachment();
+            Log.e("fileUrl",attachment.getUrl());
             fileNameText = findView(R.id.file_name);
             fileDownloadBtn = findView(R.id.download_btn);
             imageView = findView(R.id.file_icon);
@@ -219,7 +220,7 @@ public class FileDownloadActivity extends UI {
      */
     private void showDownloadDialog(String url, String fileName) {
         if (TextUtils.isEmpty(url)) {
-            ToastHelper.showToast(this, "文件错误");
+            ToastHelper.showToast(this, "资源获取中，请稍后再试");
             return;
         }
         String dealUrl = url.startsWith("http") ? url : CommonUtil.BaseUrl + "/" + url;

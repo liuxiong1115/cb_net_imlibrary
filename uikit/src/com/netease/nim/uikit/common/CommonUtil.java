@@ -263,4 +263,15 @@ public class CommonUtil {
     public interface onGetFriendWxIdListener {
         void onFriendWxId(String wxNo, String sessionId, MyToolbar toolbar);
     }
+
+    //媒体消息获取url
+    public static onGetMediaUrlListener getMediaUrlListener;
+
+    public static void setonGetMediaUrlListener(onGetMediaUrlListener listener) {
+        getMediaUrlListener = listener;
+    }
+
+    public interface onGetMediaUrlListener {
+        void onMediaUrl(IMMessage imMessage,Context context,String wxMsgId);
+    }
 }

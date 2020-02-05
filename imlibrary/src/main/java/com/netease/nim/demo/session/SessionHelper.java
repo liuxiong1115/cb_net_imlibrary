@@ -298,7 +298,6 @@ public class SessionHelper {
         }
         LocalAntiSpamResult result = NIMClient.getService(MsgService.class).checkLocalAntiSpam(message.getContent(), "**");
         int operator = result == null ? 0 : result.getOperator();
-
         switch (operator) {
             case 1: // 替换，允许发送
                 message.setContent(result.getContent());
@@ -312,7 +311,6 @@ public class SessionHelper {
             default:
                 break;
         }
-
         return true;
     }
 
@@ -323,9 +321,7 @@ public class SessionHelper {
                 @Override
                 public void onActivityResult(final Activity activity, int requestCode, int resultCode, Intent data) {
                     super.onActivityResult(activity, requestCode, resultCode, data);
-
                 }
-
                 @Override
                 public MsgAttachment createStickerAttachment(String category, String item) {
                     return null;
@@ -341,23 +337,17 @@ public class SessionHelper {
                 }
             };
             cloudMsgButton.iconId = R.drawable.nim_ic_messge_history;
-
             SessionCustomization.OptionsButton infoButton = new SessionCustomization.OptionsButton() {
                 @Override
                 public void onClick(Context context, View view, String sessionId) {
-
                     RobotProfileActivity.start(context, sessionId); //打开聊天信息
                 }
             };
-
-
             infoButton.iconId = R.drawable.nim_ic_actionbar_robot_info;
-
             buttons.add(cloudMsgButton);
             buttons.add(infoButton);
             robotCustomization.buttons = buttons;
         }
-
         return robotCustomization;
     }
 

@@ -1,8 +1,17 @@
 package com.netease.nim.uikit.business.session.viewholder;
 
+import android.text.TextUtils;
+import android.util.Log;
+
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.business.session.activity.WatchMessagePictureActivity;
+import com.netease.nim.uikit.common.CommonUtil;
+import com.netease.nim.uikit.common.ToastHelper;
 import com.netease.nim.uikit.common.ui.recyclerview.adapter.BaseMultiItemFetchLoadAdapter;
+import com.netease.nim.uikit.common.util.log.sdk.util.FileUtils;
+import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
+
+import java.util.Map;
 
 /**
  * Created by zhoujianghua on 2015/8/4.
@@ -20,6 +29,22 @@ public class MsgViewHolderPicture extends MsgViewHolderThumbBase {
 
     @Override
     protected void onItemClick() {
+        Map<String, Object> map = message.getRemoteExtension();
+        if (map != null) {
+            String wxMsgId = (String) map.get("wxMsgId");
+            if (!TextUtils.isEmpty(wxMsgId)) {
+                FileAttachment fileAttachment = (FileAttachment) message.getAttachment();
+                boolean isExit = FileUtils.isFileExist(fileAttachment.getDisplayName());
+                if (!isExit) {
+                    CommonUtil.onGetMediaUrlListener onGetMediaUrlListener = CommonUtil.getMediaUrlListener;
+                    if (onGetMediaUrlListener != null) {
+                        onGetMediaUrlListener.onMediaUrl(message,context,wxMsgId);
+                        ToastHelper.showToast(context,"正在获取图片资源！");
+                        Log.e("fileUrl",fileAttachment.getUrl());
+                    }
+                }
+            }
+        }
         WatchMessagePictureActivity.start(context, message);
     }
 

@@ -1,5 +1,6 @@
 package com.testlib.netease;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import com.netease.nim.demo.config.preference.Preferences;
 import com.netease.nim.demo.config.preference.UserPreferences;
 import com.netease.nim.demo.login.LoginActivity;
 import com.netease.nim.uikit.api.NimUIKit;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.ui.dialog.DialogMaker;
 import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nimlib.sdk.AbortableFuture;
@@ -20,6 +22,8 @@ import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
 import com.netease.nimlib.sdk.auth.LoginInfo;
+import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
+import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.vincent.filepicker.Constant;
 import com.vincent.filepicker.activity.ImagePickActivity;
 
@@ -98,8 +102,8 @@ public class MainActivity extends AppCompatActivity {
 //        final String token = "2efc97f01cd1b00f39cb37520684fcfe";
         final String account = "crm72";
         final String token = "e8900e72002f73a243e02434796ae324";
-//        final String account = "CRM179";
-//        final String token = "1e82ac0c2e3c5ebb2155f551b41d47c8";
+//        final String account = "uc1t115";
+//        final String token = "99161490c616501fcc7df3ac6069d925";
         // 登录
         loginRequest = NimUIKit.login(new LoginInfo(account.toLowerCase(), token), new RequestCallback<LoginInfo>() {
             @Override
@@ -135,6 +139,13 @@ public class MainActivity extends AppCompatActivity {
                 onLoginDone();
             }
         });
+//        CommonUtil.setonGetMediaUrlListener(new CommonUtil.onGetMediaUrlListener() {
+//            @Override
+//            public void onMediaUrl(IMMessage imMessage, Context context) {
+//                FileAttachment fileAttachment = (FileAttachment) imMessage.getAttachment();
+//                fileAttachment.setUrl("123456");
+//            }
+//        });
     }
 
 

@@ -1,6 +1,7 @@
 package com.netease.nim.demo.session.viewholder;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -11,6 +12,8 @@ import com.netease.nim.demo.R;
 import com.netease.nim.demo.file.FileIcons;
 import com.netease.nim.demo.session.activity.FileDownloadActivity;
 import com.netease.nim.uikit.business.session.viewholder.MsgViewHolderBase;
+import com.netease.nim.uikit.common.CommonUtil;
+import com.netease.nim.uikit.common.ToastHelper;
 import com.netease.nim.uikit.common.ui.recyclerview.adapter.BaseMultiItemFetchLoadAdapter;
 import com.netease.nim.uikit.common.util.file.AttachmentStore;
 import com.netease.nim.uikit.common.util.file.FileUtil;
@@ -21,17 +24,20 @@ import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
 import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 
+import java.io.File;
+import java.util.Map;
+
 /**
  * Created by zhoujianghua on 2015/8/6.
  */
 public class MsgViewHolderFile extends MsgViewHolderBase {
-    private ImageView fileIcon;
-    private TextView fileNameLabel;
-    private TextView fileStatusLabel;
-    private ProgressBar progressBar;
+    public ImageView fileIcon;
+    public TextView fileNameLabel;
+    public TextView fileStatusLabel;
+    public ProgressBar progressBar;
 
-    private RelativeLayout layout;
-    private FileAttachment msgAttachment;
+    public RelativeLayout layout;
+    public FileAttachment msgAttachment;
 
     public MsgViewHolderFile(BaseMultiItemFetchLoadAdapter adapter) {
         super(adapter);
@@ -124,8 +130,23 @@ public class MsgViewHolderFile extends MsgViewHolderBase {
 
     @Override
     protected void onItemClick() {
-        FileDownloadActivity.start(context, message,"");
-
+        Map<String, Object> map = message.getRemoteExtension();
+        if (map != null) {
+            String wxMsgId = (String) map.get("wxMsgId");
+            if (!TextUtils.isEmpty(wxMsgId)) {
+                FileAttachment fileAttachment = (FileAttachment) message.getAttachment();
+                boolean isExit = FileUtils.isFileExist(fileAttachment.getDisplayName());
+                if (!isExit) {
+                    CommonUtil.onGetMediaUrlListener onGetMediaUrlListener = CommonUtil.getMediaUrlListener;
+                    if (onGetMediaUrlListener != null) {
+                        onGetMediaUrlListener.onMediaUrl(message,context,wxMsgId);
+                        ToastHelper.showToast(context,"正在获取文件资源！");
+                        Log.e("fileUrl",fileAttachment.getUrl());
+                    }
+                }
+            }
+        }
+            FileDownloadActivity.start(context, message,"");
     }
 
     @Override

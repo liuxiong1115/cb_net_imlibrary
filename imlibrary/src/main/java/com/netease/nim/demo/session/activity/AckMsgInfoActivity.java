@@ -22,6 +22,8 @@ import com.netease.nim.uikit.common.activity.UI;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.TeamMsgAckInfo;
 
+import org.json.JSONObject;
+
 /**
  * 消息已读详情界面
  * Created by winnie on 2018/3/14.
@@ -65,7 +67,6 @@ public class AckMsgInfoActivity extends UI implements ViewPager.OnPageChangeList
         findViews();
         setupPager();
         setupTabs();
-
         IMMessage message = (IMMessage) getIntent().getSerializableExtra(AckMsgInfoActivity.EXTRA_MESSAGE);
         viewModel = ViewModelProviders.of(this).get(AckMsgViewModel.class);
         viewModel.init(message);
