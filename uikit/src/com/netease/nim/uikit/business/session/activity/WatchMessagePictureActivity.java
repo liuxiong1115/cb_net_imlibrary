@@ -616,9 +616,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
@@ -662,6 +665,11 @@ import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -693,6 +701,8 @@ public class WatchMessagePictureActivity extends UI {
 
     private static final int MODE_NOMARL = 0;
     private static final int MODE_GIF = 1;
+
+    final Bitmap[] bitmapFile = {null};
 
     private Handler handler;
     private IMMessage message;
@@ -979,6 +989,7 @@ public class WatchMessagePictureActivity extends UI {
             return;
         }
         image = (BaseZoomableImageView) currentLayout.findViewById(R.id.watch_image_view);
+        imageMsgList.set(position,message);
         requestOriImage(imageMsgList.get(position));
     }
 
@@ -1041,7 +1052,20 @@ public class WatchMessagePictureActivity extends UI {
     }
 
     private void setImageView(final IMMessage msg) {
-        String path = ((ImageAttachment) msg.getAttachment()).getPath();
+        String path = null;
+        path = ((ImageAttachment) msg.getAttachment()).getPath();
+        if (CommonUtil.role == CommonUtil.SELLER) {
+            Map<String, Object> map = message.getRemoteExtension();
+            if (map != null) {
+                String wxMsgId = (String) map.get("wxMsgId");
+                if (!TextUtils.isEmpty(wxMsgId)) {
+                  path = ((ImageAttachment) msg.getAttachment()).getUrl();
+                    returnBitMap(path);
+//                    image.setImageBitmap(ImageUtil.getBitmapFromDrawableRes(getImageResOnFailed()));
+                    return;
+                }
+            }
+        }
         if (TextUtils.isEmpty(path)) {
             image.setImageBitmap(ImageUtil.getBitmapFromDrawableRes(getImageResOnLoading()));
             return;
@@ -1055,6 +1079,44 @@ public class WatchMessagePictureActivity extends UI {
         } else {
             image.setImageBitmap(bitmap);
         }
+    }
+    private Handler handlerFile = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            image.setImageBitmap(bitmapFile[0]);
+        }
+    };
+    /*
+    *    get image from network
+    *    @param [String]imageURL
+    *    @return [BitMap]image
+    */
+    public void returnBitMap(final String url){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                URL imageurl = null;
+                try {
+                    imageurl = new URL(url);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    HttpURLConnection conn = (HttpURLConnection)imageurl.openConnection();
+                    conn.setDoInput(true);
+                    conn.connect();
+                    InputStream is = conn.getInputStream();
+                    bitmapFile[0] = BitmapFactory.decodeStream(is);
+                    //这是一个一步请求，不能直接返回获取，要不然永远为null
+                    //在这里得到BitMap之后记得使用Hanlder或者EventBus传回主线程，不过现在加载图片都是用框架了，很少有转化为Bitmap的需求
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                handlerFile.sendEmptyMessage(1);
+            }
+        }).start();
     }
 
     private int getImageResOnLoading() {

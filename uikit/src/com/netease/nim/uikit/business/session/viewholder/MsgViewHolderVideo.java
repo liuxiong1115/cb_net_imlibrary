@@ -12,6 +12,7 @@ import com.netease.nim.uikit.common.util.log.sdk.util.FileUtils;
 import com.netease.nim.uikit.common.util.media.BitmapDecoder;
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
 import com.netease.nimlib.sdk.msg.attachment.VideoAttachment;
+import com.netease.nimlib.sdk.msg.model.IMMessage;
 
 import java.util.Map;
 
@@ -29,7 +30,8 @@ public class MsgViewHolderVideo extends MsgViewHolderThumbBase {
     protected int getContentResId() {
         CommonUtil.setonDealVideoMediaUrlListener(new CommonUtil.onDealVideoMediaUrlListener() {
             @Override
-            public void onDealVideoMediaUrl() {
+            public void onDealVideoMediaUrl(IMMessage imMessage) {
+                message = imMessage;
                 WatchVideoActivity.start(context, message);
             }
         });

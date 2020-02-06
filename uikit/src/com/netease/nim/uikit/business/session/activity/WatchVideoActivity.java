@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.wrapper.NimToolBarOptions;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
 import com.netease.nim.uikit.common.activity.UI;
 import com.netease.nim.uikit.common.util.file.FileUtil;
@@ -35,10 +36,13 @@ import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
+import com.netease.nimlib.sdk.msg.attachment.ImageAttachment;
 import com.netease.nimlib.sdk.msg.attachment.VideoAttachment;
 import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum;
 import com.netease.nimlib.sdk.msg.model.AttachmentProgress;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
+
+import java.util.Map;
 
 /**
  * 视频播放界面
@@ -501,6 +505,16 @@ public class WatchVideoActivity extends UI implements Callback {
     }
 
     private void play() {
+        if (CommonUtil.role == CommonUtil.SELLER) {
+            Map<String, Object> map = message.getRemoteExtension();
+            if (map != null) {
+                String wxMsgId = (String) map.get("wxMsgId");
+                if (!TextUtils.isEmpty(wxMsgId)) {
+                    onDownloadSuccess(message);
+                    return;
+                }
+            }
+        }
         if (isVideoHasDownloaded(message)) {
             onDownloadSuccess(message);
         }
@@ -512,7 +526,15 @@ public class WatchVideoActivity extends UI implements Callback {
         downloadLayout.setVisibility(View.GONE);
 
         videoFilePath = ((VideoAttachment) message.getAttachment()).getPath();
-
+        if (CommonUtil.role == CommonUtil.SELLER) {
+            Map<String, Object> map = message.getRemoteExtension();
+            if (map != null) {
+                String wxMsgId = (String) map.get("wxMsgId");
+                if (!TextUtils.isEmpty(wxMsgId)) {
+                  videoFilePath = ((VideoAttachment) message.getAttachment()).getUrl();
+                }
+            }
+        }
         surfaceView.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 if (playState == PLAY_STATE_PAUSE) {

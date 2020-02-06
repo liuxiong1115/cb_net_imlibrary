@@ -283,7 +283,7 @@ public class CommonUtil {
     }
 
     public interface onDealImageMediaUrlListener {
-        void onDealImageMediaUrl();
+        void onDealImageMediaUrl(IMMessage message);
     }
     //响应视频媒体消息获取url
     public static onDealVideoMediaUrlListener dealVideoMediaUrlListener;
@@ -293,7 +293,7 @@ public class CommonUtil {
     }
 
     public interface onDealVideoMediaUrlListener {
-        void onDealVideoMediaUrl();
+        void onDealVideoMediaUrl(IMMessage message);
     }
     //响应文件媒体消息获取url
     public static onDealFileMediaUrlListener dealFileMediaUrlListener;
@@ -303,7 +303,7 @@ public class CommonUtil {
     }
 
     public interface onDealFileMediaUrlListener {
-        void onDealFileMediaUrl();
+        void onDealFileMediaUrl(IMMessage message);
     }
     //响应语音媒体消息获取url
     public static onDealAudioMediaUrlListener dealAudioMediaUrlListener;

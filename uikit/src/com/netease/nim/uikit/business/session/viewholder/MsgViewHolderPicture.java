@@ -11,6 +11,7 @@ import com.netease.nim.uikit.common.ui.recyclerview.adapter.BaseMultiItemFetchLo
 import com.netease.nim.uikit.common.util.log.sdk.util.FileUtils;
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
 import com.netease.nimlib.sdk.msg.attachment.ImageAttachment;
+import com.netease.nimlib.sdk.msg.model.IMMessage;
 
 import java.util.Map;
 
@@ -27,7 +28,8 @@ public class MsgViewHolderPicture extends MsgViewHolderThumbBase {
     protected int getContentResId() {
         CommonUtil.setonDealImageMediaUrlListener(new CommonUtil.onDealImageMediaUrlListener() {
             @Override
-            public void onDealImageMediaUrl() {
+            public void onDealImageMediaUrl(IMMessage messageNwe) {
+                message = messageNwe;
                 WatchMessagePictureActivity.start(context, message);
             }
         });

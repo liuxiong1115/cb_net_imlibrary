@@ -23,6 +23,8 @@ import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
+import com.netease.nimlib.sdk.msg.attachment.ImageAttachment;
+import com.netease.nimlib.sdk.msg.attachment.VideoAttachment;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.vincent.filepicker.Constant;
 import com.vincent.filepicker.activity.ImagePickActivity;
@@ -141,9 +143,13 @@ public class MainActivity extends AppCompatActivity {
         });
 //        CommonUtil.setonGetMediaUrlListener(new CommonUtil.onGetMediaUrlListener() {
 //            @Override
-//            public void onMediaUrl(IMMessage imMessage, Context context) {
-//                FileAttachment fileAttachment = (FileAttachment) imMessage.getAttachment();
-//                fileAttachment.setUrl("123456");
+//            public void onMediaUrl(IMMessage imMessage, Context context, String wxMsgId) {
+//                VideoAttachment fileAttachment = (VideoAttachment) imMessage.getAttachment();
+//                fileAttachment.setUrl("http://siyouyunsy-1253559996.cos.ap-guangzhou.myqcloud.com/msg/HVYST/20200206/1133419432832179938_wxid_t9bw330z0dou22_1580978891256_.mp4?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDBi7d3I4UK7iDXkAhQyQsDMNGxY2KmlCY%26q-sign-time%3D1580978891%3B1667292491%26q-key-time%3D1580978891%3B1667292491%26q-header-list%3D%26q-url-param-list%3D%26q-signature%3D506911a5c23cb212d2a5902f499b696361a045bd");
+//                CommonUtil.onDealVideoMediaUrlListener listener = CommonUtil.dealVideoMediaUrlListener;
+//                if (listener != null) {
+//                    listener.onDealVideoMediaUrl(imMessage);
+//                }
 //            }
 //        });
     }

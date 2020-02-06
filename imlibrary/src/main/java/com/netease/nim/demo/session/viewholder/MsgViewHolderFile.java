@@ -129,7 +129,8 @@ public class MsgViewHolderFile extends MsgViewHolderBase {
         fileStatusLabel.setText(sb.toString());
         CommonUtil.setonDealFileUrlListener(new CommonUtil.onDealFileMediaUrlListener() {
             @Override
-            public void onDealFileMediaUrl() {
+            public void onDealFileMediaUrl(IMMessage imMessage) {
+                message = imMessage;
                 FileDownloadActivity.start(context, message,"");
             }
         });
