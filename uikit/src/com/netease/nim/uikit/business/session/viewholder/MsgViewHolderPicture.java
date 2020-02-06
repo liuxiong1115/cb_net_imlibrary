@@ -25,17 +25,18 @@ public class MsgViewHolderPicture extends MsgViewHolderThumbBase {
 
     @Override
     protected int getContentResId() {
+        CommonUtil.setonDealImageMediaUrlListener(new CommonUtil.onDealImageMediaUrlListener() {
+            @Override
+            public void onDealImageMediaUrl() {
+                WatchMessagePictureActivity.start(context, message);
+            }
+        });
         return R.layout.nim_message_item_picture;
     }
 
     @Override
     protected void onItemClick() {
-        CommonUtil.setonDealMediaUrlListener(new CommonUtil.onDealMediaUrlListener() {
-            @Override
-            public void onDealMediaUrl() {
-                WatchMessagePictureActivity.start(context, message);
-            }
-        });
+
        if (CommonUtil.role == CommonUtil.SELLER) {
            Map<String, Object> map = message.getRemoteExtension();
            if (map != null) {

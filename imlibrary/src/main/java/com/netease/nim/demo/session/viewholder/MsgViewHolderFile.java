@@ -127,9 +127,9 @@ public class MsgViewHolderFile extends MsgViewHolderBase {
             sb.append(context.getString(R.string.file_transfer_state_undownload));
         }
         fileStatusLabel.setText(sb.toString());
-        CommonUtil.setonDealMediaUrlListener(new CommonUtil.onDealMediaUrlListener() {
+        CommonUtil.setonDealFileUrlListener(new CommonUtil.onDealFileMediaUrlListener() {
             @Override
-            public void onDealMediaUrl() {
+            public void onDealFileMediaUrl() {
                 FileDownloadActivity.start(context, message,"");
             }
         });

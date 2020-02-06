@@ -635,6 +635,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.api.wrapper.NimToolBarOptions;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
 import com.netease.nim.uikit.common.activity.UI;
 import com.netease.nim.uikit.common.ui.dialog.CustomAlertDialog;
@@ -664,6 +665,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -982,6 +984,16 @@ public class WatchMessagePictureActivity extends UI {
 
     // 若图片已下载，直接显示图片；若图片未下载，则下载图片
     private void requestOriImage(IMMessage msg) {
+        if (CommonUtil.role == CommonUtil.SELLER) {
+            Map<String, Object> map = message.getRemoteExtension();
+            if (map != null) {
+                String wxMsgId = (String) map.get("wxMsgId");
+                if (!TextUtils.isEmpty(wxMsgId)) {
+                    onDownloadSuccess(msg);
+                    return;
+                }
+            }
+        }
         if (isOriginImageHasDownloaded(msg)) {
             onDownloadSuccess(msg);
             return;
@@ -1104,13 +1116,17 @@ public class WatchMessagePictureActivity extends UI {
     }
 
     private void onDownloadFailed() {
-        loadingLayout.setVisibility(View.GONE);
-        if (mode == MODE_NOMARL) {
-            image.setImageBitmap(ImageUtil.getBitmapFromDrawableRes(getImageResOnFailed()));
-        } else if (mode == MODE_GIF) {
-            simpleImageView.setImageBitmap(ImageUtil.getBitmapFromDrawableRes(getImageResOnFailed()));
+        try{
+            loadingLayout.setVisibility(View.GONE);
+            if (mode == MODE_NOMARL) {
+                image.setImageBitmap(ImageUtil.getBitmapFromDrawableRes(getImageResOnFailed()));
+            } else if (mode == MODE_GIF) {
+                simpleImageView.setImageBitmap(ImageUtil.getBitmapFromDrawableRes(getImageResOnFailed()));
+            }
+            Toast.makeText(this, R.string.download_picture_fail, Toast.LENGTH_LONG).show();
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        Toast.makeText(this, R.string.download_picture_fail, Toast.LENGTH_LONG).show();
     }
 
 //*

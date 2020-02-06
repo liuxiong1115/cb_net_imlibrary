@@ -275,14 +275,44 @@ public class CommonUtil {
         void onMediaUrl(IMMessage imMessage,Context context,String wxMsgId);
     }
 
-    //响应媒体消息获取url
-    public static onDealMediaUrlListener dealMediaUrlListener;
+    //响应图片媒体消息获取url
+    public static onDealImageMediaUrlListener dealImageMediaUrlListener;
 
-    public static void setonDealMediaUrlListener(onDealMediaUrlListener listener) {
-        dealMediaUrlListener = listener;
+    public static void setonDealImageMediaUrlListener(onDealImageMediaUrlListener listener) {
+        dealImageMediaUrlListener = listener;
     }
 
-    public interface onDealMediaUrlListener {
-        void onDealMediaUrl();
+    public interface onDealImageMediaUrlListener {
+        void onDealImageMediaUrl();
+    }
+    //响应视频媒体消息获取url
+    public static onDealVideoMediaUrlListener dealVideoMediaUrlListener;
+
+    public static void setonDealVideoMediaUrlListener(onDealVideoMediaUrlListener listener) {
+        dealVideoMediaUrlListener = listener;
+    }
+
+    public interface onDealVideoMediaUrlListener {
+        void onDealVideoMediaUrl();
+    }
+    //响应文件媒体消息获取url
+    public static onDealFileMediaUrlListener dealFileMediaUrlListener;
+
+    public static void setonDealFileUrlListener(onDealFileMediaUrlListener listener) {
+        dealFileMediaUrlListener = listener;
+    }
+
+    public interface onDealFileMediaUrlListener {
+        void onDealFileMediaUrl();
+    }
+    //响应语音媒体消息获取url
+    public static onDealAudioMediaUrlListener dealAudioMediaUrlListener;
+
+    public static void setonDealAudioMediaUrlListener(onDealAudioMediaUrlListener listener) {
+        dealAudioMediaUrlListener = listener;
+    }
+
+    public interface onDealAudioMediaUrlListener {
+        void onDealAudioMediaUrl();
     }
 }

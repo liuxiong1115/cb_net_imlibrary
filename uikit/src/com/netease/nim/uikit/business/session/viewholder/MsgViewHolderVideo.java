@@ -27,17 +27,18 @@ public class MsgViewHolderVideo extends MsgViewHolderThumbBase {
 
     @Override
     protected int getContentResId() {
+        CommonUtil.setonDealVideoMediaUrlListener(new CommonUtil.onDealVideoMediaUrlListener() {
+            @Override
+            public void onDealVideoMediaUrl() {
+                WatchVideoActivity.start(context, message);
+            }
+        });
         return R.layout.nim_message_item_video;
     }
 
     @Override
     protected void onItemClick() {
-        CommonUtil.setonDealMediaUrlListener(new CommonUtil.onDealMediaUrlListener() {
-            @Override
-            public void onDealMediaUrl() {
-                WatchVideoActivity.start(context, message);
-            }
-        });
+
        if (CommonUtil.role == CommonUtil.SELLER) {
            Map<String, Object> map = message.getRemoteExtension();
            if (map != null) {

@@ -89,9 +89,9 @@ public class MsgViewHolderAudio extends MsgViewHolderBase {
                 // 将未读标识去掉,更新数据库
                 unreadIndicator.setVisibility(View.GONE);
             }
-            CommonUtil.setonDealMediaUrlListener(new CommonUtil.onDealMediaUrlListener() {
+            CommonUtil.setonDealAudioMediaUrlListener(new CommonUtil.onDealAudioMediaUrlListener() {
                 @Override
-                public void onDealMediaUrl() {
+                public void onDealAudioMediaUrl() {
                     initPlayAnim(); // 设置语音播放动画
 
                     audioControl.startPlayAudioDelay(CLICK_TO_PLAY_AUDIO_DELAY, message, onPlayListener);
@@ -101,7 +101,7 @@ public class MsgViewHolderAudio extends MsgViewHolderBase {
             });
             if (CommonUtil.role == CommonUtil.SELLER) {
                 AudioAttachment audioAttachment = (AudioAttachment) message.getAttachment();
-                File file = new File(audioAttachment.getPathForSave());
+                File file = new File(audioAttachment.getPathForSave() == null ? "" : audioAttachment.getPathForSave());
                 if (!file.exists()) {
                     Map<String, Object> map = message.getRemoteExtension();
                     if (map != null) {
