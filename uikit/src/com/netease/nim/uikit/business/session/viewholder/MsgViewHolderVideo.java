@@ -39,25 +39,23 @@ public class MsgViewHolderVideo extends MsgViewHolderThumbBase {
     @Override
     protected void onItemClick() {
 
-       if (CommonUtil.role == CommonUtil.SELLER) {
-           Map<String, Object> map = message.getRemoteExtension();
-           if (map != null) {
-               String wxMsgId = (String) map.get("wxMsgId");
-               if (!TextUtils.isEmpty(wxMsgId)) {
-                   VideoAttachment fileAttachment = (VideoAttachment) message.getAttachment();
-                   if (TextUtils.isEmpty(fileAttachment.getPath())) {
-                       CommonUtil.onGetMediaUrlListener onGetMediaUrlListener = CommonUtil.getMediaUrlListener;
-                       if (onGetMediaUrlListener != null) {
-                           onGetMediaUrlListener.onMediaUrl(message,context,wxMsgId);
-                           return;
-                       }
-                   }
-               }
-           }
-           WatchVideoActivity.start(context, message);
-       }else {
-           WatchVideoActivity.start(context, message);
-       }
+        if (CommonUtil.role == CommonUtil.SELLER) {
+            Map<String, Object> map = message.getRemoteExtension();
+            if (map != null) {
+                String wxMsgId = (String) map.get("wxMsgId");
+                if (!TextUtils.isEmpty(wxMsgId)) {
+                    CommonUtil.onGetMediaUrlListener onGetMediaUrlListener = CommonUtil.getMediaUrlListener;
+                    if (onGetMediaUrlListener != null) {
+                        onGetMediaUrlListener.onMediaUrl(message, context, wxMsgId);
+                        return;
+
+                    }
+                }
+            }
+            WatchVideoActivity.start(context, message);
+        } else {
+            WatchVideoActivity.start(context, message);
+        }
     }
 
     @Override

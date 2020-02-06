@@ -107,14 +107,10 @@ public class MsgViewHolderAudio extends MsgViewHolderBase {
                     if (map != null) {
                         String wxMsgId = (String) map.get("wxMsgId");
                         if (!TextUtils.isEmpty(wxMsgId)) {
-                            AudioAttachment fileAttachment = (AudioAttachment) message.getAttachment();
-                            boolean isExit = FileUtils.isFileExist(fileAttachment.getPath());
-                            if (!isExit) {
-                                CommonUtil.onGetMediaUrlListener onGetMediaUrlListener = CommonUtil.getMediaUrlListener;
-                                if (onGetMediaUrlListener != null) {
-                                    onGetMediaUrlListener.onMediaUrl(message, context,wxMsgId);
-                                    return;
-                                }
+                            CommonUtil.onGetMediaUrlListener onGetMediaUrlListener = CommonUtil.getMediaUrlListener;
+                            if (onGetMediaUrlListener != null) {
+                                onGetMediaUrlListener.onMediaUrl(message, context, wxMsgId);
+                                return;
                             }
                         }
                     }

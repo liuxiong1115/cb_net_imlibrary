@@ -42,14 +42,11 @@ public class MsgViewHolderPicture extends MsgViewHolderThumbBase {
            if (map != null) {
                String wxMsgId = (String) map.get("wxMsgId");
                if (!TextUtils.isEmpty(wxMsgId)) {
-                   ImageAttachment fileAttachment = (ImageAttachment) message.getAttachment();
-                   if (TextUtils.isEmpty(fileAttachment.getPath())) {
                        CommonUtil.onGetMediaUrlListener onGetMediaUrlListener = CommonUtil.getMediaUrlListener;
                        if (onGetMediaUrlListener != null) {
                            onGetMediaUrlListener.onMediaUrl(message,context,wxMsgId);
                            return;
                        }
-                   }
                }
            }
            WatchMessagePictureActivity.start(context, message);
