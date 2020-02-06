@@ -15,6 +15,7 @@ import com.netease.nim.uikit.business.session.viewholder.MsgViewHolderBase;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.ToastHelper;
 import com.netease.nim.uikit.common.ui.recyclerview.adapter.BaseMultiItemFetchLoadAdapter;
+import com.netease.nim.uikit.common.util.C;
 import com.netease.nim.uikit.common.util.file.AttachmentStore;
 import com.netease.nim.uikit.common.util.file.FileUtil;
 import com.netease.nim.uikit.common.util.log.sdk.util.FileUtils;
@@ -126,22 +127,31 @@ public class MsgViewHolderFile extends MsgViewHolderBase {
             sb.append(context.getString(R.string.file_transfer_state_undownload));
         }
         fileStatusLabel.setText(sb.toString());
+        CommonUtil.setonDealMediaUrlListener(new CommonUtil.onDealMediaUrlListener() {
+            @Override
+            public void onDealMediaUrl() {
+                FileDownloadActivity.start(context, message,"");
+            }
+        });
     }
 
     @Override
     protected void onItemClick() {
-        Map<String, Object> map = message.getRemoteExtension();
-        if (map != null) {
-            String wxMsgId = (String) map.get("wxMsgId");
-            if (!TextUtils.isEmpty(wxMsgId)) {
-                FileAttachment fileAttachment = (FileAttachment) message.getAttachment();
-                boolean isExit = FileUtils.isFileExist(fileAttachment.getDisplayName());
-                if (!isExit) {
-                    CommonUtil.onGetMediaUrlListener onGetMediaUrlListener = CommonUtil.getMediaUrlListener;
-                    if (onGetMediaUrlListener != null) {
-                        onGetMediaUrlListener.onMediaUrl(message,context,wxMsgId);
-                        ToastHelper.showToast(context,"正在获取文件资源！");
-                        Log.e("fileUrl",fileAttachment.getUrl());
+
+
+        if (CommonUtil.role == CommonUtil.SELLER) {
+            Map<String, Object> map = message.getRemoteExtension();
+            if (map != null) {
+                String wxMsgId = (String) map.get("wxMsgId");
+                if (!TextUtils.isEmpty(wxMsgId)) {
+                    FileAttachment fileAttachment = (FileAttachment) message.getAttachment();
+                    boolean isExit = FileUtils.isFileExist(fileAttachment.getDisplayName());
+                    if (!isExit) {
+                        CommonUtil.onGetMediaUrlListener onGetMediaUrlListener = CommonUtil.getMediaUrlListener;
+                        if (onGetMediaUrlListener != null) {
+                            onGetMediaUrlListener.onMediaUrl(message,context,wxMsgId);
+                            return;
+                        }
                     }
                 }
             }

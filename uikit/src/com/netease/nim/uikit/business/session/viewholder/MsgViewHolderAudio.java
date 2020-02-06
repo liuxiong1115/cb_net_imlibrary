@@ -89,27 +89,38 @@ public class MsgViewHolderAudio extends MsgViewHolderBase {
                 // 将未读标识去掉,更新数据库
                 unreadIndicator.setVisibility(View.GONE);
             }
-            AudioAttachment audioAttachment = (AudioAttachment) message.getAttachment();
+            CommonUtil.setonDealMediaUrlListener(new CommonUtil.onDealMediaUrlListener() {
+                @Override
+                public void onDealMediaUrl() {
+                    initPlayAnim(); // 设置语音播放动画
 
-            File file = new File(audioAttachment.getPathForSave());
-            if (!file.exists()) {
-                Map<String, Object> map = message.getRemoteExtension();
-                if (map != null) {
-                    String wxMsgId = (String) map.get("wxMsgId");
-                    if (!TextUtils.isEmpty(wxMsgId)) {
-                        FileAttachment fileAttachment = (FileAttachment) message.getAttachment();
-                        boolean isExit = FileUtils.isFileExist(fileAttachment.getDisplayName());
-                        if (!isExit) {
-                            CommonUtil.onGetMediaUrlListener onGetMediaUrlListener = CommonUtil.getMediaUrlListener;
-                            if (onGetMediaUrlListener != null) {
-                                onGetMediaUrlListener.onMediaUrl(message, context,wxMsgId);
-                                ToastHelper.showToast(context, "正在获取语音消息！");
-                                Log.e("fileUrl", fileAttachment.getUrl());
+                    audioControl.startPlayAudioDelay(CLICK_TO_PLAY_AUDIO_DELAY, message, onPlayListener);
+
+                    audioControl.setPlayNext(!NimUIKitImpl.getOptions().disableAutoPlayNextAudio, adapter, message);
+                }
+            });
+            if (CommonUtil.role == CommonUtil.SELLER) {
+                AudioAttachment audioAttachment = (AudioAttachment) message.getAttachment();
+                File file = new File(audioAttachment.getPathForSave());
+                if (!file.exists()) {
+                    Map<String, Object> map = message.getRemoteExtension();
+                    if (map != null) {
+                        String wxMsgId = (String) map.get("wxMsgId");
+                        if (!TextUtils.isEmpty(wxMsgId)) {
+                            AudioAttachment fileAttachment = (AudioAttachment) message.getAttachment();
+                            boolean isExit = FileUtils.isFileExist(fileAttachment.getPath());
+                            if (!isExit) {
+                                CommonUtil.onGetMediaUrlListener onGetMediaUrlListener = CommonUtil.getMediaUrlListener;
+                                if (onGetMediaUrlListener != null) {
+                                    onGetMediaUrlListener.onMediaUrl(message, context,wxMsgId);
+                                    return;
+                                }
                             }
                         }
                     }
                 }
             }
+
             initPlayAnim(); // 设置语音播放动画
 
             audioControl.startPlayAudioDelay(CLICK_TO_PLAY_AUDIO_DELAY, message, onPlayListener);

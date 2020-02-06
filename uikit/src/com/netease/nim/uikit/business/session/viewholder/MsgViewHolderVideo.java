@@ -22,6 +22,7 @@ public class MsgViewHolderVideo extends MsgViewHolderThumbBase {
 
     public MsgViewHolderVideo(BaseMultiItemFetchLoadAdapter adapter) {
         super(adapter);
+
     }
 
     @Override
@@ -31,23 +32,31 @@ public class MsgViewHolderVideo extends MsgViewHolderThumbBase {
 
     @Override
     protected void onItemClick() {
-        Map<String, Object> map = message.getRemoteExtension();
-        if (map != null) {
-            String wxMsgId = (String) map.get("wxMsgId");
-            if (!TextUtils.isEmpty(wxMsgId)) {
-                FileAttachment fileAttachment = (FileAttachment) message.getAttachment();
-                boolean isExit = FileUtils.isFileExist(fileAttachment.getDisplayName());
-                if (!isExit) {
-                    CommonUtil.onGetMediaUrlListener onGetMediaUrlListener = CommonUtil.getMediaUrlListener;
-                    if (onGetMediaUrlListener != null) {
-                        onGetMediaUrlListener.onMediaUrl(message,context,wxMsgId);
-                        ToastHelper.showToast(context,"正在获取视频资源！");
-                        Log.e("fileUrl",fileAttachment.getUrl());
-                    }
-                }
+        CommonUtil.setonDealMediaUrlListener(new CommonUtil.onDealMediaUrlListener() {
+            @Override
+            public void onDealMediaUrl() {
+                WatchVideoActivity.start(context, message);
             }
-        }
-        WatchVideoActivity.start(context, message);
+        });
+       if (CommonUtil.role == CommonUtil.SELLER) {
+           Map<String, Object> map = message.getRemoteExtension();
+           if (map != null) {
+               String wxMsgId = (String) map.get("wxMsgId");
+               if (!TextUtils.isEmpty(wxMsgId)) {
+                   VideoAttachment fileAttachment = (VideoAttachment) message.getAttachment();
+                   if (TextUtils.isEmpty(fileAttachment.getPath())) {
+                       CommonUtil.onGetMediaUrlListener onGetMediaUrlListener = CommonUtil.getMediaUrlListener;
+                       if (onGetMediaUrlListener != null) {
+                           onGetMediaUrlListener.onMediaUrl(message,context,wxMsgId);
+                           return;
+                       }
+                   }
+               }
+           }
+           WatchVideoActivity.start(context, message);
+       }else {
+           WatchVideoActivity.start(context, message);
+       }
     }
 
     @Override

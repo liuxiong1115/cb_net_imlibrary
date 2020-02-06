@@ -274,4 +274,15 @@ public class CommonUtil {
     public interface onGetMediaUrlListener {
         void onMediaUrl(IMMessage imMessage,Context context,String wxMsgId);
     }
+
+    //响应媒体消息获取url
+    public static onDealMediaUrlListener dealMediaUrlListener;
+
+    public static void setonDealMediaUrlListener(onDealMediaUrlListener listener) {
+        dealMediaUrlListener = listener;
+    }
+
+    public interface onDealMediaUrlListener {
+        void onDealMediaUrl();
+    }
 }
