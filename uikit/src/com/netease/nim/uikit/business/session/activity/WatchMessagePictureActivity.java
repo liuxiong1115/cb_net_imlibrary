@@ -609,7 +609,6 @@
 //}
 
 
-
 package com.netease.nim.uikit.business.session.activity;
 
 import android.content.ContentValues;
@@ -690,7 +689,8 @@ import java.util.Map;
  * <p>
  * ********************************* 下载 ****************************************
  * <p>
- * ***********************************图片点击事件********************************************/
+ * ***********************************图片点击事件
+ ********************************************/
 
 
 public class WatchMessagePictureActivity extends UI {
@@ -856,9 +856,13 @@ public class WatchMessagePictureActivity extends UI {
         NIMClient.getService(MsgService.class).queryMessageListByType(MsgTypeEnum.image, anchor, Integer.MAX_VALUE).setCallback(new RequestCallback<List<IMMessage>>() {
             @Override
             public void onSuccess(List<IMMessage> param) {
-                for (IMMessage imMessage : param) {
-                    if (!ImageUtil.isGif(((ImageAttachment) imMessage.getAttachment()).getExtension())){
-                        imageMsgList.add(imMessage);
+                for (int i = 0; i < param.size(); i++) {
+                    if (!ImageUtil.isGif(((ImageAttachment) param.get(i).getAttachment()).getExtension())) {
+                        if (message.getUuid() == imageMsgList.get(i).getUuid()) {
+                            imageMsgList.add(message);
+                        } else {
+                            imageMsgList.add(param.get(i));
+                        }
                     }
                 }
                 // imageMsgList.addAll(param);
@@ -989,8 +993,9 @@ public class WatchMessagePictureActivity extends UI {
             return;
         }
         image = (BaseZoomableImageView) currentLayout.findViewById(R.id.watch_image_view);
-        imageMsgList.set(position,message);
+
         requestOriImage(imageMsgList.get(position));
+
     }
 
     // 若图片已下载，直接显示图片；若图片未下载，则下载图片
@@ -1029,7 +1034,6 @@ public class WatchMessagePictureActivity extends UI {
 // * ******************************** 设置图片 *********************************
 
 
-
     private void setThumbnail(IMMessage msg) {
         String thumbPath = ((ImageAttachment) msg.getAttachment()).getThumbPath();
         String path = ((ImageAttachment) msg.getAttachment()).getPath();
@@ -1059,7 +1063,7 @@ public class WatchMessagePictureActivity extends UI {
             if (map != null) {
                 String wxMsgId = (String) map.get("wxMsgId");
                 if (!TextUtils.isEmpty(wxMsgId)) {
-                  path = ((ImageAttachment) msg.getAttachment()).getUrl();
+                    path = ((ImageAttachment) msg.getAttachment()).getUrl();
                     returnBitMap(path);
 //                    image.setImageBitmap(ImageUtil.getBitmapFromDrawableRes(getImageResOnFailed()));
                     return;
@@ -1080,19 +1084,21 @@ public class WatchMessagePictureActivity extends UI {
             image.setImageBitmap(bitmap);
         }
     }
-    private Handler handlerFile = new Handler(){
+
+    private Handler handlerFile = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             image.setImageBitmap(bitmapFile[0]);
         }
     };
+
     /*
     *    get image from network
     *    @param [String]imageURL
     *    @return [BitMap]image
     */
-    public void returnBitMap(final String url){
+    public void returnBitMap(final String url) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -1103,7 +1109,7 @@ public class WatchMessagePictureActivity extends UI {
                     e.printStackTrace();
                 }
                 try {
-                    HttpURLConnection conn = (HttpURLConnection)imageurl.openConnection();
+                    HttpURLConnection conn = (HttpURLConnection) imageurl.openConnection();
                     conn.setDoInput(true);
                     conn.connect();
                     InputStream is = conn.getInputStream();
@@ -1131,7 +1137,6 @@ public class WatchMessagePictureActivity extends UI {
 // * ********************************* 下载 ****************************************
 
 
-
     private void registerObservers(boolean register) {
         NIMClient.getService(MsgServiceObserve.class).observeMsgStatus(statusObserver, register);
     }
@@ -1143,7 +1148,7 @@ public class WatchMessagePictureActivity extends UI {
                 return;
             }
 
-            if ( isOriginImageHasDownloaded(msg)) {
+            if (isOriginImageHasDownloaded(msg)) {
                 onDownloadSuccess(msg);
             } else if (msg.getAttachStatus() == AttachStatusEnum.fail) {
                 onDownloadFailed();
@@ -1178,7 +1183,7 @@ public class WatchMessagePictureActivity extends UI {
     }
 
     private void onDownloadFailed() {
-        try{
+        try {
             loadingLayout.setVisibility(View.GONE);
             if (mode == MODE_NOMARL) {
                 image.setImageBitmap(ImageUtil.getBitmapFromDrawableRes(getImageResOnFailed()));
@@ -1186,14 +1191,13 @@ public class WatchMessagePictureActivity extends UI {
                 simpleImageView.setImageBitmap(ImageUtil.getBitmapFromDrawableRes(getImageResOnFailed()));
             }
             Toast.makeText(this, R.string.download_picture_fail, Toast.LENGTH_LONG).show();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
 //*
 // * ***********************************图片点击事件*******************************************
-
 
 
     // 设置图片点击事件
@@ -1257,7 +1261,7 @@ public class WatchMessagePictureActivity extends UI {
 
         String srcFilename = attachment.getFileName();
         //默认jpg
-      //  String extension = TextUtils.isEmpty(attachment.getExtension()) ? "jpg" : attachment.getExtension();
+        //  String extension = TextUtils.isEmpty(attachment.getExtension()) ? "jpg" : attachment.getExtension();
         srcFilename += ("." + "jpg");
 
         String picPath = StorageUtil.getSystemImagePath();
