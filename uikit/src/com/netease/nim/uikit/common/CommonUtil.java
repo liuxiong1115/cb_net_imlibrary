@@ -319,7 +319,7 @@ public class CommonUtil {
     //选择外部联系人进行转发
     public static onSelectContactistener selectContactistener;
 
-    public static void setnSelectContactistener(onSelectContactistener listener) {
+    public static void setOnSelectContactistener(onSelectContactistener listener) {
         selectContactistener = listener;
     }
 

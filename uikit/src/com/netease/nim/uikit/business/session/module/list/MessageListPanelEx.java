@@ -1039,19 +1039,13 @@ public class MessageListPanelEx {
                                 @Override
                                 public void onClick() {
                                     forwardMessage = selectedItem;
-                                    if (CommonUtil.role == CommonUtil.SELLER) {
-                                        CommonUtil.onSelectContactistener listener = CommonUtil.selectContactistener;
-                                        if (listener != null) {
-                                            listener.onSelectContact(container.activity, REQUEST_CODE_FORWARD_TEAM);
-                                        }
-                                    } else {
-                                        ContactSelectActivity.Option option1 = new ContactSelectActivity.Option();
-                                        option1.title = "选择转发的群";
-                                        option1.type = ContactSelectActivity.ContactSelectType.TEAM;
-                                        option1.multi = false;
-                                        option1.maxSelectNum = 1;
-                                        NimUIKit.startContactSelector(container.activity, option1, REQUEST_CODE_FORWARD_TEAM);
-                                    }
+                                    ContactSelectActivity.Option option1 = new ContactSelectActivity.Option();
+                                    option1.title = "选择转发的群";
+                                    option1.type = ContactSelectActivity.ContactSelectType.TEAM;
+                                    option1.multi = false;
+                                    option1.maxSelectNum = 1;
+                                    NimUIKit.startContactSelector(container.activity, option1, REQUEST_CODE_FORWARD_TEAM);
+
                                 }
                             });
                             customAlertDialog.show();
@@ -1150,19 +1144,13 @@ public class MessageListPanelEx {
                     adapter.notifyDataSetChanged();
                     messageFragment.inputPanel.showLayout();
                     messageFragment.forwardPanel.hideLayout();
-                    if (CommonUtil.role == CommonUtil.SELLER) {
-                        CommonUtil.onSelectContactistener listener = CommonUtil.selectContactistener;
-                        if (listener != null) {
-                            listener.onSelectContact(container.activity, REQUEST_CODE_FORWARD_TEAM);
-                        }
-                    } else {
-                        ContactSelectActivity.Option option1 = new ContactSelectActivity.Option();
-                        option1.title = "选择转发的群";
-                        option1.type = ContactSelectActivity.ContactSelectType.TEAM;
-                        option1.multi = false;
-                        option1.maxSelectNum = 1;
-                        NimUIKit.startContactSelector(container.activity, option1, REQUEST_CODE_FORWARD_TEAM);
-                    }
+                    ContactSelectActivity.Option option1 = new ContactSelectActivity.Option();
+                    option1.title = "选择转发的群";
+                    option1.type = ContactSelectActivity.ContactSelectType.TEAM;
+                    option1.multi = false;
+                    option1.maxSelectNum = 1;
+                    NimUIKit.startContactSelector(container.activity, option1, REQUEST_CODE_FORWARD_TEAM);
+
 
                 }
             });
