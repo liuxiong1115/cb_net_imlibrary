@@ -28,6 +28,7 @@ import com.netease.nim.uikit.business.robot.parser.elements.group.LinkElement;
 import com.netease.nim.uikit.business.session.activity.P2PMessageActivity;
 import com.netease.nim.uikit.business.session.activity.TeamMessageActivity;
 import com.netease.nim.uikit.business.session.activity.VoiceTrans;
+import com.netease.nim.uikit.business.session.activity.WatchMessagePictureActivity;
 import com.netease.nim.uikit.business.session.audio.MessageAudioControl;
 import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nim.uikit.business.session.helper.MessageHelper;
@@ -1000,41 +1001,57 @@ public class MessageListPanelEx {
                                         Toast.makeText(container.activity, "revoke msg failed, code:" + code, Toast.LENGTH_SHORT).show();
                                     }
                                 }
+
                                 @Override
                                 public void onException(Throwable exception) {
                                 }
                             });
                             break;
-                            case "收藏":
-                                CommonUtil.onCollectionListener onCollectionListener = CommonUtil.collectionListener;
-                                if (onCollectionListener != null) {
-                                    onCollectionListener.onCollection(selectedItem,container.activity);
-                                }
-                                break;
+                        case "收藏":
+                            CommonUtil.onCollectionListener onCollectionListener = CommonUtil.collectionListener;
+                            if (onCollectionListener != null) {
+                                onCollectionListener.onCollection(selectedItem, container.activity);
+                            }
+                            break;
                         case "转发":
                             CustomAlertDialog customAlertDialog = new CustomAlertDialog(container.activity);
                             customAlertDialog.addItem("转发到个人", new CustomAlertDialog.onSeparateItemClickListener() {
                                 @Override
                                 public void onClick() {
                                     forwardMessage = selectedItem;
-                                    ContactSelectActivity.Option option = new ContactSelectActivity.Option();
-                                    option.title = "选择转发的人";
-                                    option.type = ContactSelectActivity.ContactSelectType.BUDDY;
-                                    option.multi = false;
-                                    option.maxSelectNum = 1;
-                                    NimUIKit.startContactSelector(container.activity, option, REQUEST_CODE_FORWARD_PERSON);
+                                    if (CommonUtil.role == CommonUtil.SELLER) {
+                                        CommonUtil.onSelectContactistener listener = CommonUtil.selectContactistener;
+                                        if (listener != null) {
+                                            listener.onSelectContact(container.activity, REQUEST_CODE_FORWARD_PERSON);
+                                        }
+                                    } else {
+                                        ContactSelectActivity.Option option = new ContactSelectActivity.Option();
+                                        option.title = "选择转发的人";
+                                        option.type = ContactSelectActivity.ContactSelectType.BUDDY;
+                                        option.multi = false;
+                                        option.maxSelectNum = 1;
+                                        NimUIKit.startContactSelector(container.activity, option, REQUEST_CODE_FORWARD_PERSON);
+                                    }
+
                                 }
                             });
                             customAlertDialog.addItem("转发到群组", new CustomAlertDialog.onSeparateItemClickListener() {
                                 @Override
                                 public void onClick() {
                                     forwardMessage = selectedItem;
-                                    ContactSelectActivity.Option option1 = new ContactSelectActivity.Option();
-                                    option1.title = "选择转发的群";
-                                    option1.type = ContactSelectActivity.ContactSelectType.TEAM;
-                                    option1.multi = false;
-                                    option1.maxSelectNum = 1;
-                                    NimUIKit.startContactSelector(container.activity, option1, REQUEST_CODE_FORWARD_TEAM);
+                                    if (CommonUtil.role == CommonUtil.SELLER) {
+                                        CommonUtil.onSelectContactistener listener = CommonUtil.selectContactistener;
+                                        if (listener != null) {
+                                            listener.onSelectContact(container.activity, REQUEST_CODE_FORWARD_TEAM);
+                                        }
+                                    } else {
+                                        ContactSelectActivity.Option option1 = new ContactSelectActivity.Option();
+                                        option1.title = "选择转发的群";
+                                        option1.type = ContactSelectActivity.ContactSelectType.TEAM;
+                                        option1.multi = false;
+                                        option1.maxSelectNum = 1;
+                                        NimUIKit.startContactSelector(container.activity, option1, REQUEST_CODE_FORWARD_TEAM);
+                                    }
                                 }
                             });
                             customAlertDialog.show();
@@ -1111,12 +1128,19 @@ public class MessageListPanelEx {
                     adapter.notifyDataSetChanged();
                     messageFragment.inputPanel.showLayout();
                     messageFragment.forwardPanel.hideLayout();
-                    ContactSelectActivity.Option option = new ContactSelectActivity.Option();
-                    option.title = "选择转发的人";
-                    option.type = ContactSelectActivity.ContactSelectType.BUDDY;
-                    option.multi = false;
-                    option.maxSelectNum = 1;
-                    NimUIKit.startContactSelector(container.activity, option, REQUEST_CODE_FORWARD_PERSON);
+                    if (CommonUtil.role == CommonUtil.SELLER) {
+                        CommonUtil.onSelectContactistener listener = CommonUtil.selectContactistener;
+                        if (listener != null) {
+                            listener.onSelectContact(container.activity, REQUEST_CODE_FORWARD_PERSON);
+                        }
+                    } else {
+                        ContactSelectActivity.Option option = new ContactSelectActivity.Option();
+                        option.title = "选择转发的人";
+                        option.type = ContactSelectActivity.ContactSelectType.BUDDY;
+                        option.multi = false;
+                        option.maxSelectNum = 1;
+                        NimUIKit.startContactSelector(container.activity, option, REQUEST_CODE_FORWARD_PERSON);
+                    }
                 }
             });
             customAlertDialog.addItem("转发到群组", new CustomAlertDialog.onSeparateItemClickListener() {
@@ -1126,12 +1150,20 @@ public class MessageListPanelEx {
                     adapter.notifyDataSetChanged();
                     messageFragment.inputPanel.showLayout();
                     messageFragment.forwardPanel.hideLayout();
-                    ContactSelectActivity.Option option1 = new ContactSelectActivity.Option();
-                    option1.title = "选择转发的群";
-                    option1.type = ContactSelectActivity.ContactSelectType.TEAM;
-                    option1.multi = false;
-                    option1.maxSelectNum = 1;
-                    NimUIKit.startContactSelector(container.activity, option1, REQUEST_CODE_FORWARD_TEAM);
+                    if (CommonUtil.role == CommonUtil.SELLER) {
+                        CommonUtil.onSelectContactistener listener = CommonUtil.selectContactistener;
+                        if (listener != null) {
+                            listener.onSelectContact(container.activity, REQUEST_CODE_FORWARD_TEAM);
+                        }
+                    } else {
+                        ContactSelectActivity.Option option1 = new ContactSelectActivity.Option();
+                        option1.title = "选择转发的群";
+                        option1.type = ContactSelectActivity.ContactSelectType.TEAM;
+                        option1.multi = false;
+                        option1.maxSelectNum = 1;
+                        NimUIKit.startContactSelector(container.activity, option1, REQUEST_CODE_FORWARD_TEAM);
+                    }
+
                 }
             });
             customAlertDialog.show();
@@ -1268,6 +1300,14 @@ public class MessageListPanelEx {
 
         // 长按菜单项 -- 听筒扬声器切换
         private void longClickItemEarPhoneMode(MsgTypeEnum msgType, List<String> list) {
+        }
+
+        // 长按菜单项 -- 转发到个人
+        private void longClickItemForwardToPerson(final IMMessage item, CustomAlertDialog alertDialog) {
+            alertDialog.addItem(container.activity.getString(R.string.forward_to_person), new CustomAlertDialog.onSeparateItemClickListener() {
+
+                @Override
+                public void onClick() {
 //            if (msgType != MsgTypeEnum.audio) return;
 //
 //            String content = UserPreferences.isEarPhoneModeEnable() ? "切换成扬声器播放" : "切换成听筒播放";
@@ -1280,14 +1320,6 @@ public class MessageListPanelEx {
 //                    setEarPhoneMode(!UserPreferences.isEarPhoneModeEnable(), true);
 //                }
 //            });
-        }
-
-        // 长按菜单项 -- 转发到个人
-        private void longClickItemForwardToPerson(final IMMessage item, CustomAlertDialog alertDialog) {
-            alertDialog.addItem(container.activity.getString(R.string.forward_to_person), new CustomAlertDialog.onSeparateItemClickListener() {
-
-                @Override
-                public void onClick() {
                     forwardMessage = item;
                     ContactSelectActivity.Option option = new ContactSelectActivity.Option();
                     option.title = "选择转发的人";
@@ -1565,7 +1597,15 @@ public class MessageListPanelEx {
             Toast.makeText(container.activity, "该类型不支持转发", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        if (CommonUtil.role == CommonUtil.SELLER) {
+            Map<String, Object> map = message.getRemoteExtension();
+            if (map != null) {
+                String messageService = (String) map.get("fromMessageService");
+                if (!TextUtils.isEmpty(messageService)) {
+                    map.put("fromMessageService", null);
+                }
+            }
+        }
         NIMClient.getService(MsgService.class).sendMessage(message, false);
         if (container.account.equals(sessionId)) {
             onMsgSend(message);
@@ -1586,10 +1626,22 @@ public class MessageListPanelEx {
             return;
         }
 
+        if (CommonUtil.role == CommonUtil.SELLER) {
+            Map<String, Object> map = message.getRemoteExtension();
+            if (map != null) {
+                String messageService = (String) map.get("fromMessageService");
+                if (!TextUtils.isEmpty(messageService)) {
+                    map.put("fromMessageService", null);
+                }
+            }
+        }
+
+
         NIMClient.getService(MsgService.class).sendMessage(message, false);
         if (container.account.equals(sessionId)) {
             onMsgSend(message);
         }
+
     }
 
     private IMMessage buildForwardRobotMessage(final String sessionId, SessionTypeEnum sessionTypeEnum) {
@@ -1633,6 +1685,7 @@ public class MessageListPanelEx {
         }
         MsgAttachment msgAttachment = CommonUtil.forwardAttachment;
         IMMessage message = MessageBuilder.createCustomMessage(sessionId, sessionTypeEnum, "聊天记录", msgAttachment);
+
         NIMClient.getService(MsgService.class).sendMessage(message, false);
         if (container.account.equals(sessionId)) {
             onMsgSend(message);

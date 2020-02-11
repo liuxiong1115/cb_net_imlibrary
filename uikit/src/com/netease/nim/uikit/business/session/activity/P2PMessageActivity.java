@@ -119,42 +119,44 @@ public class P2PMessageActivity extends BaseMessageActivity {
                 }
             }
             if (!TextUtils.isEmpty(session)) {
-                if (session.startsWith("stud")) {
-                    NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(session);
-                    if (nimUserInfo != null) {
-                        String content = nimUserInfo.getExtension();
-                        if (!TextUtils.isEmpty(content)) {
-                            Log.e("userInfo", content.toString());
-                            try {
-                                org.json.JSONObject jsonObject = new org.json.JSONObject(content);
-                                isActiva = jsonObject.getInt("activa");
-                                Integer type = jsonObject.getInt("isInternal");
-                                wxNo = jsonObject.optString("wxNo");
-                                if (type == 0) {  //内部
-                                  return;
-                                } else {
-                                    CommonUtil.AddUserInfoListener listener = CommonUtil.addUserInfoListener;
-                                    if (listener != null) {
-                                        listener.addUserInfo(P2PMessageActivity.this, sessionId);
-                                    }
-                                    if (isActiva == 0) { //未激活
-                                        toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
-                                    } else {
-                                        toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.nim_ic_messge_history));
-                                        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                                        return;
-                                    }
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                            }
-                        }
-                    }
+                toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.nim_ic_messge_history));
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+//                if (session.startsWith("stud")) {
+//                    NimUserInfo nimUserInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(session);
+//                    if (nimUserInfo != null) {
+//                        String content = nimUserInfo.getExtension();
+//                        if (!TextUtils.isEmpty(content)) {
+//                            Log.e("userInfo", content.toString());
+//                            try {
+//                                org.json.JSONObject jsonObject = new org.json.JSONObject(content);
+//                                isActiva = jsonObject.getInt("activa");
+//                                Integer type = jsonObject.getInt("isInternal");
+//                                wxNo = jsonObject.optString("wxNo");
+//                                if (type == 0) {  //内部
+//                                  return;
+//                                } else {
+//                                    CommonUtil.AddUserInfoListener listener = CommonUtil.addUserInfoListener;
+//                                    if (listener != null) {
+//                                        listener.addUserInfo(P2PMessageActivity.this, sessionId);
+//                                    }
+//                                    if (isActiva == 0) { //未激活
+//                                        toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.action_bar_black_more_icon));
+//                                    } else {
+//                                        toolbar.setMenuDrawable(getResources().getDrawable(R.drawable.nim_ic_messge_history));
+//                                        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+//                                        return;
+//                                    }
+//                                }
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+//                            }
+//                        }
+ //           }
                 }
             }
-            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        }
+//            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+  //      }
     }
 
 
@@ -199,7 +201,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
                     toolbar.setSubtitleTextColor(getResources().getColor(R.color.color_aaaaaa_content_text));
                     CommonUtil.onGetFriendWxIdListener onGetFriendWxIdListener = CommonUtil.getFriendWxIdListener;
                     if (onGetFriendWxIdListener != null) {
-                        onGetFriendWxIdListener.onFriendWxId(source,sessionId,toolbar);
+                        onGetFriendWxIdListener.onFriendWxId(source,session,toolbar);
                     }
                  //   toolbar.setSubtitle(source == null ? "" : source);
 
@@ -355,15 +357,15 @@ public class P2PMessageActivity extends BaseMessageActivity {
                 listener.deleted(sessionId);
             }
         } else {
-            if (isActiva == 0) {
-                drawerLayout.openDrawer(Gravity.RIGHT);
-            } else {
-                CommonUtil.CheckHistoryMessageListener listener = CommonUtil.checkHistoryMessageListener;
-                if (listener != null) {
-                    listener.checkMessage(wxNo, session);
-                }
+//             if (isActiva == 0) {
+//                drawerLayout.openDrawer(Gravity.RIGHT);
+//        } else {
+            CommonUtil.CheckHistoryMessageListener listener = CommonUtil.checkHistoryMessageListener;
+            if (listener != null) {
+                listener.checkMessage(wxNo, session);
             }
-        }
+ //       }
+    }
     }
 
     @Override

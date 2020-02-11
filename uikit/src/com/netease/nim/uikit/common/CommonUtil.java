@@ -57,7 +57,7 @@ public class CommonUtil {
         if (null == url) {
             return url;
         }
-        boolean sta = url.startsWith("http://");
+        boolean sta = url.startsWith("http://") || url.startsWith("https://");
         if (sta) {
             return url;
         }
@@ -314,5 +314,17 @@ public class CommonUtil {
 
     public interface onDealAudioMediaUrlListener {
         void onDealAudioMediaUrl();
+    }
+
+    //选择外部联系人进行转发
+    public static onSelectContactistener selectContactistener;
+
+    public static void setnSelectContactistener(onSelectContactistener listener) {
+        selectContactistener = listener;
+    }
+
+    public interface onSelectContactistener {
+        void onSelectContact(Context context,int requestCode);
+
     }
 }
