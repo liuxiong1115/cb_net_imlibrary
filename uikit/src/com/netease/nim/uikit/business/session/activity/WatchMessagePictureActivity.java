@@ -858,7 +858,7 @@ public class WatchMessagePictureActivity extends UI {
             public void onSuccess(List<IMMessage> param) {
                 for (int i = 0; i < param.size(); i++) {
                     if (!ImageUtil.isGif(((ImageAttachment) param.get(i).getAttachment()).getExtension())) {
-                        if (message.getUuid() == imageMsgList.get(i).getUuid()) {
+                        if (message.getUuid() == param.get(i).getUuid()) {
                             imageMsgList.add(message);
                         } else {
                             imageMsgList.add(param.get(i));
