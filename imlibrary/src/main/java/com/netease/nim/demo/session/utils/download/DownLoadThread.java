@@ -49,6 +49,14 @@ public class DownLoadThread extends Thread {
                 urlConn.setRequestMethod("GET");
                 urlConn.setRequestProperty("User-Agent", " Mozilla/5.0 (Windows NT 6.viewpager_1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.120 Safari/537.36");
                 urlConn.setRequestProperty("Accept-Encoding", "identity");
+                int code = urlConn.getResponseCode();
+                if(301 == code || 302 == code) {
+                    String redirectUrl = urlConn.getHeaderField("Location");
+                    if(redirectUrl != null && !redirectUrl.isEmpty()) {
+                        path = redirectUrl;
+                    }
+                }
+
                 fileSize = urlConn.getContentLength();
                 if(listener != null){
                     listener.onStart(DownLoadThread.this , fileSize);

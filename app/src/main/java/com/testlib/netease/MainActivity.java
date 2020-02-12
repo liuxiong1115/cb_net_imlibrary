@@ -102,10 +102,10 @@ public class MainActivity extends AppCompatActivity {
         final String token = "e0fd8d49ce019f1b914d24e4a743989b";*/
 //        final String account = "CRM191";
 //        final String token = "2efc97f01cd1b00f39cb37520684fcfe";
-        final String account = "crm72";
-        final String token = "e8900e72002f73a243e02434796ae324";
-//        final String account = "uc1t115";
-//        final String token = "99161490c616501fcc7df3ac6069d925";
+//        final String account = "crm72";
+//        final String token = "e8900e72002f73a243e02434796ae324";
+        final String account = "uc1t101";
+        final String token = "531734c25c8bd5d81c1f13b42649a11b";
         // 登录
         loginRequest = NimUIKit.login(new LoginInfo(account.toLowerCase(), token), new RequestCallback<LoginInfo>() {
             @Override

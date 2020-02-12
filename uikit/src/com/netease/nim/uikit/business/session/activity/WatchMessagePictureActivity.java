@@ -1000,8 +1000,10 @@ public class WatchMessagePictureActivity extends UI {
 
     // 若图片已下载，直接显示图片；若图片未下载，则下载图片
     private void requestOriImage(IMMessage msg) {
+        ImageAttachment imageAttachment = (ImageAttachment) msg.getAttachment();
+        imageAttachment.setUrl( imageAttachment.getUrl().replace("https","http"));
         if (CommonUtil.role == CommonUtil.SELLER) {
-            Map<String, Object> map = message.getRemoteExtension();
+            Map<String, Object> map = msg.getRemoteExtension();
             if (map != null) {
                 String wxMsgId = (String) map.get("wxMsgId");
                 if (!TextUtils.isEmpty(wxMsgId)) {
@@ -1059,7 +1061,7 @@ public class WatchMessagePictureActivity extends UI {
         String path = null;
         path = ((ImageAttachment) msg.getAttachment()).getPath();
         if (CommonUtil.role == CommonUtil.SELLER) {
-            Map<String, Object> map = message.getRemoteExtension();
+            Map<String, Object> map = msg.getRemoteExtension();
             if (map != null) {
                 String wxMsgId = (String) map.get("wxMsgId");
                 if (!TextUtils.isEmpty(wxMsgId)) {

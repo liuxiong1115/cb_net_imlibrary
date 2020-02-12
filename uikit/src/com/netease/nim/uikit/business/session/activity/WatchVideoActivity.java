@@ -136,7 +136,8 @@ public class WatchVideoActivity extends UI implements Callback {
         parseIntent();
         findViews();
         initActionbar();
-
+        VideoAttachment imageAttachment = (VideoAttachment) message.getAttachment();
+        imageAttachment.setUrl( imageAttachment.getUrl().replace("https","http"));
         showVideoInfo();
 
         registerObservers(true);
