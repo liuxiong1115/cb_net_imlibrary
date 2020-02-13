@@ -179,10 +179,10 @@ public abstract class MsgViewHolderThumbBase extends MsgViewHolderBase {
         FileAttachment msgAttachment = (FileAttachment) message.getAttachment();
         String path = msgAttachment.getPath();
         String thumbPath = msgAttachment.getThumbPath();
-        if (!TextUtils.isEmpty(path)) {
+        if (!TextUtils.isEmpty(thumbPath)) {
+            loadThumbnailImage(thumbPath, false, msgAttachment.getExtension(), msgAttachment);
+        }else if (!TextUtils.isEmpty(path)) {
             loadThumbnailImage(thumbFromSourceFile(path), true, msgAttachment.getExtension(),msgAttachment);
-        } else if (!TextUtils.isEmpty(thumbPath)) {
-            loadThumbnailImage(thumbPath, false, msgAttachment.getExtension(),msgAttachment);
         } else {
             loadThumbnailImage(null, false, msgAttachment.getExtension(),msgAttachment);
             if (message.getAttachStatus() == AttachStatusEnum.transferred || message.getAttachStatus() == AttachStatusEnum.def) {

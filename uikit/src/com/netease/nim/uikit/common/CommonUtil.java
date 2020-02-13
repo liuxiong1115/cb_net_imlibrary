@@ -261,7 +261,7 @@ public class CommonUtil {
     }
 
     public interface onGetFriendWxIdListener {
-        void onFriendWxId(String wxNo, String sessionId, MyToolbar toolbar);
+        void onFriendWxId(Context context,String wxNo, String sessionId, MyToolbar toolbar);
     }
 
     //媒体消息获取url

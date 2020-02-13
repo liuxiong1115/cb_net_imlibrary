@@ -1,5 +1,6 @@
 package com.netease.nim.uikit.business.session.activity;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -10,6 +11,7 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -29,14 +31,19 @@ import com.netease.nim.uikit.api.wrapper.NimToolBarOptions;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.activity.ToolBarOptions;
 import com.netease.nim.uikit.common.activity.UI;
+import com.netease.nim.uikit.common.ui.dialog.CustomAlertDialog;
+import com.netease.nim.uikit.common.util.C;
+import com.netease.nim.uikit.common.util.file.AttachmentStore;
 import com.netease.nim.uikit.common.util.file.FileUtil;
+import com.netease.nim.uikit.common.util.storage.StorageUtil;
 import com.netease.nim.uikit.common.util.sys.TimeUtil;
 import com.netease.nimlib.sdk.AbortableFuture;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
-import com.netease.nimlib.sdk.msg.attachment.ImageAttachment;
+import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
+import com.netease.nimlib.sdk.msg.attachment.VideoAttachment;
 import com.netease.nimlib.sdk.msg.attachment.VideoAttachment;
 import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum;
 import com.netease.nimlib.sdk.msg.model.AttachmentProgress;
@@ -104,6 +111,7 @@ public class WatchVideoActivity extends UI implements Callback {
 
     private final static int PLAY_STATE_PAUSE = 3;
 
+    protected CustomAlertDialog alertDialog;
     // download control
     private boolean downloading;
     private ImageView downloadBtn;
@@ -136,8 +144,8 @@ public class WatchVideoActivity extends UI implements Callback {
         parseIntent();
         findViews();
         initActionbar();
-        VideoAttachment imageAttachment = (VideoAttachment) message.getAttachment();
-        imageAttachment.setUrl( imageAttachment.getUrl().replace("https","http"));
+        VideoAttachment VideoAttachment = (VideoAttachment) message.getAttachment();
+        VideoAttachment.setUrl( VideoAttachment.getUrl().replace("https","http"));
         showVideoInfo();
 
         registerObservers(true);
@@ -179,6 +187,7 @@ public class WatchVideoActivity extends UI implements Callback {
     }
 
     private void findViews() {
+        alertDialog = new CustomAlertDialog(this);
         downloadLayout = findViewById(R.id.layoutDownload);
         downloadProgressBackground = findViewById(R.id.downloadProgressBackground);
         downloadProgressForeground = findViewById(R.id.downloadProgressForeground);
@@ -547,12 +556,73 @@ public class WatchVideoActivity extends UI implements Callback {
                 }
             }
         });
+        surfaceView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showWatchVideoAction();
+                return false;
+            }
+        });
         playVideo();
+    }
+
+    protected void showWatchVideoAction() {
+        if (alertDialog.isShowing()) {
+            alertDialog.dismiss();
+            return;
+        }
+        alertDialog.clearData();
+        String path = ((VideoAttachment) message.getAttachment()).getThumbPath();
+        if (TextUtils.isEmpty(path)) {
+            return;
+        }
+        String title;
+        if (!TextUtils.isEmpty(((VideoAttachment) message.getAttachment()).getPath())) {
+            title = getString(R.string.save_to_device);
+            alertDialog.addItem(title, new CustomAlertDialog.onSeparateItemClickListener() {
+
+                @Override
+                public void onClick() {
+                    saveVideo();
+                }
+            });
+        }
+        alertDialog.show();
+    }
+
+    // 保存视频
+    public void saveVideo() {
+        VideoAttachment attachment = (VideoAttachment) message.getAttachment();
+        String path = attachment.getPath();
+        if (TextUtils.isEmpty(path)) {
+            return;
+        }
+
+        String srcFilename = attachment.getFileName();
+        //默认jpg
+          String extension = TextUtils.isEmpty(attachment.getExtension()) ? "mp4" : attachment.getExtension();
+        srcFilename += ("." + extension);
+
+        String picPath = StorageUtil.getSystemImagePath();
+        String dstPath = picPath + srcFilename;
+        if (AttachmentStore.copy(path, dstPath) != -1) {
+            try {
+                ContentValues values = new ContentValues(2);
+                values.put(MediaStore.Video.Media.MIME_TYPE, C.MimeType.MIME_VIDEO_3GPP);
+                values.put(MediaStore.Video.Media.DATA, dstPath);
+                getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
+                Toast.makeText(WatchVideoActivity.this, "保存成功", Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                // may be java.lang.UnsupportedOperationException
+                Toast.makeText(WatchVideoActivity.this,"保存失败", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(WatchVideoActivity.this, "保存失败", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void onDownloadFailed() {
         downloadFuture = null;
-
         downloadLayout.setVisibility(View.GONE);
         Toast.makeText(WatchVideoActivity.this, R.string.download_video_fail, Toast.LENGTH_SHORT).show();
     }

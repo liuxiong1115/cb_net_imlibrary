@@ -705,7 +705,7 @@ public class WatchMessagePictureActivity extends UI {
     final Bitmap[] bitmapFile = {null};
 
     private Handler handler;
-    private IMMessage message;
+    private IMMessage message,downloadMeassage;
     private boolean isShowMenu;
     private List<IMMessage> imageMsgList = new ArrayList<>();
     private int firstDisplayImageIndex = 0;
@@ -1000,8 +1000,10 @@ public class WatchMessagePictureActivity extends UI {
 
     // 若图片已下载，直接显示图片；若图片未下载，则下载图片
     private void requestOriImage(IMMessage msg) {
+
         ImageAttachment imageAttachment = (ImageAttachment) msg.getAttachment();
         imageAttachment.setUrl( imageAttachment.getUrl().replace("https","http"));
+        downloadMeassage = msg;
         if (CommonUtil.role == CommonUtil.SELLER) {
             Map<String, Object> map = msg.getRemoteExtension();
             if (map != null) {
@@ -1061,7 +1063,7 @@ public class WatchMessagePictureActivity extends UI {
         String path = null;
         path = ((ImageAttachment) msg.getAttachment()).getPath();
         if (CommonUtil.role == CommonUtil.SELLER) {
-            Map<String, Object> map = msg.getRemoteExtension();
+            Map<String, Object> map = message.getRemoteExtension();
             if (map != null) {
                 String wxMsgId = (String) map.get("wxMsgId");
                 if (!TextUtils.isEmpty(wxMsgId)) {
@@ -1080,8 +1082,10 @@ public class WatchMessagePictureActivity extends UI {
         Bitmap bitmap = BitmapDecoder.decodeSampledForDisplay(path, false);
         bitmap = ImageUtil.rotateBitmapInNeeded(path, bitmap);
         if (bitmap == null) {
-            Toast.makeText(this, R.string.picker_image_error, Toast.LENGTH_LONG).show();
-            image.setImageBitmap(ImageUtil.getBitmapFromDrawableRes(getImageResOnFailed()));
+            path = ((ImageAttachment) msg.getAttachment()).getUrl();
+            returnBitMap(path);
+//            Toast.makeText(this, R.string.picker_image_error, Toast.LENGTH_LONG).show();
+//            image.setImageBitmap(ImageUtil.getBitmapFromDrawableRes(getImageResOnFailed()));
         } else {
             image.setImageBitmap(bitmap);
         }
@@ -1188,7 +1192,8 @@ public class WatchMessagePictureActivity extends UI {
         try {
             loadingLayout.setVisibility(View.GONE);
             if (mode == MODE_NOMARL) {
-                image.setImageBitmap(ImageUtil.getBitmapFromDrawableRes(getImageResOnFailed()));
+                returnBitMap(((ImageAttachment)downloadMeassage.getAttachment()).getUrl());
+            //    image.setImageBitmap(ImageUtil.getBitmapFromDrawableRes(getImageResOnFailed()));
             } else if (mode == MODE_GIF) {
                 simpleImageView.setImageBitmap(ImageUtil.getBitmapFromDrawableRes(getImageResOnFailed()));
             }

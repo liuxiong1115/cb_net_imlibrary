@@ -1544,28 +1544,28 @@ public class MessageListPanelEx {
                 case REQUEST_CODE_FORWARD_TEAM:
                     if (isStep) {
                         for (int i = 0; i < selectMsg.size(); i++) {
-                            onForwardMessage(selected.get(0), SessionTypeEnum.Team, selectMsg.get(i));
+                            onForwardMessage(selected.get(0) == null ?"":selected.get(0), SessionTypeEnum.Team, selectMsg.get(i));
                         }
                         isStep = false;
                     } else if (isMerge) {  //合并转发群
                         isMerge = false;
                         // onForwardMessage(selected.get(0),SessionTypeEnum.Team,selectMsg.get(0));
-                        createForward(selected.get(0), SessionTypeEnum.Team);
+                        createForward(selected.get(0) == null ?"":selected.get(0), SessionTypeEnum.Team);
                     } else {
-                        doForwardMessage(selected.get(0), SessionTypeEnum.Team);
+                        doForwardMessage(selected.get(0) == null ?"":selected.get(0), SessionTypeEnum.Team);
                     }
                     break;
                 case REQUEST_CODE_FORWARD_PERSON:
                     if (isStep) {
                         for (int i = 0; i < selectMsg.size(); i++) {
-                            onForwardMessage(selected.get(0), SessionTypeEnum.P2P, selectMsg.get(i));
+                            onForwardMessage(selected.get(0) == null ?"":selected.get(0), SessionTypeEnum.P2P, selectMsg.get(i));
                         }
                         isStep = false;
                     } else if (isMerge) {
                         isMerge = false;
-                        createForward(selected.get(0), SessionTypeEnum.P2P);
+                        createForward(selected.get(0) == null ?"":selected.get(0), SessionTypeEnum.P2P);
                     } else {
-                        doForwardMessage(selected.get(0), SessionTypeEnum.P2P);
+                        doForwardMessage(selected.get(0) == null ?"":selected.get(0), SessionTypeEnum.P2P);
                     }
                     break;
             }
@@ -1617,8 +1617,8 @@ public class MessageListPanelEx {
         if (CommonUtil.role == CommonUtil.SELLER) {
             Map<String, Object> map = message.getRemoteExtension();
             if (map != null) {
-                String messageService = (String) map.get("fromMessageService");
-                if (!TextUtils.isEmpty(messageService)) {
+                Object messageService = map.get("fromMessageService");
+                if (messageService != null) {
                     map.put("fromMessageService", null);
                 }
             }

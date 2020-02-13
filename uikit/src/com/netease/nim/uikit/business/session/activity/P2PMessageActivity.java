@@ -201,7 +201,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
                     toolbar.setSubtitleTextColor(getResources().getColor(R.color.color_aaaaaa_content_text));
                     CommonUtil.onGetFriendWxIdListener onGetFriendWxIdListener = CommonUtil.getFriendWxIdListener;
                     if (onGetFriendWxIdListener != null) {
-                        onGetFriendWxIdListener.onFriendWxId(source,session,toolbar);
+                        onGetFriendWxIdListener.onFriendWxId(this,source,session,toolbar);
                     }
                  //   toolbar.setSubtitle(source == null ? "" : source);
 
