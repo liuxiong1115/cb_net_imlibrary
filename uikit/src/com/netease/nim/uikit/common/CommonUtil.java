@@ -325,6 +325,27 @@ public class CommonUtil {
 
     public interface onSelectContactistener {
         void onSelectContact(Context context,int requestCode);
+    }
 
+    //添加名片信息
+    public static onAddCardMessageListener addCardMessageListener;
+
+    public static void setOnAddCardMessageListener(onAddCardMessageListener listener) {
+        addCardMessageListener = listener;
+    }
+
+    public interface onAddCardMessageListener {
+        void onAddCardMessage(Context context, MsgAttachment msgAttachment);
+    }
+
+    //添加名片信息
+    public static onEditWxAliasListener editWxAliasListener;
+
+    public static void setOnEditWxAliasListener(onEditWxAliasListener listener) {
+        editWxAliasListener = listener;
+    }
+
+    public interface onEditWxAliasListener {
+        void onEditWxAlias(Context context, String content,String alias);
     }
 }

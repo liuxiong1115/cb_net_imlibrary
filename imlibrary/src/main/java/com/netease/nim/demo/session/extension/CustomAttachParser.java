@@ -54,6 +54,9 @@ public class CustomAttachParser implements MsgAttachmentParser {
                 case CustomAttachmentType.avChatCall: //语音通话
                     attachment = new CustomAvChatAttachment();
                     break;
+                case CustomAttachmentType.CardMessage: //名片信息
+                    attachment = new CardAttachment();
+                    break;
                 default:   //自定义
                     attachment = new DefaultCustomAttachment();
                     break;

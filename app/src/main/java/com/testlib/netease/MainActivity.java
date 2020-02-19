@@ -13,8 +13,10 @@ import com.netease.nim.demo.DemoCache;
 import com.netease.nim.demo.config.preference.Preferences;
 import com.netease.nim.demo.config.preference.UserPreferences;
 import com.netease.nim.demo.login.LoginActivity;
+import com.netease.nim.demo.session.extension.CardAttachment;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.common.CommonUtil;
+import com.netease.nim.uikit.common.ToastHelper;
 import com.netease.nim.uikit.common.ui.dialog.DialogMaker;
 import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nimlib.sdk.AbortableFuture;
@@ -24,6 +26,7 @@ import com.netease.nimlib.sdk.StatusBarNotificationConfig;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
 import com.netease.nimlib.sdk.msg.attachment.ImageAttachment;
+import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 import com.netease.nimlib.sdk.msg.attachment.VideoAttachment;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.vincent.filepicker.Constant;
@@ -102,10 +105,10 @@ public class MainActivity extends AppCompatActivity {
         final String token = "e0fd8d49ce019f1b914d24e4a743989b";*/
 //        final String account = "CRM191";
 //        final String token = "2efc97f01cd1b00f39cb37520684fcfe";
-//        final String account = "crm72";
-//        final String token = "e8900e72002f73a243e02434796ae324";
-        final String account = "uc1t101";
-        final String token = "531734c25c8bd5d81c1f13b42649a11b";
+        final String account = "crm72";
+        final String token = "e8900e72002f73a243e02434796ae324";
+//        final String account = "uc1t101";
+//        final String token = "531734c25c8bd5d81c1f13b42649a11b";
         // 登录
         loginRequest = NimUIKit.login(new LoginInfo(account.toLowerCase(), token), new RequestCallback<LoginInfo>() {
             @Override
@@ -150,6 +153,13 @@ public class MainActivity extends AppCompatActivity {
 //                if (listener != null) {
 //                    listener.onDealVideoMediaUrl(imMessage);
 //                }
+//            }
+//        });
+//        CommonUtil.setOnAddCardMessageListener(new CommonUtil.onAddCardMessageListener() {
+//            @Override
+//            public void onAddCardMessage(Context context, MsgAttachment msgAttachment) {
+//                CardAttachment cardAttachment = (CardAttachment) msgAttachment;
+//                ToastHelper.showToast(context,cardAttachment.getType()+"");
 //            }
 //        });
     }

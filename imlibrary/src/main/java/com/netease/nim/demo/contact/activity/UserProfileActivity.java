@@ -82,6 +82,7 @@ public class UserProfileActivity extends UI {
     private RelativeLayout signatureLayout;
     private RelativeLayout aliasLayout;
     private TextView nickText;
+    private TextView aliasText;
 
     // 开关
     private ViewGroup toggleLayout;
@@ -186,6 +187,7 @@ public class UserProfileActivity extends UI {
         signatureLayout = findView(R.id.signature);
         signatureText = signatureLayout.findViewById(R.id.value);
         aliasLayout = findView(R.id.alias);
+        aliasText = aliasLayout.findViewById(R.id.value);
         ((TextView) birthdayLayout.findViewById(R.id.attribute)).setText(R.string.birthday);
         ((TextView) phoneLayout.findViewById(R.id.attribute)).setText(R.string.phone);
         ((TextView) emailLayout.findViewById(R.id.attribute)).setText(R.string.email);
@@ -198,7 +200,11 @@ public class UserProfileActivity extends UI {
         aliasLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserProfileEditItemActivity.startActivity(UserProfileActivity.this, UserConstant.KEY_ALIAS, account);
+              //  UserProfileEditItemActivity.startActivity(UserProfileActivity.this, UserConstant.KEY_ALIAS, account);
+                CommonUtil.onEditWxAliasListener listener = CommonUtil.editWxAliasListener;
+                if (listener != null) {
+                    listener.onEditWxAlias(UserProfileActivity.this,account,NimUIKit.getContactProvider().getAlias(account));
+                }
             }
         });
     }
@@ -374,6 +380,10 @@ public class UserProfileActivity extends UI {
             nickText.setVisibility(View.GONE);
             nameText.setText(UserInfoHelper.getUserName(account));
         }
+        aliasLayout.setVisibility(View.VISIBLE);
+        aliasLayout.findViewById(R.id.arrow_right).setVisibility(View.VISIBLE);
+        String alias = NimUIKit.getContactProvider().getAlias(account);
+        aliasText.setText(alias == null ? "" : alias);
     }
 
     private SwitchButton.OnChangedListener onChangedListener = new SwitchButton.OnChangedListener() {

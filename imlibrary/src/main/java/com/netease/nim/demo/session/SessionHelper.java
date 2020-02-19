@@ -19,6 +19,7 @@ import com.netease.nim.demo.session.action.TeamAVChatAction;
 import com.netease.nim.demo.session.activity.AckMsgInfoActivity;
 import com.netease.nim.demo.session.activity.MessageHistoryActivity;
 import com.netease.nim.demo.session.activity.MessageInfoActivity;
+import com.netease.nim.demo.session.extension.CardAttachment;
 import com.netease.nim.demo.session.extension.CustomAttachParser;
 import com.netease.nim.demo.session.extension.CustomAvChatAttachment;
 import com.netease.nim.demo.session.extension.DefaultCustomAttachment;
@@ -33,6 +34,7 @@ import com.netease.nim.demo.session.extension.StickerAttachment;
 import com.netease.nim.demo.session.search.SearchMessageActivity;
 import com.netease.nim.demo.session.viewholder.MsgViewHolderAVChat;
 import com.netease.nim.demo.session.viewholder.MsgViewHolderAvchatCallCustom;
+import com.netease.nim.demo.session.viewholder.MsgViewHolderCard;
 import com.netease.nim.demo.session.viewholder.MsgViewHolderDefCustom;
 import com.netease.nim.demo.session.viewholder.MsgViewHolderFile;
 import com.netease.nim.demo.session.viewholder.MsgViewHolderForwardCustom;
@@ -523,7 +525,7 @@ public class SessionHelper {
         NimUIKit.registerMsgItemViewHolder(SnapChatAttachment.class, MsgViewHolderSnapChat.class);
         NimUIKit.registerMsgItemViewHolder(NotifyAttchment.class, NotifyViewHolder.class);  //新访客
         NimUIKit.registerMsgItemViewHolder(CustomAvChatAttachment.class, MsgViewHolderAvchatCallCustom.class); //回拨
-
+        NimUIKit.registerMsgItemViewHolder(CardAttachment.class, MsgViewHolderCard.class); //名片信息
 //        NimUIKit.registerMsgItemViewHolder(RTSAttachment.class, MsgViewHolderRTS.class);
         NimUIKit.registerTipMsgViewHolder(MsgViewHolderTip.class);
         registerRedPacketViewHolder();
@@ -570,7 +572,7 @@ public class SessionHelper {
                 //TODO 用户头像点击事件处理
                 // 一般用于打开用户资料页面
                 if (CommonUtil.role == CommonUtil.SELLER) {
-                   if (message.getSessionType() != SessionTypeEnum.P2P) {
+                   if (message.getSessionType() == SessionTypeEnum.Team) {
                         Team team = NimUIKit.getTeamProvider().getTeamById(message.getSessionId());
                         if (team.getType() == TeamTypeEnum.Normal) {
                         /*if (message.getMsgType() == MsgTypeEnum.robot && message.getDirect() == MsgDirectionEnum.In) {
@@ -582,7 +584,9 @@ public class SessionHelper {
                         }*/
                             UserProfileActivity.start(context, message.getFromAccount());
                         }
-                    }
+                    } else {
+                       UserProfileActivity.start(context, message.getFromAccount());
+                   }
 
                 }
 

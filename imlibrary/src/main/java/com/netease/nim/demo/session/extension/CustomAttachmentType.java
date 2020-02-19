@@ -39,4 +39,5 @@ public interface CustomAttachmentType {
     int avChatCall = 362;//语音通话回拨
 
     int FriendVerification = 800;  //好友验证
+    int CardMessage = 801;  //名片信息
 }
