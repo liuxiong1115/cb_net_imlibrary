@@ -12,7 +12,7 @@ public class CardMessage {
      * title : 名片消息
      * subtitle : 名片消息
      * type : 801
-     * content : {"scStatused":0,"businessCardEntity":{"alias":"","antispamticket":"v2_cfa4e7040033914cfbd6e440284a4713818996c6124066773035fe733bbf14aaa48c54587b61d2317e14c9a9b6723e89c65db955e9a19fb1d9669829e449d392cebe53d4c8d09b90d4e70e0cf4dd8e8e5b8f583508397db0e5ea0098687108e227e7c78e411302570428c15f533be06378acc159a81941bf3bb73e26d28390437c6cc0fb8020bf1a9bfa0afc0a5795d0be915ab454cd23e6b28b0c6db2a03173fbcef3b888093e79e1fd7bca5911a791d55fb7bba30f054ab77a4877f990c052@stranger","bigheadimgurl":"http://wx.qlogo.cn/mmhead/ver_1/mxQ6DZA2CO4NNnh4kqNrkpZ9ZnH0RN0ia9GgPgON9v9gqzZ3CfrRqXgzCYxZB825a9MPGtiaa7qvia64liahWtH2HkwyiaSpqClAW9gRlwIvuTyQ/0","imagestatus":"3","nickname":"-_-","province":"","regionCode":"CN","scene":"17","sex":"1","smallheadimgurl":"http://wx.qlogo.cn/mmhead/ver_1/mxQ6DZA2CO4NNnh4kqNrkpZ9ZnH0RN0ia9GgPgON9v9gqzZ3CfrRqXgzCYxZB825a9MPGtiaa7qvia64liahWtH2HkwyiaSpqClAW9gRlwIvuTyQ/132","username":"v1_5b8227fc7a110070013c77ee0917f8e301b2bbbd3c5de260a6f549895aa756dc@stranger"}}
+     * content : {"scStatused":0,"businessCardEntity":{"uin":"2015606831","contactFlag":"0","alias":"","antispamticket":"v2_63cfdfc355b26b7e40afe805ed05113940758ce40794178116e6226447de09255f693d4553ae5b4bd80728d760c64d5b401788bf64477354bd3dec0b36e09727a8672fca04e81fc4e1f1eae79283c72b48545e02e8b68030ecb2a53046b9c73793fe9bd9134f5accd8e9d165fc093eb22bdb791d8979de10b4f3edd6f699a605965c9a3e5c598d9b6f0d2d1ad6b72a01e2c52e6038b51c468c26281c59d48830115c6c2175a65951956843664a1989cce2c9931e387b16037ab820cfa62a1ec2258313bd618b2ac444b51397f1435a28@stranger","bigheadimgurl":"http://wx.qlogo.cn/mmhead/ver_1/2gwicia8zoSeY5sJswGrlvjTV0fA7EBibVib2z86Cee2bMwxEibyAHOTWrLtauM7EDT8qic44fiaCGXuthy4pNJuPdiaMIvPBf5sz2ibGg7cETJJkobc/0","imagestatus":"3","nickname":"Jenny","province":"","regionCode":"CN","scene":"17","sex":"2","smallheadimgurl":"http://wx.qlogo.cn/mmhead/ver_1/2gwicia8zoSeY5sJswGrlvjTV0fA7EBibVib2z86Cee2bMwxEibyAHOTWrLtauM7EDT8qic44fiaCGXuthy4pNJuPdiaMIvPBf5sz2ibGg7cETJJkobc/132","username":"v1_067b110a215198b2ed4dd1b908624870a74369d24da5595dc557549d645227c68675aafecc316fd482066e65da8a4f20@stranger","wechatUserName":"wxid_t9bw330z0dou22"}}
      * picType : 0
      */
 
@@ -74,7 +74,7 @@ public class CardMessage {
     public static class ContentBean {
         /**
          * scStatused : 0
-         * businessCardEntity : {"alias":"","antispamticket":"v2_cfa4e7040033914cfbd6e440284a4713818996c6124066773035fe733bbf14aaa48c54587b61d2317e14c9a9b6723e89c65db955e9a19fb1d9669829e449d392cebe53d4c8d09b90d4e70e0cf4dd8e8e5b8f583508397db0e5ea0098687108e227e7c78e411302570428c15f533be06378acc159a81941bf3bb73e26d28390437c6cc0fb8020bf1a9bfa0afc0a5795d0be915ab454cd23e6b28b0c6db2a03173fbcef3b888093e79e1fd7bca5911a791d55fb7bba30f054ab77a4877f990c052@stranger","bigheadimgurl":"http://wx.qlogo.cn/mmhead/ver_1/mxQ6DZA2CO4NNnh4kqNrkpZ9ZnH0RN0ia9GgPgON9v9gqzZ3CfrRqXgzCYxZB825a9MPGtiaa7qvia64liahWtH2HkwyiaSpqClAW9gRlwIvuTyQ/0","imagestatus":"3","nickname":"-_-","province":"","regionCode":"CN","scene":"17","sex":"1","smallheadimgurl":"http://wx.qlogo.cn/mmhead/ver_1/mxQ6DZA2CO4NNnh4kqNrkpZ9ZnH0RN0ia9GgPgON9v9gqzZ3CfrRqXgzCYxZB825a9MPGtiaa7qvia64liahWtH2HkwyiaSpqClAW9gRlwIvuTyQ/132","username":"v1_5b8227fc7a110070013c77ee0917f8e301b2bbbd3c5de260a6f549895aa756dc@stranger"}
+         * businessCardEntity : {"uin":"2015606831","contactFlag":"0","alias":"","antispamticket":"v2_63cfdfc355b26b7e40afe805ed05113940758ce40794178116e6226447de09255f693d4553ae5b4bd80728d760c64d5b401788bf64477354bd3dec0b36e09727a8672fca04e81fc4e1f1eae79283c72b48545e02e8b68030ecb2a53046b9c73793fe9bd9134f5accd8e9d165fc093eb22bdb791d8979de10b4f3edd6f699a605965c9a3e5c598d9b6f0d2d1ad6b72a01e2c52e6038b51c468c26281c59d48830115c6c2175a65951956843664a1989cce2c9931e387b16037ab820cfa62a1ec2258313bd618b2ac444b51397f1435a28@stranger","bigheadimgurl":"http://wx.qlogo.cn/mmhead/ver_1/2gwicia8zoSeY5sJswGrlvjTV0fA7EBibVib2z86Cee2bMwxEibyAHOTWrLtauM7EDT8qic44fiaCGXuthy4pNJuPdiaMIvPBf5sz2ibGg7cETJJkobc/0","imagestatus":"3","nickname":"Jenny","province":"","regionCode":"CN","scene":"17","sex":"2","smallheadimgurl":"http://wx.qlogo.cn/mmhead/ver_1/2gwicia8zoSeY5sJswGrlvjTV0fA7EBibVib2z86Cee2bMwxEibyAHOTWrLtauM7EDT8qic44fiaCGXuthy4pNJuPdiaMIvPBf5sz2ibGg7cETJJkobc/132","username":"v1_067b110a215198b2ed4dd1b908624870a74369d24da5595dc557549d645227c68675aafecc316fd482066e65da8a4f20@stranger","wechatUserName":"wxid_t9bw330z0dou22"}
          */
 
         private int scStatused;
@@ -98,19 +98,24 @@ public class CardMessage {
 
         public static class BusinessCardEntityBean {
             /**
+             * uin : 2015606831
+             * contactFlag : 0
              * alias :
-             * antispamticket : v2_cfa4e7040033914cfbd6e440284a4713818996c6124066773035fe733bbf14aaa48c54587b61d2317e14c9a9b6723e89c65db955e9a19fb1d9669829e449d392cebe53d4c8d09b90d4e70e0cf4dd8e8e5b8f583508397db0e5ea0098687108e227e7c78e411302570428c15f533be06378acc159a81941bf3bb73e26d28390437c6cc0fb8020bf1a9bfa0afc0a5795d0be915ab454cd23e6b28b0c6db2a03173fbcef3b888093e79e1fd7bca5911a791d55fb7bba30f054ab77a4877f990c052@stranger
-             * bigheadimgurl : http://wx.qlogo.cn/mmhead/ver_1/mxQ6DZA2CO4NNnh4kqNrkpZ9ZnH0RN0ia9GgPgON9v9gqzZ3CfrRqXgzCYxZB825a9MPGtiaa7qvia64liahWtH2HkwyiaSpqClAW9gRlwIvuTyQ/0
+             * antispamticket : v2_63cfdfc355b26b7e40afe805ed05113940758ce40794178116e6226447de09255f693d4553ae5b4bd80728d760c64d5b401788bf64477354bd3dec0b36e09727a8672fca04e81fc4e1f1eae79283c72b48545e02e8b68030ecb2a53046b9c73793fe9bd9134f5accd8e9d165fc093eb22bdb791d8979de10b4f3edd6f699a605965c9a3e5c598d9b6f0d2d1ad6b72a01e2c52e6038b51c468c26281c59d48830115c6c2175a65951956843664a1989cce2c9931e387b16037ab820cfa62a1ec2258313bd618b2ac444b51397f1435a28@stranger
+             * bigheadimgurl : http://wx.qlogo.cn/mmhead/ver_1/2gwicia8zoSeY5sJswGrlvjTV0fA7EBibVib2z86Cee2bMwxEibyAHOTWrLtauM7EDT8qic44fiaCGXuthy4pNJuPdiaMIvPBf5sz2ibGg7cETJJkobc/0
              * imagestatus : 3
-             * nickname : -_-
+             * nickname : Jenny
              * province :
              * regionCode : CN
              * scene : 17
-             * sex : 1
-             * smallheadimgurl : http://wx.qlogo.cn/mmhead/ver_1/mxQ6DZA2CO4NNnh4kqNrkpZ9ZnH0RN0ia9GgPgON9v9gqzZ3CfrRqXgzCYxZB825a9MPGtiaa7qvia64liahWtH2HkwyiaSpqClAW9gRlwIvuTyQ/132
-             * username : v1_5b8227fc7a110070013c77ee0917f8e301b2bbbd3c5de260a6f549895aa756dc@stranger
+             * sex : 2
+             * smallheadimgurl : http://wx.qlogo.cn/mmhead/ver_1/2gwicia8zoSeY5sJswGrlvjTV0fA7EBibVib2z86Cee2bMwxEibyAHOTWrLtauM7EDT8qic44fiaCGXuthy4pNJuPdiaMIvPBf5sz2ibGg7cETJJkobc/132
+             * username : v1_067b110a215198b2ed4dd1b908624870a74369d24da5595dc557549d645227c68675aafecc316fd482066e65da8a4f20@stranger
+             * wechatUserName : wxid_t9bw330z0dou22
              */
 
+            private String uin;
+            private String contactFlag;
             private String alias;
             private String antispamticket;
             private String bigheadimgurl;
@@ -122,6 +127,23 @@ public class CardMessage {
             private String sex;
             private String smallheadimgurl;
             private String username;
+            private String wechatUserName;
+
+            public String getUin() {
+                return uin;
+            }
+
+            public void setUin(String uin) {
+                this.uin = uin;
+            }
+
+            public String getContactFlag() {
+                return contactFlag;
+            }
+
+            public void setContactFlag(String contactFlag) {
+                this.contactFlag = contactFlag;
+            }
 
             public String getAlias() {
                 return alias;
@@ -209,6 +231,14 @@ public class CardMessage {
 
             public void setUsername(String username) {
                 this.username = username;
+            }
+
+            public String getWechatUserName() {
+                return wechatUserName;
+            }
+
+            public void setWechatUserName(String wechatUserName) {
+                this.wechatUserName = wechatUserName;
             }
         }
     }
