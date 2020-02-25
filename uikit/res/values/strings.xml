@@ -17,6 +17,8 @@
     <string name="close">关闭</string>
     <string name="menu">菜单</string>
     <string name="input_panel_schedule">排 课</string>
+    <string name="input_panel_collection">我的收藏</string>
+
     <string name="visitor">访客会话</string>
     <string name="now_allow_space">不能含有空格</string>
     <string name="readed">已读</string>

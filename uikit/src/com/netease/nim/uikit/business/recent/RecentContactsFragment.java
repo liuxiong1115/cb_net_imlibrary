@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
@@ -35,7 +34,6 @@ import com.netease.nim.uikit.common.ui.drop.DropCover;
 import com.netease.nim.uikit.common.ui.drop.DropFake;
 import com.netease.nim.uikit.common.ui.drop.DropManager;
 import com.netease.nim.uikit.common.ui.recyclerview.listener.SimpleClickListener;
-import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nim.uikit.common.util.string.StringUtil;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nimlib.sdk.NIMClient;
@@ -53,14 +51,8 @@ import com.netease.nimlib.sdk.team.constant.TeamMessageNotifyTypeEnum;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
 import com.netease.nimlib.sdk.uinfo.UserService;
-import com.netease.nimlib.sdk.uinfo.UserServiceObserve;
 import com.netease.nimlib.sdk.uinfo.constant.UserInfoFieldEnum;
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
-import com.netease.nimlib.sdk.uinfo.model.UserInfo;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -355,7 +347,7 @@ public class RecentContactsFragment extends TFragment {
         if (userInfo != null) {
             String extension = userInfo.getExtension();
             if (!TextUtils.isEmpty(extension)) {
-                userInfoExtension = JSON.parseObject(extension, UserInfoExtension.class);
+                userInfoExtension = JSON.parseObject(extension.toString(), UserInfoExtension.class);
                 // 先比较置顶tag
                 if (userInfoExtension != null && userInfoExtension.getToplist() != null) {
                     for (String s : userInfoExtension.getToplist()) {
@@ -582,8 +574,9 @@ public class RecentContactsFragment extends TFragment {
             NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(CommonUtil.userAccount);
             if (userInfo != null) {
                 String extension = userInfo.getExtension();
+                Log.e("extension",extension == null ? "" :extension);
                 if (!TextUtils.isEmpty(extension)) {
-                    UserInfoExtension userInfoExtension = JSON.parseObject(extension, UserInfoExtension.class);
+                    UserInfoExtension userInfoExtension = JSON.parseObject(extension.toString(), UserInfoExtension.class);
                     // 先比较置顶tag
                     if (userInfoExtension != null && userInfoExtension.getToplist() != null) {
                         boolean tag1 = false, tag2 = false;

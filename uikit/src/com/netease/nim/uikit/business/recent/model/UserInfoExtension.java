@@ -26,6 +26,16 @@ public class UserInfoExtension {
     private String wxNo;
     private int activa;
     private int isInternal;
+
+    public String getWxStatus() {
+        return wxStatus;
+    }
+
+    public void setWxStatus(String wxStatus) {
+        this.wxStatus = wxStatus;
+    }
+
+    private String wxStatus;
     private List<String> toplist;
 
     public int getUserType() {

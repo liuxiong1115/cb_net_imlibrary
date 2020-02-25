@@ -50,6 +50,7 @@ import com.netease.nim.uikit.api.model.session.SessionCustomization;
 import com.netease.nim.uikit.api.model.session.SessionEventListener;
 import com.netease.nim.uikit.api.wrapper.NimMessageRevokeObserver;
 import com.netease.nim.uikit.business.session.actions.BaseAction;
+import com.netease.nim.uikit.business.session.actions.MyCollectionAction;
 import com.netease.nim.uikit.business.session.actions.ScheduleAction;
 import com.netease.nim.uikit.business.session.helper.MessageListPanelHelper;
 import com.netease.nim.uikit.business.session.module.MsgForwardFilter;
@@ -206,7 +207,9 @@ public class SessionHelper {
 //            }
             p2pCustomization.actions = actions;
             p2pCustomization.withSticker = true;
-
+            if (CommonUtil.role == CommonUtil.SELLER) {
+                actions.add(new MyCollectionAction());
+            }
             // 定制ActionBar右边的按钮，可以加多个
             ArrayList<SessionCustomization.OptionsButton> buttons = new ArrayList<>();
             SessionCustomization.OptionsButton cloudMsgButton = new SessionCustomization.OptionsButton() {
@@ -277,6 +280,9 @@ public class SessionHelper {
             actions.add(new FileAction());
             myP2pCustomization.actions = actions;
             myP2pCustomization.withSticker = true;
+            if (CommonUtil.role == CommonUtil.SELLER) {
+                actions.add(new MyCollectionAction());
+            }
             // 定制ActionBar右边的按钮，可以加多个
             ArrayList<SessionCustomization.OptionsButton> buttons = new ArrayList<>();
             SessionCustomization.OptionsButton cloudMsgButton = new SessionCustomization.OptionsButton() {
@@ -422,6 +428,9 @@ public class SessionHelper {
             if (CommonUtil.role == CommonUtil.TEAC) {
                 actions.add(new ScheduleAction());
             }
+            if (CommonUtil.role == CommonUtil.SELLER) {
+                actions.add(new MyCollectionAction());
+            }
 //            if (NIMRedPacketClient.isEnable()) {
 //                actions.add(new RedPacketAction());
 //            }
@@ -466,6 +475,9 @@ public class SessionHelper {
             //教师权限添加排课按钮
             if (CommonUtil.role == CommonUtil.TEAC) {
                 actions.add(new ScheduleAction());
+            }
+            if (CommonUtil.role == CommonUtil.SELLER) {
+                actions.add(new MyCollectionAction());
             }
 //            actions.add(avChatAction);
 //            actions.add(new GuessAction());

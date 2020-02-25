@@ -338,7 +338,7 @@ public class CommonUtil {
         void onAddCardMessage(Context context, MsgAttachment msgAttachment);
     }
 
-    //添加名片信息
+    //修改备注
     public static onEditWxAliasListener editWxAliasListener;
 
     public static void setOnEditWxAliasListener(onEditWxAliasListener listener) {
@@ -347,5 +347,15 @@ public class CommonUtil {
 
     public interface onEditWxAliasListener {
         void onEditWxAlias(Context context, String content,String alias);
+    }
+    //我的收藏
+    public static onClickMyCollectionListener myCollectionListener;
+
+    public static void setOnClickMyCollectionListener(onClickMyCollectionListener listener) {
+        myCollectionListener = listener;
+    }
+
+    public interface onClickMyCollectionListener {
+        void onClickCollection(Context context, String session);
     }
 }
