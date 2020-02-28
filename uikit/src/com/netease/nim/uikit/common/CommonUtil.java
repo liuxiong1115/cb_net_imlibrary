@@ -170,7 +170,7 @@ public class CommonUtil {
     }
 
     public interface CheckHistoryMessageListener {
-        void checkMessage(String wxNo, String sessionId);
+        void checkMessage(Context context,String wxNo, String sessionId);
     }
 
     //回复
@@ -357,5 +357,15 @@ public class CommonUtil {
 
     public interface onClickMyCollectionListener {
         void onClickCollection(Context context, String session);
+    }
+    //聊天头像
+    public static onClickFriendAvatarListener clickFriendAvatarListener;
+
+    public static void setOnClickFriendAvatarListener(onClickFriendAvatarListener listener) {
+        clickFriendAvatarListener = listener;
+    }
+
+    public interface onClickFriendAvatarListener {
+        void onClickAvatar(Context context, String session);
     }
 }

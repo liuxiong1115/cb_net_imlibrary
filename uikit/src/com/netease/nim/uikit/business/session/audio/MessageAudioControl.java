@@ -116,7 +116,6 @@ public class MessageAudioControl extends BaseAudioControl<IMMessage> {
             final IMMessage message,
             final AudioControlListener audioControlListener, final int audioStreamType) {
         // 如果不存在则下载
-        //TODO 语音播放
         File file;
             AudioAttachment audioAttachment = (AudioAttachment) message.getAttachment();
             file = new File(audioAttachment.getPathForSave());

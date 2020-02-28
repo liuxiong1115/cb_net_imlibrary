@@ -362,7 +362,7 @@ public class P2PMessageActivity extends BaseMessageActivity {
 //        } else {
             CommonUtil.CheckHistoryMessageListener listener = CommonUtil.checkHistoryMessageListener;
             if (listener != null) {
-                listener.checkMessage(wxNo, session);
+                listener.checkMessage(this,wxNo, session);
             }
  //       }
     }

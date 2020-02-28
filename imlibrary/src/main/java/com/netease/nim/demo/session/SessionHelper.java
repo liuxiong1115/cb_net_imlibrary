@@ -584,21 +584,25 @@ public class SessionHelper {
                 //TODO 用户头像点击事件处理
                 // 一般用于打开用户资料页面
                 if (CommonUtil.role == CommonUtil.SELLER) {
-                   if (message.getSessionType() == SessionTypeEnum.Team) {
-                        Team team = NimUIKit.getTeamProvider().getTeamById(message.getSessionId());
-                        if (team.getType() == TeamTypeEnum.Normal) {
-                        /*if (message.getMsgType() == MsgTypeEnum.robot && message.getDirect() == MsgDirectionEnum.In) {
-                            RobotAttachment attachment = (RobotAttachment) message.getAttachment();
-                            if (attachment.isRobotSend()) {
-                                RobotProfileActivity.start(context, attachment.getFromRobotAccount());
-                                return;
-                            }
-                        }*/
-                            UserProfileActivity.start(context, message.getFromAccount());
-                        }
-                    } else {
-                       UserProfileActivity.start(context, message.getFromAccount());
-                   }
+                    CommonUtil.onClickFriendAvatarListener listener =  CommonUtil.clickFriendAvatarListener;
+                    if (listener != null) {
+                        listener.onClickAvatar(context,message.getFromAccount());
+                    }
+//                   if (message.getSessionType() == SessionTypeEnum.Team) {
+//                        Team team = NimUIKit.getTeamProvider().getTeamById(message.getSessionId());
+//                        if (team.getType() == TeamTypeEnum.Normal) {
+//                        /*if (message.getMsgType() == MsgTypeEnum.robot && message.getDirect() == MsgDirectionEnum.In) {
+//                            RobotAttachment attachment = (RobotAttachment) message.getAttachment();
+//                            if (attachment.isRobotSend()) {
+//                                RobotProfileActivity.start(context, attachment.getFromRobotAccount());
+//                                return;
+//                            }
+//                        }*/
+//                            UserProfileActivity.start(context, message.getFromAccount());
+//                        }
+//                    } else {
+//                       UserProfileActivity.start(context, message.getFromAccount());
+//                   }
 
                 }
 

@@ -17,7 +17,8 @@ public class UserPreferences {
     }
 
     public static boolean isEarPhoneModeEnable() {
-        return getBoolean(KEY_EARPHONE_MODE, true);
+        //TODO   true  默认为听筒模式    false为扬声器
+        return getBoolean(KEY_EARPHONE_MODE, false);
     }
 
     private static boolean getBoolean(String key, boolean value) {
