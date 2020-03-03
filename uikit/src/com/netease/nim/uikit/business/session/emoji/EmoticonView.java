@@ -260,7 +260,7 @@ public class EmoticonView {
             if (i == categoryIndex) {
                 break;
             }
-            position += categoryPageNumberList.get(i);
+            position = categoryPageNumberList.get(i);
         }
 
         setCurStickerPage(position);
@@ -395,24 +395,14 @@ public class EmoticonView {
             int pos = pagerIndexInfo[1];
             CollectionEmoji collectionEmoji = emojis.get(cIndex);
             int index = arg2 + pos * COLLECTION_PER_PAGE; // 在category中贴图的index
+
+
             boolean isExit = FileUtils.isFileExist(collectionEmoji.getBody().getList().get(index).getEmojiDesc());
-            IMMessage message;
             if (isExit) {
-                message = MessageBuilder.createImageMessage(sessionId, context instanceof P2PMessageActivity ? SessionTypeEnum.P2P: SessionTypeEnum.Team,
-                        FileUtils.createFile(collectionEmoji.getBody().getList().get(index).getEmojiDesc()));
-                NIMClient.getService(MsgService.class).sendMessage(message, false);
-                RecyclerView messageListView;
-                if (context instanceof P2PMessageActivity) {
-                    messageListView = P2PMessageActivity.instance.get().findViewById(R.id.messageListView);
-                } else {
-                    messageListView = TeamMessageActivity.instance.get().findViewById(R.id.messageListView);
+                if (listener != null) {
+                    listener.onCollectionEmoji(FileUtils.createFile(collectionEmoji.getBody().getList().get(index).getEmojiDesc()));
                 }
-                List<IMMessage> addedListItems = new ArrayList<>(1);
-                addedListItems.add(message);
-                MsgAdapter adapter = (MsgAdapter) messageListView.getAdapter();
-                adapter.updateShowTimeItem(addedListItems, false, true);
-                adapter.appendData(message);
-                messageListView.scrollToPosition(adapter.getBottomDataPosition());
+
             } else {
                 ToastHelper.showToast(context,"该表情包发送有误");
             }

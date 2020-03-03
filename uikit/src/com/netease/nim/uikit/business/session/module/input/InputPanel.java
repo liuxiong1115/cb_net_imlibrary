@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -31,15 +32,19 @@ import com.netease.nim.uikit.api.UIKitOptions;
 import com.netease.nim.uikit.api.model.session.SessionCustomization;
 import com.netease.nim.uikit.business.ait.AitTextChangeListener;
 import com.netease.nim.uikit.business.session.actions.BaseAction;
+import com.netease.nim.uikit.business.session.activity.P2PMessageActivity;
+import com.netease.nim.uikit.business.session.activity.TeamMessageActivity;
 import com.netease.nim.uikit.business.session.emoji.EmoticonPickerView;
 import com.netease.nim.uikit.business.session.emoji.IEmoticonSelectedListener;
 import com.netease.nim.uikit.business.session.emoji.MoonUtil;
 import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nim.uikit.business.session.module.Container;
+import com.netease.nim.uikit.business.session.module.list.MsgAdapter;
 import com.netease.nim.uikit.business.session.module.model.ReplyMsgData;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.ui.dialog.EasyAlertDialogHelper;
 import com.netease.nim.uikit.common.util.log.LogUtil;
+import com.netease.nim.uikit.common.util.log.sdk.util.FileUtils;
 import com.netease.nim.uikit.common.util.string.StringUtil;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nimlib.sdk.NIMClient;
@@ -57,6 +62,7 @@ import com.netease.nimlib.sdk.msg.model.CustomNotificationConfig;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
@@ -66,6 +72,24 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
  * Created by hzxuwen on 2015/6/16.
  */
 public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallback, AitTextChangeListener {
+    @Override
+    public void onCollectionEmoji(File file) {
+       IMMessage message = MessageBuilder.createImageMessage(container.account, container.sessionType,
+                file);
+       NIMClient.getService(MsgService.class).sendMessage(message, false);
+        RecyclerView messageListView;
+        if (container.sessionType  == SessionTypeEnum.P2P) {
+            messageListView = P2PMessageActivity.instance.get().findViewById(R.id.messageListView);
+        } else {
+            messageListView = TeamMessageActivity.instance.get().findViewById(R.id.messageListView);
+        }
+        List<IMMessage> addedListItems = new ArrayList<>(1);
+        addedListItems.add(message);
+        MsgAdapter adapter = (MsgAdapter) messageListView.getAdapter();
+        adapter.updateShowTimeItem(addedListItems, false, true);
+        adapter.appendData(message);
+        messageListView.scrollToPosition(adapter.getBottomDataPosition());
+    }
 
     private static final String TAG = "MsgSendLayout";
 
