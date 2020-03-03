@@ -574,7 +574,6 @@ public class RecentContactsFragment extends TFragment {
             NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(CommonUtil.userAccount);
             if (userInfo != null) {
                 String extension = userInfo.getExtension();
-                Log.e("extension",extension == null ? "" :extension);
                 if (!TextUtils.isEmpty(extension)) {
                     UserInfoExtension userInfoExtension = JSON.parseObject(extension.toString(), UserInfoExtension.class);
                     // 先比较置顶tag

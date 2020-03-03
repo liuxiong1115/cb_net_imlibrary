@@ -8,8 +8,10 @@ import android.view.View;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.business.recent.adapter.RecentContactAdapter;
+import com.netease.nim.uikit.business.session.emoji.EmoticonView;
 import com.netease.nim.uikit.business.session.module.model.ReplyMsgData;
 import com.netease.nim.uikit.common.ui.widget.MyToolbar;
+import com.netease.nim.uikit.model.CollectionEmoji;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
@@ -64,6 +66,26 @@ public class CommonUtil {
         return CommonUtil.BaseUrl + url;
     }
 
+
+    public static CollectionEmoji getCollectionEmoji() {
+        return collectionEmoji;
+    }
+
+    public static void setCollectionEmoji(CollectionEmoji collectionEmoji) {
+        CommonUtil.collectionEmoji = collectionEmoji;
+    }
+
+    private static CollectionEmoji collectionEmoji;
+
+    public static boolean isIsReloadCollection() {
+        return isReloadCollection;
+    }
+
+    public static void setIsReloadCollection(boolean isReloadCollection) {
+        CommonUtil.isReloadCollection = isReloadCollection;
+    }
+
+    private static boolean isReloadCollection = true;
 
     public static void addTag(RecentContact recent, long tag) {
         tag = recent.getTag() | tag;
@@ -367,5 +389,25 @@ public class CommonUtil {
 
     public interface onClickFriendAvatarListener {
         void onClickAvatar(Context context, String session);
+    }
+    //更新收藏表情適配器
+    public static onUpdateCollectionEmojiListener updateCollectionEmojiListener;
+
+    public static void setOnUpdateCollectionEmojiListener(onUpdateCollectionEmojiListener listener) {
+        updateCollectionEmojiListener = listener;
+    }
+
+    public interface onUpdateCollectionEmojiListener {
+        void onUpdateEmojiAdapter(CollectionEmoji collectionEmoji);
+    }
+    //新增表情包收藏
+    public static onAddCollectionEmojiListener addCollectionEmojiListener;
+
+    public static void setOnAddCollectionEmojiListener(onAddCollectionEmojiListener listener) {
+        addCollectionEmojiListener = listener;
+    }
+
+    public interface onAddCollectionEmojiListener {
+        void onAddCollectionEmoji(IMMessage message,Context context);
     }
 }

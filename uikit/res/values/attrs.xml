@@ -59,5 +59,4 @@
         <attr name="menuViewLayout" format="reference" />
 
     </declare-styleable>
-
 </resources>

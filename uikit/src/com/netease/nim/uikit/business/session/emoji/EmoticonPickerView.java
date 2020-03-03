@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.netease.nim.uikit.R;
+import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.ui.imageview.CheckedImageButton;
 import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nim.uikit.common.util.media.BitmapDecoder;
@@ -92,7 +93,6 @@ public class EmoticonPickerView extends LinearLayout implements IEmoticonCategor
 
     public void show(IEmoticonSelectedListener listener) {
         setListener(listener);
-
         if (loaded)
             return;
         loadStickers();
@@ -143,6 +143,11 @@ public class EmoticonPickerView extends LinearLayout implements IEmoticonCategor
         btn.setNormalImageId(R.drawable.nim_emoji_icon_inactive);
         btn.setCheckedImageId(R.drawable.nim_emoji_icon);
 
+        if (CommonUtil.role == CommonUtil.SELLER){
+            btn = addEmoticonTabBtn(index++,tabCheckListener);
+            btn.setNormalImageId(R.drawable.chart_extend_emoji_favorite);
+            btn.setCheckedImageId(R.drawable.chart_extend_emoji_favorite_checked);
+        }
 
         // 贴图
         //todo

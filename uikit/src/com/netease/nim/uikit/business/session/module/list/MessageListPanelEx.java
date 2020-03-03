@@ -52,6 +52,7 @@ import com.netease.nim.uikit.common.util.sys.ClipboardUtil;
 import com.netease.nim.uikit.common.util.sys.NetworkUtil;
 import com.netease.nim.uikit.common.util.sys.ScreenUtil;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
+import com.netease.nim.uikit.model.CollectionEmoji;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.NIMSDK;
 import com.netease.nimlib.sdk.Observer;
@@ -930,6 +931,9 @@ public class MessageListPanelEx {
             longClickItemVoidToText(selectedItem, msgType, list);
             if (CommonUtil.role == CommonUtil.SELLER) {
                 list.add("收藏");
+                if (selectedItem.getMsgType() == MsgTypeEnum.image) {
+                    list.add("添加到表情");
+                }
             }
             list.add("多选");
             //TODO 长按Message Item弹出框选项
@@ -1076,6 +1080,33 @@ public class MessageListPanelEx {
                                     initForwardType();
                                 }
                             });
+                            break;
+                        case "添加到表情":
+                            CommonUtil.onAddCollectionEmojiListener listener1 = CommonUtil.addCollectionEmojiListener;
+                            if (listener1 != null) {
+                                listener1.onAddCollectionEmoji(selectedItem,container.activity);
+                            }
+//                            CollectionEmoji collectionEmoji = new CollectionEmoji();
+//                            CollectionEmoji.BodyBean bodyBean= new CollectionEmoji.BodyBean();
+//
+//                            List< CollectionEmoji.BodyBean.ListBean> list = new ArrayList<>();
+//                            for (int i=0;i<20;i++) {
+//                                CollectionEmoji.BodyBean.ListBean listBean = new CollectionEmoji.BodyBean.ListBean();
+//                                if (i%2 == 1) {
+//                                    listBean.setEmojiUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1583227946132&di=3d74fe52230db027b949c480b8cf4437&imgtype=0&src=http%3A%2F%2Fa0.att.hudong.com%2F78%2F52%2F01200000123847134434529793168.jpg");
+//                                } else {
+//                                    listBean.setEmojiUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1583227946132&di=9d534d40a35c96a7aacb7e4d4b7fd9ea&imgtype=0&src=http%3A%2F%2Fa3.att.hudong.com%2F68%2F61%2F300000839764127060614318218_950.jpg");
+//                                }
+//                                list.add(listBean);
+//                            }
+//
+//                            bodyBean.setTotalCount(20);
+//                            bodyBean.setList(list);
+//                            collectionEmoji.setBody(bodyBean);
+//                            CommonUtil.onUpdateCollectionEmojiListener listener1 = CommonUtil.updateCollectionEmojiListener;
+//                            if (listener1 != null) {
+//                                listener1.onUpdateEmojiAdapter(collectionEmoji);
+//                            }
                             break;
 
                     }

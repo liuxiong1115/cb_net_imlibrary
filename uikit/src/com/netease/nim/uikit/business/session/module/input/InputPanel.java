@@ -91,7 +91,7 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
     private SessionCustomization customization;
 
     // 表情
-    protected EmoticonPickerView emoticonPickerView;  // 贴图表情控件
+    public EmoticonPickerView emoticonPickerView;  // 贴图表情控件
 
     // 语音
     protected AudioRecorder audioMessageHelper;
