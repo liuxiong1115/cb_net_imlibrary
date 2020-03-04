@@ -295,7 +295,11 @@ public class AdvancedTeamInfoActivity extends UI implements
         memberCountText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AdvancedTeamMemberActivity.startActivityForResult(AdvancedTeamInfoActivity.this, teamId, REQUEST_CODE_MEMBER_LIST);
+                CommonUtil.onQueryTeamMemberListener listener = CommonUtil.teamMemberListener;
+                if (listener != null) {
+                    listener.onTeamMember(teamId,AdvancedTeamInfoActivity.this);
+                }
+             //   AdvancedTeamMemberActivity.startActivityForResult(AdvancedTeamInfoActivity.this, teamId, REQUEST_CODE_MEMBER_LIST);
             }
         });
 

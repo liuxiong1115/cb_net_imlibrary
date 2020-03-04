@@ -410,4 +410,15 @@ public class CommonUtil {
     public interface onAddCollectionEmojiListener {
         void onAddCollectionEmoji(IMMessage message,Context context);
     }
+
+    //群成员
+    public static onQueryTeamMemberListener teamMemberListener;
+
+    public static void setOnQueryTeamMemberListener(onQueryTeamMemberListener listener) {
+        teamMemberListener = listener;
+    }
+
+    public interface onQueryTeamMemberListener {
+        void onTeamMember(String teamId,Context context);
+    }
 }

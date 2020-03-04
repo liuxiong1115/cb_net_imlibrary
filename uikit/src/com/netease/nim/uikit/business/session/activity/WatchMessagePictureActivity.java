@@ -1000,7 +1000,6 @@ public class WatchMessagePictureActivity extends UI {
 
     // 若图片已下载，直接显示图片；若图片未下载，则下载图片
     private void requestOriImage(IMMessage msg) {
-
         ImageAttachment imageAttachment = (ImageAttachment) msg.getAttachment();
         imageAttachment.setUrl( imageAttachment.getUrl().replace("https","http"));
         downloadMeassage = msg;
@@ -1018,7 +1017,7 @@ public class WatchMessagePictureActivity extends UI {
             onDownloadSuccess(msg);
             return;
         }
-
+     //   returnBitMap(((ImageAttachment)downloadMeassage.getAttachment()).getUrl());
         // async download original image
         onDownloadStart(msg);
         message = msg; // 下载成功之后，判断是否是同一条消息时需要使用

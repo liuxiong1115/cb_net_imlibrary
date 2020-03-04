@@ -1,5 +1,7 @@
 package com.netease.nim.uikit.business.session.emoji;
 
+import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
 
 import android.support.v4.view.PagerAdapter;
@@ -20,6 +22,9 @@ import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.business.session.activity.P2PMessageActivity;
 import com.netease.nim.uikit.business.session.activity.TeamMessageActivity;
 import com.netease.nim.uikit.business.session.module.list.MsgAdapter;
+import com.netease.nim.uikit.business.session.util.download.DownLoadManager;
+import com.netease.nim.uikit.business.session.util.download.DownLoadThread;
+import com.netease.nim.uikit.business.session.util.download.DownloadListener;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.ToastHelper;
 import com.netease.nim.uikit.common.util.log.LogUtil;
@@ -31,6 +36,7 @@ import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -393,8 +399,8 @@ public class EmoticonView {
             getPagerInfo(position);
             int cIndex = pagerIndexInfo[0];
             int pos = pagerIndexInfo[1];
-            CollectionEmoji collectionEmoji = emojis.get(cIndex);
-            int index = arg2 + pos * COLLECTION_PER_PAGE; // 在category中贴图的index
+            final CollectionEmoji collectionEmoji = emojis.get(cIndex);
+            final int index = arg2 + pos * COLLECTION_PER_PAGE; // 在category中贴图的index
 
 
             boolean isExit = FileUtils.isFileExist(collectionEmoji.getBody().getList().get(index).getEmojiDesc());
@@ -402,8 +408,42 @@ public class EmoticonView {
                 if (listener != null) {
                     listener.onCollectionEmoji(FileUtils.createFile(collectionEmoji.getBody().getList().get(index).getEmojiDesc()));
                 }
-
             } else {
+                DownLoadManager downLoadManager = new DownLoadManager();
+                downLoadManager.start(collectionEmoji.getBody().getList().get(index).getEmojiUrl(), collectionEmoji.getBody().getList().get(index).getEmojiDesc(), new DownloadListener() {
+                    @Override
+                    public void onStart(DownLoadThread thread, long fileSize) {
+
+                    }
+
+                    @Override
+                    public void onStop(File downloadFile) {
+
+                    }
+
+                    @Override
+                    public void onProgress(long fileSize, long downFileSize, int progress) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(File downloadFile) {
+                        Activity activity = (Activity) context;
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (listener != null) {
+                                    listener.onCollectionEmoji(FileUtils.createFile(collectionEmoji.getBody().getList().get(index).getEmojiDesc()));
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Exception ex) {
+
+                    }
+                });
                 ToastHelper.showToast(context,"该表情包发送有误");
             }
         }
