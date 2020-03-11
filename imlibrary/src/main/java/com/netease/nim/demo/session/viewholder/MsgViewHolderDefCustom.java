@@ -65,9 +65,9 @@ public class MsgViewHolderDefCustom extends MsgViewHolderBase {
     @Override
     protected void bindContentView() {
         final DefaultCustomAttachment attachment = (DefaultCustomAttachment) message.getAttachment();
-        MoonUtil.identifyFaceExpressionAndATags(context, titleView, attachment.getTitle() == null ? "" : attachment.getTitle(), ImageSpan.ALIGN_BASELINE);  //标题
+        MoonUtil.identifyFaceExpression(context, titleView, attachment.getTitle() == null ? "" : attachment.getTitle(), ImageSpan.ALIGN_BASELINE);  //标题
         if (attachment.getMsgType() == CustomAttachmentType.Extend) {  //313扩展消息
-            MoonUtil.identifyFaceExpressionAndATags(context, contentView, attachment.getDesc() == null ? ""
+            MoonUtil.identifyFaceExpression(context, contentView, attachment.getDesc() == null ? ""
                     : attachment.getDesc(), ImageSpan.ALIGN_BOTTOM);  //内容
             //图片
             if (!TextUtils.isEmpty(attachment.getImgUrl())) {
@@ -76,11 +76,11 @@ public class MsgViewHolderDefCustom extends MsgViewHolderBase {
             }
         }  else if (attachment.getMsgType() == CustomAttachmentType.FriendVerification) { //好友验证
             imageView.setVisibility(View.GONE);
-            MoonUtil.identifyFaceExpressionAndATags(context, titleView, "验证消息", ImageSpan.ALIGN_BASELINE);  //标题
-            MoonUtil.identifyFaceExpressionAndATags(context, contentView, attachment.getSubTitle() == null ? ""
+            MoonUtil.identifyFaceExpression(context, titleView, "验证消息", ImageSpan.ALIGN_BASELINE);  //标题
+            MoonUtil.identifyFaceExpression(context, contentView, attachment.getSubTitle() == null ? ""
                     : attachment.getSubTitle(), ImageSpan.ALIGN_BOTTOM);  //内容
         }else {
-            MoonUtil.identifyFaceExpressionAndATags(context, contentView, attachment.getSubTitle() == null ? ""
+            MoonUtil.identifyFaceExpression(context, contentView, attachment.getSubTitle() == null ? ""
                     : attachment.getSubTitle(), ImageSpan.ALIGN_BOTTOM);  //内容
             //图片
             if (!TextUtils.isEmpty(attachment.getImgUrl())) {

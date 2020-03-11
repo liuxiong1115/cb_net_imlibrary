@@ -484,7 +484,6 @@ public class MessageListPanelEx {
             if (!container.account.equals(message.getSessionId())) {
                 return;
             }
-
             deleteItem(message, false);
         }
     };
@@ -666,6 +665,8 @@ public class MessageListPanelEx {
 
         private void loadFromRemote() {
             this.direction = QueryDirectionEnum.QUERY_OLD;
+          //  this.direction = QueryDirectionEnum.QUERY_NEW;
+
             NIMClient.getService(MsgService.class).pullMessageHistory(anchor(), loadMsgCount, true)
                     .setCallback(callback);
         }
@@ -1103,12 +1104,12 @@ public class MessageListPanelEx {
 //                            bodyBean.setTotalCount(20);
 //                            bodyBean.setList(list);
 //                            collectionEmoji.setBody(bodyBean);
-//                            CommonUtil.onUpdateCollectionEmojiListener listener1 = CommonUtil.updateCollectionEmojiListener;
-//                            if (listener1 != null) {
-//                                listener1.onUpdateEmojiAdapter(collectionEmoji);
+//                            CommonUtil.onUpdateCollectionEmojiListener listener2 = CommonUtil.updateCollectionEmojiListener;
+//                            if (listener2 != null) {
+//                                listener2.onUpdateEmojiAdapter(collectionEmoji);
 //                            }
-                            break;
-
+//                            break;
+//
                     }
                 }
             });

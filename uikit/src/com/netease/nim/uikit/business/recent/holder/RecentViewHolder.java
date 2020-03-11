@@ -248,7 +248,7 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
 
     private void updateMsgLabel(BaseViewHolder holder, RecentContact recent) {
         // 显示消息具体内容
-        MoonUtil.identifyRecentVHFaceExpressionAndTags(holder.getContext(), tvMessage, getContent(recent), -1, 0.45f);
+        MoonUtil.identifyFaceExpression(holder.getContext(), tvMessage, getContent(recent), -1, 0.45f);
         //tvMessage.setText(getContent());
 
         MsgStatusEnum status = recent.getMsgStatus();

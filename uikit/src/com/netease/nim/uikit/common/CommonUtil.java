@@ -421,4 +421,15 @@ public class CommonUtil {
     public interface onQueryTeamMemberListener {
         void onTeamMember(String teamId,Context context);
     }
+
+    //更新个人资料信息
+    public static onUpdatePersonInfoListener updatePersonInfoListener;
+
+    public static void setOnUpdatePersonInfoListener(onUpdatePersonInfoListener listener) {
+        updatePersonInfoListener = listener;
+    }
+
+    public interface onUpdatePersonInfoListener {
+        void onPersonInfo();
+    }
 }

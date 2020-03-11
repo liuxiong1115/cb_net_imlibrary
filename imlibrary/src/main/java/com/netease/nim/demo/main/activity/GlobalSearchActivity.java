@@ -38,6 +38,7 @@ import com.netease.nim.uikit.common.activity.UI;
 import com.netease.nim.uikit.common.util.string.StringUtil;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.lucene.LuceneService;
+import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.search.model.MsgIndexRecord;
 
 /**
@@ -217,7 +218,12 @@ public class GlobalSearchActivity extends UI implements OnItemClickListener {
                 if (msgIndexRecord.getCount() > 1) {
                     GlobalSearchDetailActivity2.start(this, msgIndexRecord);
                 } else {
-                    DisplayMessageActivity.start(this, msgIndexRecord.getMessage());
+                   // DisplayMessageActivity.start(this, msgIndexRecord.getMessage());
+                    if (msgIndexRecord.getSessionType() == SessionTypeEnum.P2P) {
+                        SessionHelper.startP2PSession(this, msgIndexRecord.getSessionId(), msgIndexRecord.getMessage());
+                    } else if (msgIndexRecord.getSessionType() == SessionTypeEnum.Team) {
+                        SessionHelper.startTeamSession(this, msgIndexRecord.getSessionId(), msgIndexRecord.getMessage());
+                    }
                 }
                 break;
             }

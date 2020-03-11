@@ -9,6 +9,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 import com.netease.nim.demo.R;
+import com.netease.nim.demo.session.SessionHelper;
 import com.netease.nim.demo.session.search.DisplayMessageActivity;
 import com.netease.nim.uikit.api.wrapper.NimToolBarOptions;
 import com.netease.nim.uikit.business.contact.core.item.AbsContactItem;
@@ -163,7 +164,13 @@ public class GlobalSearchDetailActivity2 extends UI implements OnItemClickListen
         switch (item.getItemType()) {
             case ItemTypes.MSG: {
                 MsgIndexRecord msgIndexRecord = ((MsgItem) item).getRecord();
-                DisplayMessageActivity.start(this, msgIndexRecord.getMessage());
+             //   DisplayMessageActivity.start(this, msgIndexRecord.getMessage());
+                if (msgIndexRecord.getSessionType() == SessionTypeEnum.P2P) {
+                    SessionHelper.startP2PSession(this, msgIndexRecord.getSessionId(), msgIndexRecord.getMessage());
+                } else if (msgIndexRecord.getSessionType() == SessionTypeEnum.Team) {
+                    SessionHelper.startTeamSession(this, msgIndexRecord.getSessionId(), msgIndexRecord.getMessage());
+                }
+
                 break;
             }
 

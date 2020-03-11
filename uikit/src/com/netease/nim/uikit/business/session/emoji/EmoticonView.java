@@ -303,7 +303,8 @@ public class EmoticonView {
             //收藏
             if (collectionEmoji != null && collectionEmoji.getBody() != null) {
                 emojis.add(collectionEmoji);
-                categoryPageNumberList.add(collectionEmoji.getBody().getTotalCount()/COLLECTION_PER_PAGE+1);
+                categoryPageNumberList.add((int) Math.ceil(collectionEmoji.getBody().getTotalCount() / (float) COLLECTION_PER_PAGE));
+            //    categoryPageNumberList.add(collectionEmoji.getBody().getTotalCount()/COLLECTION_PER_PAGE);
             } else {
                 categoryPageNumberList.add(0);
             }
@@ -449,6 +450,22 @@ public class EmoticonView {
         }
     };
 
+    private AdapterView.OnItemLongClickListener collectionLongclick = new AdapterView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            int temp = emotPager.getCurrentItem();
+            getPagerInfo(temp);
+            int cIndex = pagerIndexInfo[0];
+            int pos = pagerIndexInfo[1];
+            final CollectionEmoji collectionEmoji = emojis.get(cIndex);
+            final int index = position + pos * COLLECTION_PER_PAGE; // 在category中贴图的index
+            collectionEmoji.getBody().getList().get(index).getId();
+            collectionEmoji.getBody().getList().remove(index);
+            showCollectionGridView();
+          //  collectAdapter.notifyDataSetChanged();
+            return true;
+        }
+    };
     /**
      * ***************************** PagerAdapter ****************************
      */
@@ -487,6 +504,7 @@ public class EmoticonView {
                 pageNumberLayout.setVisibility(View.VISIBLE);
                 GridView gridView = new GridView(context);
                 gridView.setOnItemClickListener(collectionListener);
+             //   gridView.setOnItemLongClickListener(collectionLongclick);
                 gridView.setPadding(10, 0, 10, 0);
                 gridView.setAdapter(new CollectAdapter(context, collectionEmoji,pos*COLLECTION_PER_PAGE));
                 gridView.setNumColumns(6);

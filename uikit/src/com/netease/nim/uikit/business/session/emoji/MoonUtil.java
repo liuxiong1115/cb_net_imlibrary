@@ -24,8 +24,7 @@ public class MoonUtil {
     private static final float DEF_SCALE = 0.6f;
     private static final float SMALL_SCALE = 0.45F;
 
-    public static void identifyFaceExpression(Context context,
-                                              View textView, String value, int align) {
+    public static void identifyFaceExpression(Context context, View textView, String value, int align) {
         identifyFaceExpression(context, textView, value, align, DEF_SCALE);
     }
 
@@ -67,8 +66,7 @@ public class MoonUtil {
     /**
      * lstmsgviewholder类使用,只需显示a标签对应的文本
      */
-    public static void identifyFaceExpressionAndTags(Context context,
-                                                     View textView, String value, int align, float scale) {
+    public static void identifyFaceExpressionAndTags(Context context, View textView, String value, int align, float scale) {
         SpannableString mSpannableString = makeSpannableStringTags(context, value, scale, align, false);
         viewSetText(textView, mSpannableString);
     }
@@ -96,7 +94,7 @@ public class MoonUtil {
     private static Pattern mATagPattern = Pattern.compile("<a.*?>.*?</a>");
 
     public static SpannableString makeSpannableStringTags(Context context, String value, float scale, int align) {
-        return makeSpannableStringTags(context, value, DEF_SCALE, align, true);
+        return makeSpannableStringTags(context, value, DEF_SCALE, align, false);
     }
 
     public static SpannableString makeSpannableStringTags(Context context, String value, float scale, int align, boolean bTagClickable) {
@@ -219,17 +217,17 @@ public class MoonUtil {
 
         @Override
         public void onClick(View widget) {
-            try {
-                if (TextUtils.isEmpty(mUrl))
-                    return;
-                Uri uri = Uri.parse(mUrl);
-                String scheme = uri.getScheme();
-                if (TextUtils.isEmpty(scheme)) {
-                    mUrl = "http://" + mUrl;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            try {
+//                if (TextUtils.isEmpty(mUrl))
+//                    return;
+//                Uri uri = Uri.parse(mUrl);
+//                String scheme = uri.getScheme();
+//                if (TextUtils.isEmpty(scheme)) {
+//                    mUrl = "http://" + mUrl;
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
         }
     }
 }

@@ -525,7 +525,6 @@ public class RecentContactsFragment extends TFragment {
     private void refreshMessages(boolean unreadChanged) {
         sortRecentContacts(items);
         notifyDataSetChanged();
-
         if (unreadChanged) {
 
             // 方式一：累加每个最近联系人的未读（快）
@@ -850,6 +849,10 @@ public class RecentContactsFragment extends TFragment {
                     //TODO 个人信息更改  防止recyclerivew一直刷新
                     for (String s : accounts) {
                         if (s.equals(CommonUtil.userAccount)) {
+                            CommonUtil.onUpdatePersonInfoListener listener = CommonUtil.updatePersonInfoListener;
+                            if (listener != null) {
+                                listener.onPersonInfo();
+                            }
                             refreshMessages(false);
                             return;
                         }

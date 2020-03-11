@@ -85,6 +85,7 @@ public class TeamMessageActivity extends BaseMessageActivity {
         backToClass = (Class<? extends Activity>) getIntent().getSerializableExtra(Extras.EXTRA_BACK_TO_CLASS);
         findViews();
         registerTeamUpdateObserver(true);
+
     }
 
     @Override

@@ -110,7 +110,7 @@ public class SearchMessageAdapter extends BaseAdapter {
         }
 
         private void refreshContent(IMMessage message) {
-            MoonUtil.identifyFaceExpressionAndTags(context, tvMessage, message.getContent(), ImageSpan.ALIGN_BOTTOM, 0.45f);
+            MoonUtil.identifyFaceExpression(context, tvMessage, message.getContent(), ImageSpan.ALIGN_BOTTOM, 0.45f);
 //            SpanUtil.makeKeywordSpan(context, tvMessage, keyword);
 
             switch (message.getStatus()) {

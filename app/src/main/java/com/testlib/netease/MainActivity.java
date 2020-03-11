@@ -103,14 +103,14 @@ public class MainActivity extends AppCompatActivity {
 //        final String token = "d5d814fd-9917-4419-9e6d-86b71e76cce9";
        /* final String account = "CRM62";
         final String token = "e0fd8d49ce019f1b914d24e4a743989b";*/
-//        final String account = "CRM191";
-//        final String token = "2efc97f01cd1b00f39cb37520684fcfe";
+//        final String account = "uc1t91";
+//        final String token = "9cfbae36106c512a66200073c9618e16";
 //        final String account = "crm72";
-//        final String token = "e8900e72002f73a243e02434796ae324";
+//        final String token = "59e30eac77ebff7d09579857b5ccfff2";
         final String account = "uc1t101";
         final String token = "531734c25c8bd5d81c1f13b42649a11b";
         // 登录
-        loginRequest = NimUIKit.login(new LoginInfo(account.toLowerCase(), token), new RequestCallback<LoginInfo>() {
+        loginRequest = NimUIKit.login(new LoginInfo(account, token), new RequestCallback<LoginInfo>() {
             @Override
             public void onSuccess(LoginInfo param) {
                 LogUtil.i(TAG, "login success");
