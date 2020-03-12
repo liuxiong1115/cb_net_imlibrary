@@ -478,7 +478,6 @@ public class RecentContactsFragment extends TFragment {
                                     list.add(recents.get(i));
                                 } else {
                                     visiList.add(recents.get(i));
-                                    Log.e("recent", recents.get(i).getContactId());
                                 }
                             }
                             loadedRecents = list;

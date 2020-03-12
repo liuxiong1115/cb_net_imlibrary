@@ -1022,6 +1022,22 @@ public class WatchMessagePictureActivity extends UI {
         onDownloadStart(msg);
         message = msg; // 下载成功之后，判断是否是同一条消息时需要使用
         downloadFuture = NIMClient.getService(MsgService.class).downloadAttachment(msg, false);
+//        NIMClient.getService(MsgService.class).downloadAttachment(msg, false).setCallback(new RequestCallback() {
+//            @Override
+//            public void onSuccess(Object o) {
+//                Log.e("failCode","成功");
+//            }
+//
+//            @Override
+//            public void onFailed(int i) {
+//                Log.e("failCode",i+"");
+//            }
+//
+//            @Override
+//            public void onException(Throwable throwable) {
+//                Log.e("failCode",throwable.toString());
+//            }
+//        });
     }
 
     private boolean isOriginImageHasDownloaded(final IMMessage message) {

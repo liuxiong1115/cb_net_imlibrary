@@ -27,6 +27,7 @@ import com.netease.nim.uikit.common.util.sys.TimeUtil;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.NIMSDK;
+import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
 import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum;
@@ -144,9 +145,9 @@ public abstract class MsgViewHolderBase extends RecyclerViewHolder<BaseMultiItem
     /**
      * 下载附件/缩略图
      */
-    protected void downloadAttachment() {
+    protected void downloadAttachment(RequestCallback<Void> callback) {
         if (message.getAttachment() != null && message.getAttachment() instanceof FileAttachment)
-            NIMClient.getService(MsgService.class).downloadAttachment(message, true);
+            NIMClient.getService(MsgService.class).downloadAttachment(message, true).setCallback(callback);
     }
 
     // 设置FrameLayout子控件的gravity参数
@@ -267,6 +268,9 @@ public abstract class MsgViewHolderBase extends RecyclerViewHolder<BaseMultiItem
      */
     private void setStatus() {
         MsgStatusEnum status = message.getStatus();
+        if (message.getMsgType() == MsgTypeEnum.image && isReceivedMessage()) {
+            return;
+        }
         switch (status) {
             case fail:
                 progressBar.setVisibility(View.GONE);

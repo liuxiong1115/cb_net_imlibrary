@@ -134,6 +134,7 @@
 package com.netease.nim.uikit.business.session.viewholder;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -144,6 +145,7 @@ import com.netease.nim.uikit.common.util.media.BitmapDecoder;
 import com.netease.nim.uikit.common.util.media.ImageUtil;
 import com.netease.nim.uikit.common.util.string.StringUtil;
 import com.netease.nim.uikit.common.util.sys.ScreenUtil;
+import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment;
 import com.netease.nimlib.sdk.msg.attachment.ImageAttachment;
 import com.netease.nimlib.sdk.msg.attachment.VideoAttachment;
@@ -176,7 +178,7 @@ public abstract class MsgViewHolderThumbBase extends MsgViewHolderBase {
 
     @Override
     protected void bindContentView() {
-        FileAttachment msgAttachment = (FileAttachment) message.getAttachment();
+        final FileAttachment msgAttachment = (FileAttachment) message.getAttachment();
         String path = msgAttachment.getPath();
         String thumbPath = msgAttachment.getThumbPath();
         if (!TextUtils.isEmpty(thumbPath)) {
@@ -185,8 +187,25 @@ public abstract class MsgViewHolderThumbBase extends MsgViewHolderBase {
             loadThumbnailImage(thumbFromSourceFile(path), true, msgAttachment.getExtension(),msgAttachment);
         } else {
             loadThumbnailImage(null, false, msgAttachment.getExtension(),msgAttachment);
-            if (message.getAttachStatus() == AttachStatusEnum.transferred || message.getAttachStatus() == AttachStatusEnum.def) {
-                downloadAttachment();
+            if (message.getAttachStatus() == AttachStatusEnum.transferred ||
+                    message.getAttachStatus() == AttachStatusEnum.def) {
+                downloadAttachment(new RequestCallback<Void>() {
+                    @Override
+                    public void onSuccess(Void param) {
+                        loadThumbnailImage(msgAttachment.getThumbPath(), false, msgAttachment.getExtension(),msgAttachment);
+                        refreshStatus();
+                    }
+
+                    @Override
+                    public void onFailed(int code) {
+                        Log.e("code",code+"");
+                    }
+
+                    @Override
+                    public void onException(Throwable exception) {
+                        Log.e("code",exception+"");
+                    }
+                });
             }
         }
         refreshStatus();
@@ -202,7 +221,8 @@ public abstract class MsgViewHolderThumbBase extends MsgViewHolderBase {
             }
         }
 
-        if (message.getStatus() == MsgStatusEnum.sending || (isReceivedMessage() && message.getAttachStatus() == AttachStatusEnum.transferring)) {
+        if (message.getStatus() == MsgStatusEnum.sending
+                || (isReceivedMessage() && message.getAttachStatus() == AttachStatusEnum.transferring)) {
             progressCover.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.VISIBLE);
             progressLabel.setVisibility(View.VISIBLE);

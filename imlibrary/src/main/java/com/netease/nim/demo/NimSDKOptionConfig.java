@@ -160,7 +160,6 @@ class NimSDKOptionConfig {
     // 这里开发者可以自定义该应用初始的 StatusBarNotificationConfig
     private static StatusBarNotificationConfig loadStatusBarNotificationConfig() {
         StatusBarNotificationConfig config = new StatusBarNotificationConfig();
-
         // 点击通知需要跳转到的界面
         config.notificationEntrance = WelcomeActivity.class;
         config.notificationSmallIconId = R.drawable.pushicon;  //设置推送的小图标
@@ -174,7 +173,6 @@ class NimSDKOptionConfig {
         config.ledOffMs = 1500;
         // 是否APP ICON显示未读数红点(Android O有效)
         config.showBadge = true;
-
         // save cache，留做切换账号备用
         DemoCache.setNotificationConfig(config);
         return config;

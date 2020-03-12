@@ -152,7 +152,7 @@ public class MessageFragment extends TFragment implements ModuleProxy {
         Container container = new Container(getActivity(), sessionId, sessionType, this);
 
         if (messageListPanel == null) {
-            messageListPanel = new MessageListPanelEx(container, rootView, anchor, false, true,this);
+            messageListPanel = new MessageListPanelEx(container, rootView, anchor, false, anchor == null ? true : false,this);
         } else {
             messageListPanel.reload(container, anchor);
         }
