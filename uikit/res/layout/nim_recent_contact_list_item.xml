@@ -141,7 +141,7 @@
                             android:id="@+id/ivNotify"
                             android:layout_width="15dp"
                             android:layout_height="15dp"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             android:layout_alignParentRight="true"
                             android:layout_alignParentTop="true"
                             android:layout_marginLeft="5dp"
