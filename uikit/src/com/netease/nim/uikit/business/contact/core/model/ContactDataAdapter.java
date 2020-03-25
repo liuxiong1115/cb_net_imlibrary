@@ -282,7 +282,6 @@ public class ContactDataAdapter extends BaseAdapter {
         return null;
     }
 
-
     private Map<String, Integer> getIndexes() {
         return this.indexes;
     }

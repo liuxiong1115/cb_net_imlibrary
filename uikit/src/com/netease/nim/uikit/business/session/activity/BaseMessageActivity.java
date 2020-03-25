@@ -37,7 +37,7 @@ public abstract class BaseMessageActivity extends UI {
 
     private SessionCustomization customization;
 
-    private MessageFragment messageFragment;
+    public MessageFragment messageFragment;
 
     private SensorManager sensorManager;
 

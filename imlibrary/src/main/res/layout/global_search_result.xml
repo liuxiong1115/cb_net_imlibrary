@@ -6,7 +6,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
+    <android.support.design.widget.AppBarLfayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
             app:titleTextAppearance="@style/Toolbar.TitleText">
 
         </com.netease.nim.uikit.common.ui.widget.MyToolbar>
-    </android.support.design.widget.AppBarLayout>
+    </android.support.design.widget.AppBarLfayout>
 
     <!--<include layout="@layout/nim_layout_toolbar"></include>-->
     <android.support.v4.widget.NestedScrollView
@@ -37,7 +37,7 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvExFriend"
-                android:layout_width="match_parent"
+                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:nestedScrollingEnabled="false"
                 android:background="@color/white"

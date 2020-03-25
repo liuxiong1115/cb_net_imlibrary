@@ -8,6 +8,7 @@ import android.view.View;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.business.recent.adapter.RecentContactAdapter;
+import com.netease.nim.uikit.business.session.activity.TeamMessageActivity;
 import com.netease.nim.uikit.business.session.emoji.EmoticonView;
 import com.netease.nim.uikit.business.session.module.model.ReplyMsgData;
 import com.netease.nim.uikit.common.ui.widget.MyToolbar;
@@ -17,6 +18,7 @@ import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class CommonUtil {
@@ -431,5 +433,27 @@ public class CommonUtil {
 
     public interface onUpdatePersonInfoListener {
         void onPersonInfo();
+    }
+
+    //消息列表可见时
+    public static onMessageFragmentVisiableonListener messageFragmentVisiableonListener;
+
+    public static void setOnMessageFragmentVisiableonListener(onMessageFragmentVisiableonListener listener) {
+        messageFragmentVisiableonListener = listener;
+    }
+
+    public interface onMessageFragmentVisiableonListener {
+        void onVisiableon(String sessionId);
+    }
+
+    //群聊界面可见时
+    public static onTeamActivityVisiableonListener teamActivityVisiableonListener;
+
+    public static void setOnTeamActivityVisiableonListener(onTeamActivityVisiableonListener listener) {
+        teamActivityVisiableonListener = listener;
+    }
+
+    public interface onTeamActivityVisiableonListener {
+        void onTeamVisiable(Activity activity);
     }
 }

@@ -25,6 +25,7 @@ import com.netease.nim.uikit.business.VisitorActivity;
 import com.netease.nim.uikit.business.recent.adapter.RecentContactAdapter;
 import com.netease.nim.uikit.business.recent.adapter.SwipeItemLayout;
 import com.netease.nim.uikit.business.recent.model.UserInfoExtension;
+import com.netease.nim.uikit.business.session.activity.TeamMessageActivity;
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.badger.Badger;
@@ -102,6 +103,7 @@ public class RecentContactsFragment extends TFragment {
     public int visiUnreadNum = 0;
 
     public View view;
+
     public static RecentContactsFragment instance() {
         RecentContactsFragment recentContactsFragment = new RecentContactsFragment();
         return recentContactsFragment;
@@ -110,7 +112,7 @@ public class RecentContactsFragment extends TFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        view = View.inflate(getContext(),R.layout.recent_head,null);
+        view = View.inflate(getContext(), R.layout.recent_head, null);
         findViews();
         initMessageList();
         requestMessages(true);
@@ -369,46 +371,50 @@ public class RecentContactsFragment extends TFragment {
         alertDialog.addItem(title, new onSeparateItemClickListener() {
             @Override
             public void onClick() {
-                if (finalTitleStr == null) {
-                    if (finalUserInfoExtension.getToplist() == null) {
-                        List<String> list = new ArrayList<>();
-                        list.add(0, recent.getContactId());
-                        finalUserInfoExtension.setToplist(list);
-                    } else {
-                        finalUserInfoExtension.getToplist().add(0, recent.getContactId());
-                    }
-                } else {
-                    for (int i = 0; i < finalUserInfoExtension.getToplist().size(); i++) {
-                        if (recent.getContactId().equals(finalUserInfoExtension.getToplist().get(i))) {
-                            finalUserInfoExtension.getToplist().remove(i);
-                        }
-                    }
-                }
-                Map<UserInfoFieldEnum, Object> fields = new HashMap<>(1);
-                fields.put(UserInfoFieldEnum.EXTEND, new Gson().toJson(finalUserInfoExtension));
-                NIMClient.getService(UserService.class).updateUserInfo(fields).setCallback(new RequestCallbackWrapper<Void>() {
-                    @Override
-                    public void onResult(int code, Void result, Throwable exception) {
-                        if (code == ResponseCode.RES_SUCCESS) {
-                            NIMClient.getService(MsgService.class).updateRecent(recent);
-                            refreshMessages(false);
-                        } else {
-                            if (exception != null) {
+                if (CommonUtil.role == CommonUtil.SELLER) {
 
+                    if (finalTitleStr == null) {
+                        if (finalUserInfoExtension.getToplist() == null) {
+                            List<String> list = new ArrayList<>();
+                            list.add(0, recent.getContactId());
+                            finalUserInfoExtension.setToplist(list);
+                        } else {
+                            finalUserInfoExtension.getToplist().add(0, recent.getContactId());
+                        }
+                    } else {
+                        for (int i = 0; i < finalUserInfoExtension.getToplist().size(); i++) {
+                            if (recent.getContactId().equals(finalUserInfoExtension.getToplist().get(i))) {
+                                finalUserInfoExtension.getToplist().remove(i);
                             }
                         }
-                        if (callback != null) {
-                        }
                     }
-                });
+                    Map<UserInfoFieldEnum, Object> fields = new HashMap<>(1);
+                    fields.put(UserInfoFieldEnum.EXTEND, new Gson().toJson(finalUserInfoExtension));
+                    NIMClient.getService(UserService.class).updateUserInfo(fields).setCallback(new RequestCallbackWrapper<Void>() {
+                        @Override
+                        public void onResult(int code, Void result, Throwable exception) {
+                            if (code == ResponseCode.RES_SUCCESS) {
+                                NIMClient.getService(MsgService.class).updateRecent(recent);
+                                refreshMessages(false);
+                            } else {
+                                if (exception != null) {
 
-//                if (CommonUtil.isTagSet(recent, RECENT_TAG_STICKY)) {
-//                    CommonUtil.removeTag(recent, RECENT_TAG_STICKY);
-//                } else {
-//                    CommonUtil.addTag(recent, RECENT_TAG_STICKY);
-//                }
-//                NIMClient.getService(MsgService.class).updateRecent(recent);
-//                refreshMessages(false);
+                                }
+                            }
+                            if (callback != null) {
+                            }
+                        }
+                    });
+
+                } else {
+                    if (CommonUtil.isTagSet(recent, RECENT_TAG_STICKY)) {
+                        CommonUtil.removeTag(recent, RECENT_TAG_STICKY);
+                    } else {
+                        CommonUtil.addTag(recent, RECENT_TAG_STICKY);
+                    }
+                    NIMClient.getService(MsgService.class).updateRecent(recent);
+                    refreshMessages(false);
+                }
             }
         });
 
@@ -569,43 +575,46 @@ public class RecentContactsFragment extends TFragment {
 
         @Override
         public int compare(RecentContact o1, RecentContact o2) {
-            NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(CommonUtil.userAccount);
-            if (userInfo != null) {
-                String extension = userInfo.getExtension();
-                if (!TextUtils.isEmpty(extension)) {
-                    UserInfoExtension userInfoExtension = JSON.parseObject(extension.toString(), UserInfoExtension.class);
-                    // 先比较置顶tag
-                    if (userInfoExtension != null && userInfoExtension.getToplist() != null) {
-                        boolean tag1 = false, tag2 = false;
-                        for (String s : userInfoExtension.getToplist()) {
-                            if (s.equals(o1.getContactId())) {
-                                tag1 = true;
+            if (CommonUtil.role == CommonUtil.SELLER) {
+
+                NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(CommonUtil.userAccount);
+                if (userInfo != null) {
+                    String extension = userInfo.getExtension();
+                    if (!TextUtils.isEmpty(extension)) {
+                        UserInfoExtension userInfoExtension = JSON.parseObject(extension.toString(), UserInfoExtension.class);
+                        // 先比较置顶tag
+                        if (userInfoExtension != null && userInfoExtension.getToplist() != null) {
+                            boolean tag1 = false, tag2 = false;
+                            for (String s : userInfoExtension.getToplist()) {
+                                if (s.equals(o1.getContactId())) {
+                                    tag1 = true;
+                                }
+                                if (s.equals(o2.getContactId())) {
+                                    tag2 = true;
+                                }
                             }
-                            if (s.equals(o2.getContactId())) {
-                                tag2 = true;
+                            if (tag1 && tag2) {
+                                long time = o1.getTime() - o2.getTime();
+                                return time == 0 ? 0 : (time > 0 ? -1 : 1);
+                            } else if (tag1) {
+                                return -1;
+                            } else if (tag2) {
+                                return 1;
                             }
-                        }
-                        if (tag1 && tag2) {
-                            long time = o1.getTime() - o2.getTime();
-                            return time == 0 ? 0 : (time > 0 ? -1 : 1);
-                        } else if (tag1) {
-                            return -1;
-                        } else if (tag2) {
-                            return 1;
                         }
                     }
                 }
+                long time = o1.getTime() - o2.getTime();
+                return time == 0 ? 0 : (time > 0 ? -1 : 1);
             }
-            long time = o1.getTime() - o2.getTime();
-            return time == 0 ? 0 : (time > 0 ? -1 : 1);
 //             先比较置顶tag
-//            long sticky = (o1.getTag() & RECENT_TAG_STICKY) - (o2.getTag() & RECENT_TAG_STICKY);
-//            if (sticky != 0) {
-//                return sticky > 0 ? -1 : 1;
-//            } else {
-//                long time = o1.getTime() - o2.getTime();
-//                return time == 0 ? 0 : (time > 0 ? -1 : 1);
-//            }
+            long sticky = (o1.getTag() & RECENT_TAG_STICKY) - (o2.getTag() & RECENT_TAG_STICKY);
+            if (sticky != 0) {
+                return sticky > 0 ? -1 : 1;
+            } else {
+                long time = o1.getTime() - o2.getTime();
+                return time == 0 ? 0 : (time > 0 ? -1 : 1);
+            }
         }
 
     };

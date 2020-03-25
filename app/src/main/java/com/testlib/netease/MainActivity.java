@@ -1,11 +1,13 @@
 package com.testlib.netease;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -15,6 +17,8 @@ import com.netease.nim.demo.config.preference.UserPreferences;
 import com.netease.nim.demo.login.LoginActivity;
 import com.netease.nim.demo.session.extension.CardAttachment;
 import com.netease.nim.uikit.api.NimUIKit;
+import com.netease.nim.uikit.business.session.activity.TeamMessageActivity;
+import com.netease.nim.uikit.business.session.module.input.InputPanel;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.ToastHelper;
 import com.netease.nim.uikit.common.ui.dialog.DialogMaker;
@@ -144,22 +148,23 @@ public class MainActivity extends AppCompatActivity {
                 onLoginDone();
             }
         });
-//        CommonUtil.setonGetMediaUrlListener(new CommonUtil.onGetMediaUrlListener() {
+
+//        CommonUtil.setOnMessageFragmentVisiableonListener(new CommonUtil.onMessageFragmentVisiableonListener() {
 //            @Override
-//            public void onMediaUrl(IMMessage imMessage, Context context, String wxMsgId) {
-//                VideoAttachment fileAttachment = (VideoAttachment) imMessage.getAttachment();
-//                fileAttachment.setUrl("http://siyouyunsy-1253559996.cos.ap-guangzhou.myqcloud.com/msg/HVYST/20200206/1133419432832179938_wxid_t9bw330z0dou22_1580978891256_.mp4?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDBi7d3I4UK7iDXkAhQyQsDMNGxY2KmlCY%26q-sign-time%3D1580978891%3B1667292491%26q-key-time%3D1580978891%3B1667292491%26q-header-list%3D%26q-url-param-list%3D%26q-signature%3D506911a5c23cb212d2a5902f499b696361a045bd");
-//                CommonUtil.onDealVideoMediaUrlListener listener = CommonUtil.dealVideoMediaUrlListener;
-//                if (listener != null) {
-//                    listener.onDealVideoMediaUrl(imMessage);
-//                }
+//            public void onVisiableon(String sessionId) {
+//                ToastHelper.showToast(MainActivity.this,sessionId+"");
 //            }
 //        });
-//        CommonUtil.setOnAddCardMessageListener(new CommonUtil.onAddCardMessageListener() {
+//        CommonUtil.setOnTeamActivityVisiableonListener(new CommonUtil.onTeamActivityVisiableonListener() {
 //            @Override
-//            public void onAddCardMessage(Context context, MsgAttachment msgAttachment) {
-//                CardAttachment cardAttachment = (CardAttachment) msgAttachment;
-//                ToastHelper.showToast(context,cardAttachment.getType()+"");
+//            public void onTeamVisiable(Activity activity) {
+//                TeamMessageActivity context = (TeamMessageActivity) activity;
+//                InputPanel inputPanel = context.messageFragment.inputPanel;
+//                inputPanel.messageEditText.setFocusable(true);
+//                inputPanel.messageEditText.setFocusableInTouchMode(true);
+//                inputPanel.messageEditText.requestFocus();
+//                activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+//                inputPanel.messageEditText.setText("jfklsdajd;la");
 //            }
 //        });
     }

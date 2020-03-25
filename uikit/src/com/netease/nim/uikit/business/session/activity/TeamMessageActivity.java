@@ -21,6 +21,7 @@ import com.netease.nim.uikit.api.wrapper.NimToolBarOptions;
 import com.netease.nim.uikit.business.session.constant.Extras;
 import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nim.uikit.business.session.fragment.TeamMessageFragment;
+import com.netease.nim.uikit.business.session.module.input.InputPanel;
 import com.netease.nim.uikit.business.team.activity.AdvancedTeamInfoActivity;
 import com.netease.nim.uikit.business.team.activity.AdvancedTeamMemberActivity;
 import com.netease.nim.uikit.common.CommonUtil;
@@ -35,6 +36,7 @@ import com.netease.nimlib.sdk.team.model.TeamMember;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.ls.LSException;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -85,7 +87,6 @@ public class TeamMessageActivity extends BaseMessageActivity {
         backToClass = (Class<? extends Activity>) getIntent().getSerializableExtra(Extras.EXTRA_BACK_TO_CLASS);
         findViews();
         registerTeamUpdateObserver(true);
-
     }
 
     @Override
@@ -99,6 +100,10 @@ public class TeamMessageActivity extends BaseMessageActivity {
     protected void onResume() {
         super.onResume();
         requestTeamInfo();
+        CommonUtil.onTeamActivityVisiableonListener listener = CommonUtil.teamActivityVisiableonListener;
+        if (listener != null) {
+            listener.onTeamVisiable(this);
+        }
     }
 
     /**

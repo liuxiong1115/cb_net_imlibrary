@@ -93,6 +93,12 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
 
     @Override
     public void convert(BaseViewHolder holder, RecentContact data, int position, boolean isScrolling) {
+        if (position == 0) {
+            CommonUtil.onMessageFragmentVisiableonListener listener = CommonUtil.messageFragmentVisiableonListener;
+            if (listener != null) {
+                listener.onVisiableon(data.getContactId());
+            }
+        }
         inflate(holder, data, position);
         refresh(holder, data, position);
     }
@@ -176,35 +182,38 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
     private void updateBackground(BaseViewHolder holder, RecentContact recent, int position) {
         topLine.setVisibility(getAdapter().isFirstDataItem(position) ? View.GONE : View.VISIBLE);
         bottomLine.setVisibility(getAdapter().isLastDataItem(position) ? View.VISIBLE : View.GONE);
-        UserInfoExtension userInfoExtension;
-        String titleStr = null;
-        NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(CommonUtil.userAccount);
-        if (userInfo != null) {
-            String extension = userInfo.getExtension();
-            if (!TextUtils.isEmpty(extension)) {
-                userInfoExtension = JSON.parseObject(extension, UserInfoExtension.class);
-                // 先比较置顶tag
-                if (userInfoExtension != null && userInfoExtension.getToplist() != null) {
-                    for (String s : userInfoExtension.getToplist()) {
-                        if (s.equals(recent.getContactId())) {
-                            titleStr = s;
+        if (CommonUtil.role == CommonUtil.SELLER) {
+            UserInfoExtension userInfoExtension;
+            String titleStr = null;
+            NimUserInfo userInfo = (NimUserInfo) NimUIKit.getUserInfoProvider().getUserInfo(CommonUtil.userAccount);
+            if (userInfo != null) {
+                String extension = userInfo.getExtension();
+                if (!TextUtils.isEmpty(extension)) {
+                    userInfoExtension = JSON.parseObject(extension, UserInfoExtension.class);
+                    // 先比较置顶tag
+                    if (userInfoExtension != null && userInfoExtension.getToplist() != null) {
+                        for (String s : userInfoExtension.getToplist()) {
+                            if (s.equals(recent.getContactId())) {
+                                titleStr = s;
+                            }
                         }
                     }
                 }
             }
-        }
-        if (titleStr == null) {
-            holder.getConvertView().setBackgroundResource(R.drawable.nim_touch_bg);
-            //  tvMessage.setTextColor(Color.parseColor("#ffaaaaaa"));
+            if (titleStr == null) {
+                holder.getConvertView().setBackgroundResource(R.drawable.nim_touch_bg);
+                //  tvMessage.setTextColor(Color.parseColor("#ffaaaaaa"));
+            } else {
+                holder.getConvertView().setBackgroundResource(R.drawable.nim_recent_contact_sticky_selecter);
+                //  tvMessage.setTextColor(Color.parseColor("#333333"));
+            }
         } else {
-            holder.getConvertView().setBackgroundResource(R.drawable.nim_recent_contact_sticky_selecter);
-            //  tvMessage.setTextColor(Color.parseColor("#333333"));
+            if ((recent.getTag() & RecentContactsFragment.RECENT_TAG_STICKY) == 0) {
+                holder.getConvertView().setBackgroundResource(R.drawable.nim_touch_bg);
+            } else {
+                holder.getConvertView().setBackgroundResource(R.drawable.nim_recent_contact_sticky_selecter);
+            }
         }
-//        if ((recent.getTag() & RecentContactsFragment.RECENT_TAG_STICKY) == 0) {
-//            holder.getConvertView().setBackgroundResource(R.drawable.nim_touch_bg);
-//        } else {
-//            holder.getConvertView().setBackgroundResource(R.drawable.nim_recent_contact_sticky_selecter);
-//        }
     }
 
     /**

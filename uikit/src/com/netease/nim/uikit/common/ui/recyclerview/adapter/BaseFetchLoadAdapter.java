@@ -601,7 +601,6 @@ public abstract class BaseFetchLoadAdapter<T, K extends BaseViewHolder> extends 
     public int getBottomDataPosition() {
         return getHeaderLayoutCount() + mData.size() - 1;
     }
-
     public void notifyDataItemChanged(int dataIndex) {
         notifyItemChanged(getHeaderLayoutCount() + dataIndex);
     }

@@ -24,7 +24,7 @@ public class ChatRoomInputPanel extends InputPanel {
     }
 
     @Override
-    protected IMMessage createTextMessage(String text) {
+    public IMMessage createTextMessage(String text) {
         return ChatRoomMessageBuilder.createChatRoomTextMessage(container.account, text);
     }
 }
