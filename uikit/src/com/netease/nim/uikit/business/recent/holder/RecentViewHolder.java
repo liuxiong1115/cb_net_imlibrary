@@ -96,7 +96,7 @@ public abstract class RecentViewHolder extends RecyclerViewHolder<BaseQuickAdapt
         if (position == 0) {
             CommonUtil.onMessageFragmentVisiableonListener listener = CommonUtil.messageFragmentVisiableonListener;
             if (listener != null) {
-                listener.onVisiableon(data.getContactId());
+                listener.onVisiable(holder.getConvertView(),data.getContactId());
             }
         }
         inflate(holder, data, position);

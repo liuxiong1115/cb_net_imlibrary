@@ -443,7 +443,7 @@ public class CommonUtil {
     }
 
     public interface onMessageFragmentVisiableonListener {
-        void onVisiableon(String sessionId);
+        void onVisiable(View view,String sessionId);
     }
 
     //群聊界面可见时
