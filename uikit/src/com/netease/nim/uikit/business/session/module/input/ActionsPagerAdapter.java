@@ -43,6 +43,7 @@ public class ActionsPagerAdapter extends PagerAdapter {
                 * ITEM_COUNT_PER_GRID_VIEW, end);
 
         GridView gridView = new GridView(context);
+        gridView.setId(R.id.action_gridView);
         gridView.setAdapter(new ActionsGridviewAdapter(context, subBaseActions));
         if (actions.size() > 4) {
             gridView.setNumColumns(4);

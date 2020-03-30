@@ -1,13 +1,18 @@
 package com.netease.nim.uikit.business.session.module.input;
 
+import android.content.Context;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.netease.nim.uikit.R;
 import com.netease.nim.uikit.business.session.actions.BaseAction;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 /**

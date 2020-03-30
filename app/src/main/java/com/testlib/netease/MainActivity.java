@@ -18,6 +18,8 @@ import com.netease.nim.demo.login.LoginActivity;
 import com.netease.nim.demo.session.extension.CardAttachment;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.business.session.activity.TeamMessageActivity;
+import com.netease.nim.uikit.business.session.module.input.ActionsGridviewAdapter;
+import com.netease.nim.uikit.business.session.module.input.ActionsPagerAdapter;
 import com.netease.nim.uikit.business.session.module.input.InputPanel;
 import com.netease.nim.uikit.common.CommonUtil;
 import com.netease.nim.uikit.common.ToastHelper;

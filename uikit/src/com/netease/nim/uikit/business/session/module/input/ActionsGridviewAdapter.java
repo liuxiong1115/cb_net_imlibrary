@@ -25,6 +25,10 @@ public class ActionsGridviewAdapter extends BaseAdapter {
         this.baseActions = baseActions;
     }
 
+    public static void setListener(GridViewVisiableListener listener) {
+        ActionsGridviewAdapter.listener = listener;
+    }
+
     @Override
     public int getCount() {
         return baseActions.size();
@@ -48,11 +52,18 @@ public class ActionsGridviewAdapter extends BaseAdapter {
         } else {
             itemlayout = convertView;
         }
-
+        if (listener != null && position == 3) {
+            listener.onGridViewVisiable(context,itemlayout);
+        }
         BaseAction viewHolder = baseActions.get(position);
         ((ImageView) itemlayout.findViewById(R.id.imageView)).setBackgroundResource(viewHolder.getIconResId());
         ((TextView) itemlayout.findViewById(R.id.textView)).setText(context.getString(viewHolder.getTitleId()));
         return itemlayout;
+    }
+
+    private static GridViewVisiableListener listener;
+    public interface GridViewVisiableListener{
+        void onGridViewVisiable(Context context,View view);
     }
 }
 
