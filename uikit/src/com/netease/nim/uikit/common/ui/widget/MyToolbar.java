@@ -472,8 +472,8 @@ public class MyToolbar extends Toolbar implements View.OnClickListener {
 
     public void setMenuVisible(boolean visible) {
         mMenuVisible = visible;
-//        mMenuTextView.setVisibility(visible ? VISIBLE : GONE);
-        mMenuTextView.setVisibility(VISIBLE);
+       mMenuTextView.setVisibility(visible ? VISIBLE : GONE);
+//         mMenuTextView.setVisibility(VISIBLE);
     }
 
     public boolean getMenuVisible() {
