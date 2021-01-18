@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         //   maven {'https://mvnrepository.com/artifact/'}
-        maven { url 'https://fabric-artifacts.s3.amazonaws.com/public' }
+        maven { url 'https://maven.fabric.io/public'  }
     }
 
     dependencies {
