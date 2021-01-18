@@ -264,6 +264,7 @@ public class TeamMessageActivity extends BaseMessageActivity {
         setToolBar(R.id.toolbar, options);
         MyToolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setMenuDrawable(R.drawable.nim_ic_message_actionbar_team);
+        toolbar.setMenuVisible(View.GONE);
     }
 
     @Override
